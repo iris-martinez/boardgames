@@ -7,6 +7,10 @@ Tech used
 
 PHP 7.2
 
+Style Guide
+
+We ar using the following PHP Style Guide --> https://gist.github.com/ryansechrest/8138375#7-variables
+
 
 Iris Martinez Solano
 Eva Lujan Cardenas
