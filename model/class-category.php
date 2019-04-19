@@ -37,4 +37,11 @@ class category
         $this->name = $name;
     }
 
+    public function __toString()
+    {
+        return "category[id=".$this->get_id().", name=".$this->get_name()."]";
+    }
+
+
+
 }
