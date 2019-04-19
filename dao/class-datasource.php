@@ -1,7 +1,7 @@
 <?php
 
 
-class datasource
+class Datasource
 {
 
     private $connection;
