@@ -1,50 +1,45 @@
 <?php
 
-require_once(__DIR__."/../model/class-game.php");
-require_once(__DIR__."/../dao/class-datasource.php");
+require_once(__DIR__ . "/../model/class-game.php");
+require_once(__DIR__ . "/../dao/class-datasource.php");
 
 
 class gameDAO
 {
     private $datasource;
-    private $gameDAO;
 
-
-    public function __construct(){
-        $this->datasource = new datasource();
-        $this->gameDAO = new gameDAO();
+    public function __construct()
+    {
+        $this->datasource = datasource::get_instance();
     }
-    public function get_game_by_id($id) {
-        $conn = $this->datasource->get_conexion();
-        $sql = "SELECT * Game FROM  WHERE idGame = ?";
+
+    public function list_games()
+    {
+
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT * FROM Game";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param('d', $id);
         $stmt->execute();
-        $stmt->bind_result($id);
-        $game = new game();
-        if ($stmt->fetch()) {
-            $compra->set_id($id);
-            $compra->set_cliente($this->gameDAO->get_game_by_id($id));
-                   }
+        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $score, $category, $user);
+        $games = [];
+        while ($stmt->fetch()) {
+            $game = new Game();
+            $game->set_id($id);
+            $game->set_name($name);
+            $game->set_author($author);
+            $game->set_number_players($number_players);
+            $game->set_description($description);
+            $game->set_duration($duration);
+            $game->set_image($image);
+            $game->set_score($score);
+            $game->set_category($category);
+            $game->set_user($user);
+            $games[] = $game;
+        }
         $stmt->close();
-        return $game;
-    }
-    public function insert_game($game) {
-        $conn = $this->datasource->get_conexion();
-        $sql = "INSERT INTO Game (idGame,name,author,numberPlayers,description,duration,image) VALUES (?, ?, ?, ?, ?, ?, ?)";
-        // Vincular variables a una instrucción preparada como parámetros
-        $stmt = $conn->prepare($sql);
-        $id = $game->get_id();
-        $id_cliente = $compra->get_cliente()->get_id();
-        $stmt->bind_param('dd', $id, $id_cliente);
-        if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido crear el producto correctamente" . $conn->error);
-        }
-        $compra->set_id($conn->insert_id);
-        foreach ($compra->get_productos_comprados() as $producto_comprado) {
-            $this->producto_compradoDAO->insertar_producto_comprado($producto_comprado);
-        }
+        return $games;
+
     }
 }
 

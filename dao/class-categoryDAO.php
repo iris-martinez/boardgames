@@ -10,7 +10,7 @@ class CategoryDAO
 
     public function __construct()
     {
-        $this->datasource = new Datasource();
+        $this->datasource = datasource::get_instance();
     }
 
     public function list_categories()
