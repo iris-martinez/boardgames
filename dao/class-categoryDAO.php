@@ -1,16 +1,15 @@
 <?php
 
 require_once(__DIR__."/../model/class-category.php");
+require_once(__DIR__."/../dao/class-datasource.php");
 
 class CategoryDAO
 {
 
     private $datasource;
-    private $categoryDAO;
 
     public function __construct(){
-        $this->datasource = new DataSource();
-        $this->categoryDAO = new categoryDAO();
+        $this->datasource = new datasource();
     }
 
     public function get_category_by_id($id) {

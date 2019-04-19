@@ -1,7 +1,7 @@
 <?php
 
 
-class DataSource
+class datasource
 {
 
     private $connection;
@@ -11,7 +11,7 @@ class DataSource
         $servername = "localhost";
         $username = "root";
         $password = "";
-        $schema = "rottenBoard";
+        $schema = "rottenBoardEN";
         
         // Conectar DB
         $this->connection = new mysqli($servername, $username, $password);

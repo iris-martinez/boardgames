@@ -1,7 +1,7 @@
 <?php
 
 
-class Game
+class game
 {
     private $id;
     private $name;
@@ -10,9 +10,9 @@ class Game
     private $description;
     private $duration;
     private $image;
-    private $punctuation;
-    private $id_category;
-    private $id_user;
+    private $score;
+    private $category;
+    private $user;
 
     /**
      * @return mixed
@@ -129,49 +129,49 @@ class Game
     /**
      * @return mixed
      */
-    public function get_punctuation()
+    public function get_score()
     {
-        return $this->punctuation;
+        return $this->score;
     }
 
     /**
-     * @param mixed $punctuation
+     * @param mixed $score
      */
-    public function set_punctuation($punctuation)
+    public function set_score($score)
     {
-        $this->punctuation = $punctuation;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function get_id_category()
-    {
-        return $this->id_category;
-    }
-
-    /**
-     * @param mixed $id_category
-     */
-    public function set_id_category($id_category)
-    {
-        $this->id_category = $id_category;
+        $this->score = $score;
     }
 
     /**
      * @return mixed
      */
-    public function get_id_user()
+    public function get_category()
     {
-        return $this->id_user;
+        return $this->category;
     }
 
     /**
-     * @param mixed $id_user
+     * @param mixed $category
      */
-    public function set_id_user($id_user)
+    public function set_category($category)
     {
-        $this->id_user = $id_user;
+        $this->category = $category;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function get_user()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function set_user($user)
+    {
+        $this->user = $user;
     }
 
 
