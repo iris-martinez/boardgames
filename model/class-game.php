@@ -10,7 +10,7 @@ class game
     private $description;
     private $duration;
     private $image;
-    private $score;
+    private $punctuation;
     private $category;
     private $user;
 
@@ -129,17 +129,17 @@ class game
     /**
      * @return mixed
      */
-    public function get_score()
+    public function get_punctuation()
     {
-        return $this->score;
+        return $this->punctuation;
     }
 
     /**
-     * @param mixed $score
+     * @param mixed $punctuation
      */
-    public function set_score($score)
+    public function set_punctuation($punctuation)
     {
-        $this->score = $score;
+        $this->punctuation = $punctuation;
     }
 
     /**
