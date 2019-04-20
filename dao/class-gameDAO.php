@@ -20,7 +20,7 @@ class gameDAO
         $conn = $this->datasource->get_connection();
         $sql = "SELECT id_game, g.name, author, number_players, description, duration, 
                        image, punctuation, id_user, c.id_category, c.name 
-                FROM Game g join Category c using (id_category)";
+                FROM Game g JOIN Category c USING (id_category)";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $stmt->execute();
@@ -30,13 +30,13 @@ class gameDAO
 
     }
 
-    public function get_game_by_id($id): Game
+    public function get_game_by_id($id): ?Game
     {
         $conn = $this->datasource->get_connection();
         $sql = "SELECT id_game, g.name, author, number_players, description, duration, 
                        image, punctuation, id_user, c.id_category, c.name 
-                FROM Game g join Category c using (id_category) 
-                where id_game = ?";
+                FROM Game g JOIN Category c USING (id_category) 
+                WHERE id_game = ?";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('d', $id);
@@ -51,7 +51,7 @@ class gameDAO
         $conn = $this->datasource->get_connection();
         $sql = "SELECT id_game, g.name, author, number_players, description, duration, 
                        image, punctuation, id_user, c.id_category, c.name 
-                FROM Game g join Category c using (id_category) 
+                FROM Game g JOIN Category c USING (id_category) 
                 WHERE g.name like ?";
 
         $id = null;
@@ -106,7 +106,7 @@ class gameDAO
 
     private function extract_result_list($stmt): array
     {
-        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $score, $user, $id_category, $name_category);
+        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $punctuation, $user, $id_category, $name_category);
         $games = [];
         while ($stmt->fetch()) {
 
@@ -122,7 +122,7 @@ class gameDAO
             $game->set_description($description);
             $game->set_duration($duration);
             $game->set_image($image);
-            $game->set_score($score);
+            $game->set_punctuation($punctuation);
             $game->set_category($category);
             $game->set_user($user);
 
@@ -131,9 +131,9 @@ class gameDAO
         return $games;
     }
 
-    private function extract_single_result($stmt): Game
+    private function extract_single_result($stmt): ?Game
     {
-        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $score, $user, $id_category, $name_category);
+        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $punctuation, $user, $id_category, $name_category);
         $game = null;
         if ($stmt->fetch()) {
 
@@ -149,7 +149,7 @@ class gameDAO
             $game->set_description($description);
             $game->set_duration($duration);
             $game->set_image($image);
-            $game->set_score($score);
+            $game->set_punctuation($punctuation);
             $game->set_category($category);
             $game->set_user($user);
 
@@ -161,17 +161,63 @@ class gameDAO
     public function update_game($game)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "UPDATE Game SET (name = ?, author = ?, number_players = ?, description = ?, duration = ?, image = ?) WHERE id_game = ?";
-        // Vincular variables a una instrucción preparada como parámetros
+        $sql = "UPDATE Game SET name = ?, author = ?, number_players = ?, description = ?, duration = ?, image = ?, punctuation = ?, id_user = ?, id_category = ?  WHERE id_game = ?";
         $stmt = $conn->prepare($sql);
+
         $id = $game->get_id();
         $name = $game->get_name();
-        $author = $game->get_name();
-        $stmt->bind_param('sd', $name, $id);
+        $author = $game->get_author();
+        $number_players= $game->get_number_players();
+        $description = $game->get_description();
+        $duration = $game->get_duration();
+        $image = $game->get_image();
+        $punctuation = $game->get_punctuation();
+        $id_user = null;
+        $id_category = $game->get_category()->get_id();
+
+        $stmt->bind_param('ssdsssdddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category, $id);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido actualizar la categoría correctamente" . $conn->error);
+            throw new Exception("No has podido actualizar el juego." . $conn->error);
         }
+        $stmt->close();
+    }
+
+    public function insert_game($game)
+    {
+        $conn = $this->datasource->get_connection();
+        $sql = "INSERT INTO Game (name, author, number_players, description, duration, image, punctuation, id_user, id_category) VALUES (?,?,?,?,?,?,?,?,?)";
+        $stmt = $conn->prepare($sql);
+
+
+        $name = $game->get_name();
+        $author = $game->get_author();
+        $number_players= $game->get_number_players();
+        $description = $game->get_description();
+        $duration = $game->get_duration();
+        $image = $game->get_image();
+        $punctuation = $game->get_punctuation();
+        $id_user = 1;
+        $id_category = $game->get_category()->get_id();
+
+        $stmt->bind_param('ssdsssddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category);
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No has podido insertar el juego." . $conn->error);
+        }
+        $stmt->close();
+        $game->set_id($conn->insert_id);
+    }
+
+    public function delete_game($game)
+    {
+        $conn = $this->datasource->get_connection();
+        $sql = "DELETE FROM Game WHERE id_game = ?";
+        $stmt = $conn->prepare($sql);
+        $id = $game->get_id();
+        $stmt->bind_param('d', $id);
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No has podido eliminar el juego." . $conn->error);
+        }
+        $stmt->close();
     }
 }
-
 ?>
