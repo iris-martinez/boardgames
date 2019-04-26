@@ -4,6 +4,7 @@ require_once ("dao/class-categoryDAO.php");
 require_once ("model/class-category.php");
 require_once ("dao/class-datasource.php");
 
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $category_dao = new CategoryDAO();
     $name = $_POST['name'] ?? '';
@@ -19,7 +20,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $category->set_name($name);
 
         $category_dao->insert_category($category);
-        die();
     }
 }
 ?>
@@ -89,7 +89,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <div id="wrapper">
 
     <!-- Sidebar -->
-    <!--<ul class="sidebar navbar-nav">
+    <ul class="sidebar navbar-nav">
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-fw fa-users"></i>
@@ -131,7 +131,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <a class="dropdown-item" href="#"></a>
             </div>
         </li>
-    </ul>-->
+    </ul>
 
     <div id="content-wrapper">
 
@@ -162,26 +162,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <th>Categoría</th>
                             </tr>
                             </thead>
-                            <tfoot>
-                            <tr>
-                                <th>ID</th>
-                                <th>Categoría</th>
-                            </tr>
-                            </tfoot>
                             <tbody>
 
-                            <!-- Content Example, the content must come from the DB -->
 
-                            <?php include_once ('controller/list_categories.php');
-                            var_dump($category);
-/*                            foreach ($categories as $item){
-                                print "$categories = "
-                            }
-                            */?>
-                            <tr>
-                                <th></th>
-                                <td>Holaaaa</td>
-                            </tr>
+                                <?php
+                                $category_dao = new CategoryDAO();
+                                $categories = $category_dao->list_categories();
+
+                                foreach ($categories as $category) {
+                                    ?>
+                                <tr>
+                                    <td><?= $category->get_id()?> </td>
+                                    <td><?= $category->get_name()?> </td>
+                                </tr>
+                                    <?php
+                                }
+                                ?>
+
 
                             </tbody>
 
@@ -208,10 +205,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </div>
         <!-- /.container-fluid -->
-
-        <?php
-        //var_dump($category);
-        ?>
         <!-- Sticky Footer -->
         <footer class="sticky-footer">
             <div class="container my-auto">
