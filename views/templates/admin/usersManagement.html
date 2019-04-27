@@ -9,7 +9,7 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Admin - Manage game</title>
+  <title>Admin - User management</title>
 
   <!-- Custom fonts for this template-->
   <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -112,85 +112,102 @@
           <li class="breadcrumb-item">
             <a href="index.html">Admin</a>
           </li>
-          <li class="breadcrumb-item active">Actualizar juego</li>
+          <li class="breadcrumb-item active">Gestionar usuarios</li>
         </ol>
 
         <!-- Page Content -->
-        <h1>Actualizar Juego</h1>
+        <h1>Gestionar usuarios</h1>
         <hr>
-        <!-- Search Game -->
+        <!-- Search user -->
         <form action="" class="form-inline justify-content-center">
-            <div class="input-group mx-auto mt-3">
-              <input type="text" class="form-control" placeholder="Buscar juego" aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search"></i>
-                </button>
-              </div>
+                <div class="input-group mx-auto mt-3">
+                    <input type="text" class="form-control" placeholder="Buscar usuario" aria-label="Search" aria-describedby="basic-addon2">
+                    <div class="input-group-append">
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    </div>
+                </div>
+            </form>
+    
+            <!-- Manage user -->
+            <div class="card card-register mx-auto mt-5 mb-5">
+                <div class="card-header">Gestionar usuarios</div>
+                    <div class="card-body">
+                      <form action="">
+                        <div class="form-group">
+                          <div class="form-row">
+                            <div class="col-md-6">
+                              <div class="form-label-group">
+                                <input type="text" id="name" class="form-control" placeholder="Nombre" required="required" autofocus="autofocus">
+                                <label for="name">Nombre</label>
+                              </div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="form-label-group">
+                                <input type="text" id="surname" class="form-control" placeholder="Apellido" required="required">
+                                <label for="surname">Apellido</label>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <div class="form-row">
+                              <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <input type="text" id="email" class="form-control" placeholder="Email" required="required">
+                                  <label for="email">Email</label>
+                              </div>
+                              </div>
+                              <div class="col-md-6">
+                              <div class="form-label-group">
+                                  <input type="password" id="pass" class="form-control" placeholder="Contraseña" required="required">
+                                  <label for="pass">Contraseña</label>
+                              </div>
+                              </div>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="date" id="birth_date" class="form-control" placeholder="Nacimiento" required="required">
+                                    <label for="birth_date">Nacimiento</label>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="date" id="register_date" class="form-control" placeholder="Registro" required="required">
+                                    <label for="register_date">Registro</label>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="form-row">
+                                <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="text" id="role" class="form-control" placeholder="Rol" required="required">
+                                    <label for="role">Rol</label>
+                                </div>
+                                </div>
+                                <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <input type="number" id="id_role" class="form-control" placeholder="Rol ID" required="required">
+                                    <label for="id_role">Rol ID</label>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a class="btn btn-primary btn-block" href="#">Modificar usuario</a>
+                        <a class="btn btn-primary btn-block" href="#">Baja de usuario</a>
+                      </form>
+                    </div>
+                </div>
             </div>
-        </form>
-        <!-- Recover Game Data -->
-        <div class="container">
-          <div class="card card-register mx-auto mt-5">
-            <div class="card-header">Actualizar juego</div>
-            <div class="card-body">
-              <form action="">
-                <div class="form-group">
-                  <div class="form-row">
-                    <div class="col-md-6">
-                      <div class="form-label-group">
-                        <input type="text" id="name" class="form-control" placeholder="Nombre" required="required" autofocus="autofocus">
-                        <label for="name">Nombre</label>
-                      </div>
-                    </div>
-                    <div class="col-md-6">
-                      <div class="form-label-group">
-                        <input type="text" id="author" class="form-control" placeholder="Autor" required="required">
-                        <label for="author">Autor</label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="form-row">
-                      <div class="col-md-6">
-                      <div class="form-label-group">
-                          <input type="number" id="numberPlayers" class="form-control" placeholder="Nº de Jugadores" required="required">
-                          <label for="numberPlayers">Nº de Jugadores</label>
-                      </div>
-                      </div>
-                      <div class="col-md-6">
-                      <div class="form-label-group">
-                          <input type="text" id="gameDuration" class="form-control" placeholder="Duración de partida" required="required">
-                          <label for="gameDuration">Duración de partida</label>
-                      </div>
-                      </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-label-group">
-                      <input type="text" id="category" class="form-control" placeholder="Categoría" required="required">
-                      <label for="category">Categoría</label>
-                    </div>
-                </div>
-                <div class="form-group">
-                  <div class="form-label-group">
-                    <input type="text" id="description" class="form-control" placeholder="Descripción" required="required">
-                    <label for="description">Descripción</label>
-                  </div>
-                </div>
-                <div class="form-group">
-                    <div class="form-label-group">
-                      <input type="file" id="image" class="form-control" placeholder="Imagen" required="required">
-                      <label for="image">Imagen</label>
-                    </div>
-                </div>
-                <a class="btn btn-primary btn-block" href="#">Modificar</a>
-                <a class="btn btn-primary btn-block" href="#">Eliminar</a>
-              </form>
-            </div>
-          </div>
-        </div>
+    
+            <!-- end -->
 
       </div>
       <hr>
