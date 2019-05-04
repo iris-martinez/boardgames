@@ -8,10 +8,6 @@ require_once ("dao/class-datasource.php");
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $category_dao = new CategoryDAO();
     $name = $_POST['name'] ?? '';
-    $name = $_POST['author'] ?? '';
-    $name = $_POST['name'] ?? '';
-    $name = $_POST['name'] ?? '';
-    $name = $_POST['name'] ?? '';
 
 
     $error = false;
@@ -199,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-plus"></i>
+                                    <i class="fas fa-plus">Añadir</i>
                                 </button>
                             </div>
                         </div>
