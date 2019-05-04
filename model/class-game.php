@@ -11,8 +11,8 @@ class game
     private $duration;
     private $image;
     private $punctuation;
-    private $category;
-    private $user;
+    private $id_category;
+    private $id_user;
 
     /**
      * @return mixed
@@ -145,34 +145,36 @@ class game
     /**
      * @return mixed
      */
-    public function get_category()
+    public function get_id_category()
     {
-        return $this->category;
+        return $this->id_category;
     }
 
     /**
-     * @param mixed $category
+     * @param mixed $id_category
      */
-    public function set_category($category)
+    public function set_id_category($id_category)
     {
-        $this->category = $category;
+        $this->id_category = $id_category;
     }
 
     /**
      * @return mixed
      */
-    public function get_user()
+    public function get_id_user()
     {
-        return $this->user;
+        return $this->id_user;
     }
 
     /**
-     * @param mixed $user
+     * @param mixed $id_user
      */
-    public function set_user($user)
+    public function set_id_user($id_user)
     {
-        $this->user = $user;
+        $this->id_user = $id_user;
     }
+
+
 
 
 
