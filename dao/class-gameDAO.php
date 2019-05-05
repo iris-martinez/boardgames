@@ -2,6 +2,7 @@
 
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-category.php");
+require_once(__DIR__ . "/../model/class-user.php");
 require_once(__DIR__ . "/../dao/class-datasource.php");
 
 
@@ -172,7 +173,7 @@ class gameDAO
         $duration = $game->get_duration();
         $image = $game->get_image();
         $punctuation = $game->get_punctuation();
-        $id_user = null;
+        $id_user = $game->get_user()->get_id();
         $id_category = $game->get_category()->get_id();
 
         $stmt->bind_param('ssdsssdddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category, $id);
@@ -196,7 +197,7 @@ class gameDAO
         $duration = $game->get_duration();
         $image = $game->get_image();
         $punctuation = $game->get_punctuation();
-        $id_user = 1;
+        $id_user = $game->get_user()->get_id();
         $id_category = $game->get_category()->get_id();
 
         $stmt->bind_param('ssdsssddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category);
