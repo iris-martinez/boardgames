@@ -269,6 +269,11 @@ ALTER TABLE `Role`
 ALTER TABLE `User`
   MODIFY `id_user` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
+ALTER TABLE `User`
+    ADD CONSTRAINT `User_ibfk_1` FOREIGN KEY (`id_user_level`) REFERENCES `User_level` (`id_user_level`),
+    ADD CONSTRAINT `User_ibfk_2` FOREIGN KEY (`id_role`) REFERENCES `Role` (`id_role`);
+COMMIT;
+
 --
 -- AUTO_INCREMENT de la tabla `UserCommentGame`
 --
