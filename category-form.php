@@ -161,6 +161,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <tr>
                                 <th>ID</th>
                                 <th>Categoría</th>
+                                <th>Acción</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -175,6 +176,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <tr>
                                     <td><?= $category->get_id()?> </td>
                                     <td><?= $category->get_name()?> </td>
+                                    <td>
+                                        <button class="btn btn-primary" type="button">
+                                            <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal">Eliminar</i>
+                                        </button>
+                                    </td>
                                 </tr>
                                     <?php
                                 }
@@ -198,6 +204,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <i class="fas fa-plus">Añadir</i>
                                 </button>
                             </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="button">
+                                    <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal">Eliminar</i>
+                                </button>
+                            </div>
+
                         </div>
 
                     </form>
