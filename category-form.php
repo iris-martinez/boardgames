@@ -121,7 +121,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
                 <a class="dropdown-item" href="searchGame.html">Buscar</a>
-                <a class="dropdown-item" href="newGame.html">Añadir</a>
+                <a class="dropdown-item" href="game-form.php">Añadir</a>
                 <a class="dropdown-item" href="manageGame.html">Actualizar/Eliminar</a>
             </div>
         </li>
@@ -132,7 +132,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar categorías:</h6>
-                <a class="dropdown-item" href="newCategory.html">Añadir/Eliminar</a>
+                <a class="dropdown-item" href="category-form.php">Añadir/Eliminar</a>
             </div>
         </li>
     </ul>
