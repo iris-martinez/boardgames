@@ -4,18 +4,23 @@ require_once ("dao/class-categoryDAO.php");
 require_once ("model/class-game.php");
 require_once ("dao/class-datasource.php");
 
+
+//$name= $author = $number_players =$description = $id_category = $duration = $image = $id_user = null;
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    if(isset($_POST['add_game'])) {
         $game_dao = new GameDAO();
         $name = $_POST['name'] ?? '';
         $author = $_POST['author'] ?? '';
-        $number_players = $_POST['number_players'] ?? '';
+        $number_players = (int) $_POST['number_players'] ?? '';
         $description = $_POST['description'] ?? '';
-        $id_category = (int)$_POST['category'] ?? '';
         $duration = $_POST['duration'] ?? '';
         $image = $_FILES['image'] ?? '';
         $punctuation = (int)$_POST['punctuation'] ?? '';
+        $id_category = (int)$_POST['category'] ?? '';
         $id_user = $_POST['id_user'];
+
+
+
         $error = false;
 
         if (empty($name)) {
@@ -38,7 +43,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $name_error = "La duración del juego es requerida";
             $error = true;
         }
-        // var_dump($name); exit();
+        //var_dump($punctuation); exit();
         //Subir imagen
         /*if (empty($image)) {
             $name_error = "Name is required!";
@@ -49,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error = true;
         }
         //var_dump($punctuation); exit();
-        //var_dump($error . $name_error);exit();
+        var_dump($error . $name_error);exit();
         if (!$error) {
             $game = new Game();
             $game->set_name($name);
@@ -59,13 +64,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $game->set_duration($duration);
             $game->set_image($image);
             $game->set_punctuation($punctuation);
-            //var_dump($game->set_punctuation($punctuation));exit();
             $game->set_id_category($id_category);
             $game->set_id_user($id_user);
 //////////Aquí estoy
+///
+            //$game = $game_dao->insert_game($game);
             $game_dao->insert_game($game);
+
+            //return $game[];
         }
-    }
+
 }
 ?>
 <!DOCTYPE html>
@@ -196,7 +204,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="card card-register mx-auto mt-5">
                     <div class="card-header">Introducir juego</div>
                     <div class="card-body">
-                        <form method="post" action="game-form.php">
+                        <form method="post" action="">
                             <div class="form-group">
                                 <div class="form-row">
                                     <div class="col-md-6">
@@ -217,8 +225,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <div class="form-row">
                                     <div class="col-md-6">
                                         <div class="form-label-group">
-                                            <input type="number" id="number_players" class="form-control" name="number_players" placeholder="Nº de Jugadores" required="required">
-                                            <label for="number_players">Nº de Jugadores</label>
+                                            <label for="number_players" style="display: none"></label>
+                                            <select name="number_players" class="form-control" id="number_players" required>
+                                                <option>Nº de Jugadores</option>
+                                                <option value="1">1</option>
+                                                <option value="2">2</option>
+                                                <option value="3">3</option>
+                                                <option value="4">4</option>
+                                                <option value="5">5</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
@@ -279,9 +294,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                             </div>
                             <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit" name="add_game">
-                                    <i class="fas fa-plus">Añadir</i>
-                                </button>
+                                    <input type="submit" name="add_game" value="manda">
+
                             </div>
                         </form>
                     </div>

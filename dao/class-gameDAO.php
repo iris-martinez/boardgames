@@ -189,7 +189,6 @@ class gameDAO
         $sql = "INSERT INTO Game (name, author, number_players, description, duration, image, punctuation, id_user, id_category) VALUES (?,?,?,?,?,?,?,?,?)";
         $stmt = $conn->prepare($sql);
 
-
         $name = $game->get_name();
         $author = $game->get_author();
         $number_players= $game->get_number_players();
@@ -201,6 +200,7 @@ class gameDAO
         $id_category = $game->get_category()->get_id();
 
         $stmt->bind_param('ssdsssddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category);
+        var_dump($stmt); exit();
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido insertar el juego." . $conn->error);
         }
