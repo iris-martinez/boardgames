@@ -256,7 +256,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                     <div class="col-md-6">
                                         <div class="form-label-group">
-                                            <label for="id_category"></label>
                                             <select name="id_category" class="form-control" id="id_category">
                                                 <option value="0">Selecciona la categoría</option>
                                                 <?php
