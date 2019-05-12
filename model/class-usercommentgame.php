@@ -1,13 +1,12 @@
 <?php
 
-class punctuations
+class comments
 {
     private $id;
     private $user_id;
     private $game_id;
-    private $score;
+    private $comment;
     private $date;
-    private $user_level_id;
 
     /**
      * @return mixed
@@ -60,17 +59,17 @@ class punctuations
     /**
      * @return mixed
      */
-    public function get_score()
+    public function get_comment()
     {
-        return $this->score;
+        return $this->comment;
     }
 
     /**
-     * @param mixed $score
+     * @param mixed $comment
      */
-    public function set_score($score): void
+    public function set_comment($comment): void
     {
-        $this->score = $score;
+        $this->comment = $comment;
     }
 
     /**
@@ -89,26 +88,10 @@ class punctuations
         $this->date = $date;
     }
 
-    /**
-     * @return mixed
-     */
-    public function get_user_level_id()
-    {
-        return $this->user_level_id;
-    }
-
-    /**
-     * @param mixed $user_level_id
-     */
-    public function set_user_level_id($user_level_id): void
-    {
-        $this->user_level_id = $user_level_id;
-    }
-
     
     public function __toString()
     {
-        return "userpunctuategame[id=".$this->get_id().", userid=".$this->get_user_id().", gameid=".$this->get_game_id().", punctuation=".$this->get_score().", date=".$this->get_date().", userlevelid=".$this->get_user_level_id()."]";
+        return "usercommentgame[id=".$this->get_id().", userid=".$this->get_user_id().", gameid=".$this->get_game_id().", comment=".$this->get_comment().", date=".$this->get_date()."]";
     }
 
 
