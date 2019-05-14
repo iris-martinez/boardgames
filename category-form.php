@@ -25,8 +25,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 /*Delete a category*/
 if(isset($_POST['delete_category']) == 'eliminar'){
 
-    $category = new Category();
-    $category_dao->delete_category($category);
+    $category_dao = new CategoryDAO();
+    $category=$_POST['delete_category'];
+    $category_dao->delete_category((int)$category);
+
+    echo "<h3 style='color: green'> Nueva categoria borrada en la base de datos con éxito</h3>" . "<br>";
 
 }
 
@@ -169,19 +172,32 @@ if(isset($_POST['delete_category']) == 'eliminar'){
                             </tr>
                             </thead>
 
+                            <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Categoría</th>
+                                <th>Acción</th>
+                            </tr>
+                            </tfoot>
+
                             <tbody>
                             <?php
                             $category_dao = new CategoryDAO();
                             $categories = $category_dao->list_categories();
                             foreach ($categories as $category) {
+                                //var_dump($category); exit();
                                 ?>
                                 <tr>
-                                    <td><?= $category->get_id()?> </td>
+                                    <td><?= $category->get_id_category()?> </td>
                                     <td><?= $category->get_name()?> </td>
                                     <td>
-                                        <button class="btn btn-danger" type="button" >
-                                            <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
-                                        </button>
+
+                                        <form name="delete-form" method="post" action="category-form.php">
+                                            <button class="btn btn-danger" type="submit" name="delete_category" value="<?=  $category->get_id_category(); ?>" >Eliminar</button>
+
+                                        </form>
+                                        <!--<i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>-->
+                                        <!--</button>-->
                                     </td>
                                 </tr>
                                 <?php
@@ -259,7 +275,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
 </div>
 
 <!-- Delete Modal-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<!--<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -277,7 +293,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             </form>
         </div>
     </div>
-</div>
+</div>-->
 
 <!-- Bootstrap core JavaScript--><!--/var/www/html/boardgames/views/templates/admin/vendor-->
 <script src="views/templates/admin/vendor/jquery/jquery.min.js"></script>

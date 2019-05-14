@@ -2,23 +2,23 @@
 
 class category
 {
-    private $id;
+    private $id_category;
     private $name;
 
     /**
      * @return mixed
      */
-    public function get_id()
+    public function get_id_category()
     {
-        return $this->id;
+        return $this->id_category;
     }
 
     /**
      * @param mixed $id
      */
-    public function set_id($id): void
+    public function set_id($id_category): void
     {
-        $this->id = $id;
+        $this->id_category = $id_category;
     }
 
     /**
@@ -39,7 +39,7 @@ class category
 
     public function __toString()
     {
-        return "category[id=".$this->get_id().", name=".$this->get_name()."]";
+        return "category[id=".$this->get_id_category().", name=".$this->get_name()."]";
     }
 
 

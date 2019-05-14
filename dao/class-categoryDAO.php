@@ -15,7 +15,6 @@ class CategoryDAO
 
     public function list_categories()
     {
-
         $conn = $this->datasource->get_connection();
         $sql = "SELECT * FROM Category";
         // Vincular variables a una instrucción preparada como parámetros
@@ -90,8 +89,7 @@ class CategoryDAO
         $sql = "DELETE FROM Category WHERE id_category = ?";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
-        $id = $category->get_id();
-        $stmt->bind_param('d', $id);
+        $stmt->bind_param('i', $category);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido eliminar la categoría correctamente" . $conn->error);
         }
