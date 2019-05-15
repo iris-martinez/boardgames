@@ -3,7 +3,7 @@
 
 class game
 {
-    private $id;
+    private $id_game;
     private $name;
     private $author;
     private $number_players;
@@ -17,17 +17,17 @@ class game
     /**
      * @return mixed
      */
-    public function get_id()
+    public function get_id_game()
     {
-        return $this->id;
+        return $this->id_game;
     }
 
     /**
-     * @param mixed $id
+     * @param mixed $id_game
      */
-    public function set_id($id)
+    public function set_id_game($id_game)
     {
-        $this->id = $id;
+        $this->id_game = $id_game;
     }
 
     /**

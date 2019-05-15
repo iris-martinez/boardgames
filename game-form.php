@@ -7,72 +7,128 @@ require_once ("dao/class-datasource.php");
 
 //$name= $author = $number_players =$description = $id_category = $duration = $image = $id_user = null;
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $game_dao = new GameDAO();
-        $name = $_POST['name'] ?? '';
-        $author = $_POST['author'] ?? '';
-        $number_players = (int) $_POST['number_players'] ?? '';
-        $description = $_POST['description'] ?? '';
-        $duration = $_POST['duration'] ?? '';
-        $image = $_FILES['image'] ?? '';
-        $punctuation = (int)$_POST['punctuation'] ?? '';
-        $id_category = (int)$_POST['category'] ?? '';
-        $id_user = $_POST['id_user'];
+///aaaaaa
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda') {
+
+   // var_dump($_FILES);exit();
+    $game = new Game();
+
+    //Falta id joc
+    //$id_game = $new_game->get_id_game();
+    $name = $_POST['name'] ?? '';
+    $author = $_POST['author'] ?? '';
+    $number_players = (int) $_POST['number_players'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $duration = $_POST['duration'] ?? '';
+    //var_dump($_FILES); exit();
+    $image = $_FILES['image']['name'] ?? '';
+
+    $punctuation = (int)$_POST['punctuation'] ?? '';
+
+    $id_category =(int) $_POST['id_category'] ?? '';
+    //var_dump($id_category);exit();
+    $id_user = (int)$_POST['id_user'];
 
 
+//var_dump($game); exit();
 
-        $error = false;
+    $error = false;
 
-        if (empty($name)) {
-            $name_error = "El nombre del juego es requerido";
-            $error = true;
-        }
-        if (empty($author)) {
-            $name_error = "El autor del juego es requerido";
-            $error = true;
-        }
-        if (empty($number_players)) {
-            $name_error = "El número de jugadores del juego es requerido";
-            $error = true;
-        }
-        if (empty($id_category)) {
-            $name_error = "La categoria del juego es requerida";
-            $error = true;
-        }
-        if (empty($duration)) {
-            $name_error = "La duración del juego es requerida";
-            $error = true;
-        }
-        //var_dump($punctuation); exit();
-        //Subir imagen
-        /*if (empty($image)) {
-            $name_error = "Name is required!";
-            $error = true;
-        }*/
-        if (empty($punctuation)) {
-            $name_error = "La puntuación del juego es requerida,por defecto pon 0";
-            $error = true;
-        }
-        //var_dump($punctuation); exit();
-        var_dump($error . $name_error);exit();
-        if (!$error) {
-            $game = new Game();
-            $game->set_name($name);
-            $game->set_author($author);
-            $game->set_number_players($number_players);
-            $game->set_description($description);
-            $game->set_duration($duration);
-            $game->set_image($image);
-            $game->set_punctuation($punctuation);
-            $game->set_id_category($id_category);
-            $game->set_id_user($id_user);
-//////////Aquí estoy
-///
-            //$game = $game_dao->insert_game($game);
-            $game_dao->insert_game($game);
+    if (empty($name)) {
+        $name_error = "El nombre del juego es requerido";
+        $error = true;
+    }
+    if (empty($author)) {
+        $name_error = "El autor del juego es requerido";
+        $error = true;
+    }
+    if (empty($number_players)) {
+        $name_error = "El número de jugadores del juego es requerido";
+        $error = true;
+    }
+    if (empty($id_category)) {
+        $name_error = "La categoria del juego es requerida";
+        $error = true;
+    }
+    if (empty($duration)) {
+        $name_error = "La duración del juego es requerida";
+        $error = true;
+    }
+    /*Per pujar imatges*/
+    /*Mirem els diferents tipus d'error*/
 
-            //return $game[];
+    if($_FILES['image']['error']){
+
+        switch ($_FILES['image']['error']){
+
+            case 1: //Error excés de tamany
+                echo "Has superado el tamaño permitido";
+                break;
+
+            case 2: //Error tamany arxiu marcat des del formulari amb l'input amagat
+                echo "Has superado el tamaño permitido por el formulario";
+                break;
+
+            case 3: //Error fitxer pujat parcialment
+                echo "Error fichero subido parcialment, fichero corrupto";
+                break;
+
+            /* case 4: //Error no sha pujat cap fitxer
+                 echo "Error no se ha subido ningun fichero";
+                 break;*/
+
         }
+
+    } else {
+
+        //echo "Has subido la imagen correctamente <br>";
+
+        if((isset($_FILES['image']['name']) && ($_FILES['image']['error'] == UPLOAD_ERR_OK))){
+
+            /*Creem una carpeta on desarem les imatges*/
+            $destiRuta = "views/images/";
+
+            move_uploaded_file($_FILES['image']['tmp_name'], $destiRuta . $_FILES['image']['name']);
+
+
+            echo "<h3 style='color: green'>El archivo " . $_FILES['image']['name'] . " se ha copiado en el directorio de imagenes </h3>";
+
+        } else {
+
+            echo "Ha habido algun error, no se ha copiado el archivo en imagenes/";
+        }
+    }
+
+
+    if (empty($punctuation)) {
+        $name_error = "La puntuación del juego es requerida,por defecto pon 1";
+        $error = true;
+    }
+
+    if (!$error) {
+        $game = new Game();
+
+        /*Estic aquí, falta l'id del joc???*/
+        /* $game->get_id_game();*/
+        $game->set_name($name);
+        $game->set_author($author);
+        $game->set_number_players($number_players);
+        $game->set_description($description);
+        $game->set_duration($duration);
+        $game->set_image($image);
+        $game->set_punctuation($punctuation);
+        $game->set_id_category($id_category);
+        $game->set_id_user($id_user);
+
+        //$game = $game_dao->insert_game($game);
+        $game_dao = new gameDAO();
+        $game_dao->insert_game($game);
+
+        echo "<script>alert('Nuevo juego subido en la base de datos con éxito') </script>";
+
+
+        //return $game[];
+    }
 
 }
 ?>
@@ -87,7 +143,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin - Blank Page</title>
+    <title>Admin - New game</title>
 
     <!-- Custom fonts for this template-->
     <link href="views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -165,9 +221,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="searchGame.html">Buscar</a>
+                <a class="dropdown-item" href="game-list.php">Buscar</a>
                 <a class="dropdown-item" href="game-form.php">Añadir</a>
-                <a class="dropdown-item" href="#">Actualizar/Modificar</a>
+                <a class="dropdown-item" href="game-update.php">Actualizar/Modificar</a>
                 <a class="dropdown-item" href="#">Eliminar</a>
             </div>
         </li>
@@ -204,7 +260,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="card card-register mx-auto mt-5">
                     <div class="card-header">Introducir juego</div>
                     <div class="card-body">
-                        <form method="post" action="">
+                        <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                             <div class="form-group">
                                 <div class="form-row">
                                     <div class="col-md-6">
@@ -236,10 +292,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                             </select>
                                         </div>
                                     </div>
+
                                     <div class="col-md-6">
                                         <div class="form-label-group">
-                                            <input type="text" id="duration" class="form-control" name="duration" placeholder="Duración de partida" required="required">
-                                            <label for="duration">Duración de partida</label>
+                                            <select name="id_category" class="form-control" id="id_category">
+                                                <option value="0">Selecciona la categoría</option>
+                                                <?php
+                                                $category_dao = new CategoryDAO();
+                                                $categories = $category_dao->list_categories();
+                                                foreach ($categories as $id_category) {
+                                                    //var_dump($id_category); exit();
+                                                    ?>
+                                                    <option value="<?=$id_category->get_id_category() ?>"><?= $id_category->get_name()?></option>
+                                                    <?php
+                                                }
+                                                ?>
+
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -256,20 +325,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                                     <div class="col-md-6">
                                         <div class="form-label-group">
-                                            <select name="id_category" class="form-control" id="id_category">
-                                                <option value="0">Selecciona la categoría</option>
-                                                <?php
-                                                $category_dao = new CategoryDAO();
-                                                $categories = $category_dao->list_categories();
-                                                foreach ($categories as $id_category) {
-                                                    //var_dump($id_category); exit();
-                                                    ?>
-                                                    <option value="<?=$id_category->get_id()?>"><?= $id_category->get_name()?></option>
-                                                    <?php
-                                                }
-                                                ?>
 
-                                            </select>
+                                            <input type="text" id="duration" class="form-control" name="duration" placeholder="Duración de partida" required="required">
+                                            <label for="duration">Duración de partida</label>
                                         </div>
                                     </div>
                                 </div>
@@ -282,7 +340,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="form-group">
                                 <div class="form-label-group">
-                                    <input type="file" id="image" name="image" class="form-control" placeholder="Imagen" >
+                                    <input type="file" id="image" name="image" class="form-control" placeholder="Imagen" data-validation-required-message="Adjunta una imagen" >
                                     <label for="image">Imagen</label>
                                 </div>
                             </div>
@@ -293,7 +351,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                             </div>
                             <div class="input-group-append">
-                                    <input type="submit" name="add_game" value="manda">
+                                <input type="submit" name="add_game" value="manda">
 
                             </div>
                         </form>
@@ -303,22 +361,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         </div>
         <hr>
+
         <!-- /.container-fluid -->
 
-        <!-- Sticky Footer -->
-        <footer class="sticky-footer">
-            <div class="container my-auto">
-                <div class="copyright text-center my-auto">
-                    <span>Copyright © Rotten Board Games 2019</span>
-                </div>
-            </div>
-        </footer>
+
 
     </div>
     <!-- /.content-wrapper -->
 
 </div>
 <!-- /#wrapper -->
+<!-- Sticky Footer -->
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">

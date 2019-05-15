@@ -15,18 +15,41 @@ class gameDAO
         $this->datasource = datasource::get_instance();
     }
 
-    public function list_games(): array
+    public function list_games()
     {
 
-        $conn = $this->datasource->get_connection();
-        $sql = "SELECT id_game, g.name, author, number_players, description, duration, 
-                       image, punctuation, id_user, c.id_category, c.name 
-                FROM Game g JOIN Category c USING (id_category)";
+/*        $conn = $this->datasource->get_connection();
+        $sql = "SELECT * FROM Game";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        $games = $this->extract_result_list($stmt);
+        $stmt->bind_result($id_game, $name);
+        $categories = [];
+        while ($stmt->fetch()) {
+            $game = new Game();
+            $game->set_id($id_game);
+            $game->set_name($name);
+
+        }
         $stmt->close();
+        return $categories;
+*/
+
+
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT * FROM Game";
+        /*$sql = "SELECT id_game, g.name, author, number_players, description, duration,
+                       image, punctuation, id_user, c.id_category, c.name 
+                FROM Game g JOIN Category c USING (id_category)";*/
+
+        // Vincular variables a una instrucción preparada como parámetros
+        $stmt = $conn->prepare($sql);
+        $stmt->execute();
+       // var_dump($this->extract_result_list($stmt)); exit();
+        $games = $this->extract_result_list($stmt);
+        //var_dump($games); exit();
+        $stmt->close();
+
         return $games;
 
     }
@@ -47,7 +70,7 @@ class gameDAO
         return $game;
     }
 
-    public function get_game_by_name($name): array
+    public function get_game_by_name($name)
     {
         $conn = $this->datasource->get_connection();
         $sql = "SELECT id_game, g.name, author, number_players, description, duration, 
@@ -67,7 +90,7 @@ class gameDAO
 
     }
 
-    public function get_game_by_author($author): array
+    public function get_game_by_author($author)
     {
         $conn = $this->datasource->get_connection();
         $sql = "SELECT id_game, g.name, author, number_players, description, duration, 
@@ -86,7 +109,7 @@ class gameDAO
 
     }
 
-    public function get_game_by_category($category): array
+    public function get_game_by_category($category)
     {
         $conn = $this->datasource->get_connection();
         $sql = "SELECT id_game, g.name, author, number_players, description, duration, 
@@ -105,18 +128,19 @@ class gameDAO
 
     }
 
-    private function extract_result_list($stmt): array
+    private function extract_result_list($stmt)
     {
-        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $punctuation, $user, $id_category, $name_category);
+
+        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $punctuation, $user, $id_category);
         $games = [];
         while ($stmt->fetch()) {
 
             $category = new category();
             $category->set_id($id_category);
-            $category->set_name($name_category);
+            //$category->set_name($name_category);
 
             $game = new Game();
-            $game->set_id($id);
+            $game->set_id_game($id);
             $game->set_name($name);
             $game->set_author($author);
             $game->set_number_players($number_players);
@@ -124,17 +148,17 @@ class gameDAO
             $game->set_duration($duration);
             $game->set_image($image);
             $game->set_punctuation($punctuation);
-            $game->set_category($category);
-            $game->set_user($user);
+            $game->set_id_category($category);
+            $game->set_id_user($user);
 
             $games[] = $game;
         }
         return $games;
     }
 
-    private function extract_single_result($stmt): ?Game
+    private function extract_single_result($stmt)
     {
-        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $punctuation, $user, $id_category, $name_category);
+        $stmt->bind_result($id_game, $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category);
         $game = null;
         if ($stmt->fetch()) {
 
@@ -143,7 +167,7 @@ class gameDAO
             $category->set_name($name_category);
 
             $game = new Game();
-            $game->set_id($id);
+            $game->set_id_game($id_game);
             $game->set_name($name);
             $game->set_author($author);
             $game->set_number_players($number_players);
@@ -151,8 +175,8 @@ class gameDAO
             $game->set_duration($duration);
             $game->set_image($image);
             $game->set_punctuation($punctuation);
-            $game->set_category($category);
-            $game->set_user($user);
+            $game->set_id_category($category);
+            $game->set_id_user($id_user);
 
         }
 
@@ -196,16 +220,16 @@ class gameDAO
         $duration = $game->get_duration();
         $image = $game->get_image();
         $punctuation = $game->get_punctuation();
-        $id_user = $game->get_user()->get_id();
-        $id_category = $game->get_category()->get_id();
+        $id_user = $game->get_id_user();
+        $id_category = $game->get_id_category();
 
         $stmt->bind_param('ssdsssddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category);
-        var_dump($stmt); exit();
+
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido insertar el juego." . $conn->error);
         }
         $stmt->close();
-        $game->set_id($conn->insert_id);
+        $game->set_id_game($conn->insert_id);
     }
 
     public function delete_game($game)
