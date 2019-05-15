@@ -219,7 +219,7 @@ ALTER TABLE `User`
   ADD KEY `fk_User_1_idx` (`id_role`),
   ADD KEY `fk_User_2_idx` (`id_user_level`);
 
---
+ALTER TABLE `User` ADD UNIQUE( `email`);
 -- Indices de la tabla `UserCommentGame`
 --
 ALTER TABLE `UserCommentGame`
@@ -256,6 +256,8 @@ ALTER TABLE `Category`
 --
 ALTER TABLE `Game`
   MODIFY `id_game` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+ALTER TABLE `Game` ADD UNIQUE( `name`);
 
 --
 -- AUTO_INCREMENT de la tabla `Role`
