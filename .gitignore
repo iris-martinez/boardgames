@@ -2,6 +2,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/views/images
 Homestead.yaml
 Homestead.json
 .env
