@@ -38,8 +38,12 @@ class gameDAO
 
         $conn = $this->datasource->get_connection();
         $sql = "SELECT * FROM Game";
+        /*
+        $sql = "SELECT id_game, g.name, author, number_players, description, duration,
+                       image, punctuation, id_user, c.id_category, c.name
+                FROM Game g JOIN Category c USING (id_category)";*/
         /*$sql = "SELECT id_game, g.name, author, number_players, description, duration,
-                       image, punctuation, id_user, c.id_category, c.name 
+                       image, punctuation, id_user, c.id_category, c.name
                 FROM Game g JOIN Category c USING (id_category)";*/
 
         // Vincular variables a una instrucción preparada como parámetros
@@ -111,6 +115,7 @@ class gameDAO
 
     public function get_game_by_category($category)
     {
+        var_dump($category); exit();
         $conn = $this->datasource->get_connection();
         $sql = "SELECT id_game, g.name, author, number_players, description, duration, 
                        image, punctuation, id_user, c.id_category, c.name 
@@ -131,16 +136,17 @@ class gameDAO
     private function extract_result_list($stmt)
     {
 
-        $stmt->bind_result($id, $name, $author, $number_players, $description, $duration, $image, $punctuation, $user, $id_category);
+        $stmt->bind_result($id_game, $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_category, $id_user);
         $games = [];
+
         while ($stmt->fetch()) {
 
             $category = new category();
             $category->set_id($id_category);
             //$category->set_name($name_category);
-
+//var_dump($category); exit();
             $game = new Game();
-            $game->set_id_game($id);
+            $game->set_id_game($id_game);
             $game->set_name($name);
             $game->set_author($author);
             $game->set_number_players($number_players);
@@ -148,8 +154,8 @@ class gameDAO
             $game->set_duration($duration);
             $game->set_image($image);
             $game->set_punctuation($punctuation);
-            $game->set_id_category($category);
-            $game->set_id_user($user);
+            $game->set_id_category($id_category);
+            $game->set_id_user($id_user);
 
             $games[] = $game;
         }
@@ -237,8 +243,7 @@ class gameDAO
         $conn = $this->datasource->get_connection();
         $sql = "DELETE FROM Game WHERE id_game = ?";
         $stmt = $conn->prepare($sql);
-        $id = $game->get_id();
-        $stmt->bind_param('d', $id);
+        $stmt->bind_param('i', $game);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido eliminar el juego." . $conn->error);
         }
