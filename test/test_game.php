@@ -12,6 +12,7 @@ try {
     /**
      * test list_games method
      */
+
     $gameDAO = new GameDAO();
     $categoryDAO = new CategoryDAO();
     $userDAO = new userDAO();
@@ -26,17 +27,17 @@ try {
     /**
      * test get_game_by_id method
      */
-    $game = $gameDAO->get_game_by_id(2);
+    /*$game = $gameDAO->get_game_by_id(2);
     echo (ISSET($game) ? 'existe' : 'no existe') . '<br>';
     echo $game->get_id() . '<br>';
     echo $game->get_name() . '<br>';
     echo $game->get_author() . '<br>';
-    echo $game->get_category() . '<br>';
+    echo $game->get_category() . '<br>';*/
 
     /**
      * test get_game_by_name method
      */
-    echo "---------------------------<br>";
+    /*echo "---------------------------<br>";
     echo "test get_game_by_name method<br>";
     $games = $gameDAO->get_game_by_name('Love');
     foreach ($games as $game) {
@@ -46,11 +47,12 @@ try {
         echo $game->get_author() . '<br>';
         echo $game->get_category() . '<br>';
     }
-    echo "---------------------------<br>";
+    echo "---------------------------<br>";*/
 
     /**
      * test get_game_by_author method
      */
+    /*
     $games = $gameDAO->get_game_by_author('Seiji Kanai');
     foreach ($games as $game) {
         echo (ISSET($game) ? 'existe' : 'no existe') . '<br>';
@@ -58,12 +60,13 @@ try {
         echo $game->get_name() . '<br>';
         echo $game->get_author() . '<br>';
         echo $game->get_category() . '<br>';
-    }
+    }*/
 
     /**
      * test insert_game method
      */
-    /*echo "---------------------------<br>";
+
+    echo "---------------------------<br>";
     echo "test insert_game method<br>";
     $game = new Game();
     $category= $categoryDAO->get_category_by_name("Wargame");
@@ -77,7 +80,7 @@ try {
     $game->set_punctuation(30);
     $game->set_user($user);
     $game->set_category($category);
-    $gameDAO->insert_game($game);*/
+    $gameDAO->insert_game($game);
 
     /**
      * test update_game method
@@ -99,10 +102,10 @@ try {
     /**
      * test delete_game method
      */
-    $game = $gameDAO->get_game_by_name("Dummy")[0];
+    /*$game = $gameDAO->get_game_by_name("Dummy")[0];
     $gameDAO->delete_game($game);
     $game = $gameDAO->get_game_by_name("Dummy");
-    echo (!empty($game) ? 'existe' : 'no existe') . '<br>';
+    echo (!empty($game) ? 'existe' : 'no existe') . '<br>';*/
 
 } finally {
     datasource::get_instance()->close_connection();
