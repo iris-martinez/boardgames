@@ -169,7 +169,7 @@ require_once(__DIR__."/../model/class-user.php");
                             </thead>
                             <tbody>
                             <tr>
-                                <th><?= $user->get_id(); ?></th>
+                                <th><a href="userManagement.php?id_user=<?= $user->get_id(); ?>"><?= $user->get_id(); ?></a></th>
                                 <td><?= $user->get_name(); ?></td>
                                 <td><?= $user->get_surname(); ?></td>
                                 <td><?= $user->get_email(); ?></td>
