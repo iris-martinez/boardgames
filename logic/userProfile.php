@@ -162,7 +162,7 @@ require_once(__DIR__."/../model/class-user.php");
                                 <th>Apellidos</th>
                                 <th>Email</th>
                                 <th>Contraseña</th>
-                                <th>Cumpleaños</th>
+                                <th>Nacimiento</th>
                                 <th>Registro</th>
                                 <th>Rol</th>
                             </tr>
