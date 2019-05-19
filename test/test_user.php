@@ -32,6 +32,7 @@ try {
     /**
      * test get_user_by_id method
      */
+    /*
     echo "---------------------------<br>";
     echo "test get_user_by_id method<br>";
     $user = $userDAO->get_user_by_id(2);
@@ -45,11 +46,12 @@ try {
     echo $user->get_registerDate() . '<br>';
     echo $user->get_role() . '<br>';
     echo $user->get_userLevel() . '<br>';
-    echo $user->get_counterPunctuation() . '<br>';
+    echo $user->get_counterPunctuation() . '<br>';*/
 
     /**
      * test get_user_by_name method
      */
+    /*
     echo "---------------------------<br>";
     echo "test get_user_by_name method<br>";
     $users = $userDAO->get_user_by_name('admin1');
@@ -66,7 +68,7 @@ try {
         echo $user->get_userLevel() . '<br>';
         echo $user->get_counterPunctuation() . '<br>';
     }
-    echo "---------------------------<br>";
+    echo "---------------------------<br>";*/
 
     /**
      * test update_user method
@@ -101,7 +103,7 @@ try {
     /**
      * test insert_user method
      */
-    /*echo "---------------------------<br>";
+    echo "---------------------------<br>";
     echo "test insert_user method<br>";
     $user = new user();
     $role= $roleDAO->get_a_role("ADMIN");
@@ -116,17 +118,17 @@ try {
     $user->set_role($role);
     $user->set_userLevel($user_level);
     $user->set_counterPunctuation(8);
-    $userDAO->insert_user($user);*/
+    $userDAO->insert_user($user);
 
     /**
      * test delete_user method
      */
-    echo "---------------------------<br>";
+    /*echo "---------------------------<br>";
     echo "test delete_user method<br>";
     $user = $userDAO->get_user_by_name("Dummy")[0];
     $userDAO->delete_user($user);
     $user = $userDAO->get_user_by_name("Dummy");
-    echo (!empty($user) ? 'existe' : 'no existe') . '<br>';
+    echo (!empty($user) ? 'existe' : 'no existe') . '<br>';*/
 
 } finally {
     datasource::get_instance()->close_connection();

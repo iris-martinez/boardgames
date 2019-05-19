@@ -83,5 +83,26 @@ class roleDAO
         }
     }
 
+    public function get_rol_by_id($id_rol)
+    {
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT * FROM Role WHERE id_role = ?";
+
+        $id = null;
+        // Vincular variables a una instrucción preparada como parámetros
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('d', $id_rol);
+        $stmt->execute();
+        $stmt->bind_result($id, $role_name);
+        $role = null;
+        if ($stmt->fetch()) {
+            $role = new role();
+            $role->set_id($id);
+            $role->set_role($role_name);
+        }
+        $stmt->close();
+        return $role;
+    }
+
 }
 

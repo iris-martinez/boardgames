@@ -7,6 +7,93 @@ require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-user.php");
 
 
+$userDAO = new userDAO();
+$rolDAO = new roleDAO();
+$roles = $rolDAO->list_roles();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $error_name = $error_surname = $error_email = $error_password = $errors_birthdate = "";
+    $error = false;
+
+    if (empty($_POST["name"])) {
+        $error_name = "Introduce el nombre del usuario.";
+        $error = true;
+    } else {
+        $name = trim($_POST["name"]);
+    }
+
+    if (empty($_POST["surname"])) {
+        $error_surname = "Introduce los apellidos del usuario.";
+        $error = true;
+    } else {
+        $surname = trim($_POST["surname"]);
+    }
+
+    if (empty($_POST["email"])) {
+        $error_email = "Introduce el email del usuario.";
+        $error = true;
+    } else {
+        $email = trim($_POST["email"]);
+    }
+
+    if (empty($_POST["password"])) {
+        $error_password = "Introduce el password del usuario.";
+        $error = true;
+    } else {
+        $password = trim($_POST["password"]);
+    }
+
+    if (empty($_POST["birthDate"])) {
+        $errors_birthdate = "Introduce la fecha de nacimiento del usuario.";
+        $error = true;
+    } else {
+        $birthDate = trim($_POST["birthDate"]);
+    }
+
+    if ($_POST["action"] == "eliminar") {
+
+        //llamamos a usuario para llamar al método delete_user pasándole el $user.
+        $user = $userDAO->get_user_by_id($_POST['id_user']);
+        $userDAO->delete_user($user);
+        header("Location: ../views/templates/admin/user_deleted.html");
+        die();
+
+    } else {
+
+        /*llamamos a usuario y a rol para recuperar el usuario por id y el rol por id y llamar al
+        método update_user pasándole el usuario.*/
+        $user = $userDAO->get_user_by_id($_POST['id_user']);
+        $rol = $rolDAO->get_rol_by_id($_POST['id_rol']);
+
+        $user->set_name($_POST['name']);
+        $user->set_surname($_POST['surname']);
+        $user->set_email($_POST['email']);
+        $user->set_password($_POST['password']);
+
+        $birthdate_original = $_POST['birthDate'];
+        $birthdate_converted = date("Y-m-d", strtotime($birthdate_original));
+
+        $user->set_birthDate($birthdate_converted);
+        $user->set_role($rol);
+
+        $userDAO->update_user($user);
+    }
+
+} else {
+
+    if (!isset($_GET['id_user'])) {
+        die("xxxxxx");
+    }
+
+    $user = $userDAO->get_user_by_id($_GET['id_user']);
+
+    if (empty($user)) {
+        die("Introduce un usuario.");
+    }
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -135,36 +222,17 @@ require_once(__DIR__ . "/../model/class-user.php");
             <h1>Gestionar usuario</h1>
             <hr>
 
-            <?php
-
-            if (!isset($_GET['id_user'])) {
-                die("xxxxxx");
-            }
-
-
-            $userDAO = new userDAO();
-            $rol = new role();
-            $rolDAO = new roleDAO();
-
-            $user = $userDAO->get_user_by_id($_GET['id_user']);
-            $roles = $rolDAO->list_roles();
-
-            if (empty($user)) {
-                die("Introduce un usuario.");
-            }
-
-            ?>
-
             <!-- Manage user -->
             <div class="card card-register mx-auto mt-5 mb-5">
                 <div class="card-header">Gestionar usuario</div>
                 <div class="card-body">
-                    <form action="">
+                    <form method="POST" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?> ">
+                        <input type="hidden" name="id_user" value="<?= $user->get_id(); ?>">
                         <div class="form-group">
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="text" id="name" class="form-control" placeholder="Nombre"
+                                        <input type="text" id="name" name="name" class="form-control" placeholder="Nombre"
                                                value="<?= $user->get_name(); ?>"
                                                required="required" autofocus="autofocus">
                                         <label for="name">Nombre</label>
@@ -172,7 +240,7 @@ require_once(__DIR__ . "/../model/class-user.php");
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="text" id="surname" class="form-control" placeholder="Apellido"
+                                        <input type="text" id="surname" name="surname" class="form-control" placeholder="Apellido"
                                                value="<?= $user->get_surname(); ?>" required="required">
                                         <label for="surname">Apellidos</label>
                                     </div>
@@ -183,7 +251,7 @@ require_once(__DIR__ . "/../model/class-user.php");
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="text" id="email" class="form-control" placeholder="Email"
+                                        <input type="text" id="email" name="email" class="form-control" placeholder="Email"
                                                value="<?= $user->get_email(); ?>"
                                                required="required">
                                         <label for="email">Email</label>
@@ -191,7 +259,7 @@ require_once(__DIR__ . "/../model/class-user.php");
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="password" id="pass" class="form-control" placeholder="Contraseña"
+                                        <input type="password" id="pass" name="password" class="form-control" placeholder="Contraseña"
                                                value="<?= $user->get_password(); ?>"
                                                required="required">
                                         <label for="pass">Contraseña</label>
@@ -203,7 +271,7 @@ require_once(__DIR__ . "/../model/class-user.php");
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="date" id="birth_date" class="form-control" placeholder="Nacimiento"
+                                        <input type="date" id="birth_date" name="birthDate" class="form-control" placeholder="Nacimiento"
                                                value="<?= $user->get_birthDate(); ?>"
                                                required="required">
                                         <label for="birth_date">Fecha de nacimiento</label>
@@ -223,7 +291,7 @@ require_once(__DIR__ . "/../model/class-user.php");
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <select required id="role" class="form-control">
+                                        <select required id="role" name="id_rol" class="form-control">
                                             <?php
 
                                             foreach ($roles as $rol) {
@@ -241,13 +309,12 @@ require_once(__DIR__ . "/../model/class-user.php");
                             </div>
                         </div>
 
-                        <a class="btn btn-primary btn-block" href="#">Modificar usuario</a>
-                        <a class="btn btn-primary btn-block" href="#">Baja de usuario</a>
+                        <button type="submit" a class="btn btn-primary btn-block" name="action" value="modificar">Modificar usuario</button>
+                        <button type="submit" a class="btn btn-primary btn-block" name="action" value="eliminar">Baja de usuario</button>
                     </form>
                 </div>
             </div>
         </div>
-
         <!-- end -->
 
     </div>

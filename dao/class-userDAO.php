@@ -73,7 +73,7 @@ class userDAO
     {
         $conn = $this->datasource->get_connection();
         $sql = "UPDATE User  
-                SET name = ?, surname = ?, email = ?, password = ?, birth_date = ?, register_date = ?, id_role = ?, id_user_level = ?, counter_punctuation = ?
+                SET name = ?, surname = ?, email = ?, password = ?, birth_date = ?, id_role = ?, id_user_level = ?, counter_punctuation = ?
                 WHERE id_user = ?";
 
         $stmt = $conn->prepare($sql);
@@ -84,12 +84,11 @@ class userDAO
         $email = $user->get_email();
         $password = $user->get_password();
         $birth_date = $user->get_birthDate();
-        $register_date = $user->get_registerDate();
         $id_role = $user->get_role()->get_id();
         $id_user_level = $user->get_userLevel()->get_id();
         $counter_punctuation = $user->get_counterPunctuation();
 
-        $stmt->bind_param('ssssssdddd', $name, $surname, $email, $password, $birth_date, $register_date, $id_role, $id_user_level, $counter_punctuation, $id_user);
+        $stmt->bind_param('sssssdddd', $name, $surname, $email, $password, $birth_date, $id_role, $id_user_level, $counter_punctuation, $id_user);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido actualizar el usuario." . $conn->error);
         }
@@ -158,6 +157,7 @@ class userDAO
             $user->set_registerDate($register_date);
             $user->set_role($role);
             $user->set_counterPunctuation($counter_punctuation);
+            $user->set_userLevel($user_level);
 
         }
 
