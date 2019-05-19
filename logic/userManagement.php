@@ -234,7 +234,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="form-label-group">
                                         <input type="text" id="name" name="name" class="form-control" placeholder="Nombre"
                                                value="<?= $user->get_name(); ?>"
-                                               required="required" autofocus="autofocus">
+                                               required="" autofocus="autofocus"
+                                               oninvalid="this.setCustomValidity(<?php echo $error_name?>)"
+                                               oninput="setCustomValidity('')">
                                         <label for="name">Nombre</label>
                                     </div>
                                 </div>
@@ -281,7 +283,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <div class="form-label-group">
                                         <input type="date" id="register_date" class="form-control"
                                                placeholder="Registro" value="<?= $user->get_registerDate(); ?>"
-                                               required="required">
+                                               required="required" readonly>
                                         <label for="register_date">Fecha de registro</label>
                                     </div>
                                 </div>
