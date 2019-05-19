@@ -226,23 +226,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="card card-register mx-auto mt-5 mb-5">
                 <div class="card-header">Gestionar usuario</div>
                 <div class="card-body">
-                    <form method="POST" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?> ">
+                    <form method="POST" action="<?= htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                         <input type="hidden" name="id_user" value="<?= $user->get_id(); ?>">
                         <div class="form-group">
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="text" id="name" name="name" class="form-control" placeholder="Nombre"
-                                               value="<?= $user->get_name(); ?>"
-                                               required="" autofocus="autofocus"
-                                               oninvalid="this.setCustomValidity(<?php echo $error_name?>)"
-                                               oninput="setCustomValidity('')">
+                                        <input type="text" id="name" maxlength="45" name="name" class="form-control" placeholder="Nombre"
+                                               value="<?= $user->get_name(); ?>" required="required" autofocus="autofocus">
                                         <label for="name">Nombre</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="text" id="surname" name="surname" class="form-control" placeholder="Apellido"
+                                        <input type="text" id="surname" maxlength="60" name="surname" class="form-control" placeholder="Apellido"
                                                value="<?= $user->get_surname(); ?>" required="required">
                                         <label for="surname">Apellidos</label>
                                     </div>
@@ -253,7 +250,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             <div class="form-row">
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="text" id="email" name="email" class="form-control" placeholder="Email"
+                                        <input type="text" id="email" maxlength="50" name="email" class="form-control" placeholder="Email"
                                                value="<?= $user->get_email(); ?>"
                                                required="required">
                                         <label for="email">Email</label>
@@ -261,9 +258,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-label-group">
-                                        <input type="password" id="pass" name="password" class="form-control" placeholder="Contraseña"
+                                        <input type="password" id="pass" name="password" maxlength="10" class="form-control" placeholder="Contraseña"
                                                value="<?= $user->get_password(); ?>"
-                                               required="required">
+                                               required="required" >
+                                        <small id="passwordHelpInline" class="text-muted">
+                                            Must be maximum 10 characters long.
+                                        </small>
                                         <label for="pass">Contraseña</label>
                                     </div>
                                 </div>
