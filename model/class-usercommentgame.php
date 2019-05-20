@@ -1,6 +1,6 @@
 <?php
 
-class comments
+class comment
 {
     private $id;
     private $user_id;
@@ -85,7 +85,7 @@ class comments
      */
     public function set_date($date): void
     {
-        $this->date = $date;
+        $this->create_date = $date;
     }
 
     

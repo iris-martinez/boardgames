@@ -5,7 +5,7 @@ class punctuations
     private $id;
     private $user_id;
     private $game_id;
-    private $score;
+    private $punctuation;
     private $date;
     private $user_level_id;
 
@@ -60,17 +60,17 @@ class punctuations
     /**
      * @return mixed
      */
-    public function get_score()
+    public function get_punctuation()
     {
-        return $this->score;
+        return $this->punctuation;
     }
 
     /**
-     * @param mixed $score
+     * @param mixed $punctuation
      */
-    public function set_score($score): void
+    public function set_punctuation($punctuation): void
     {
-        $this->score = $score;
+        $this->punctuation = $punctuation;
     }
 
     /**
@@ -108,7 +108,7 @@ class punctuations
     
     public function __toString()
     {
-        return "userpunctuategame[id=".$this->get_id().", userid=".$this->get_user_id().", gameid=".$this->get_game_id().", punctuation=".$this->get_score().", date=".$this->get_date().", userlevelid=".$this->get_user_level_id()."]";
+        return "userpunctuategame[id=".$this->get_id().", userid=".$this->get_user_id().", gameid=".$this->get_game_id().", punctuation=".$this->get_punctuation().", date=".$this->get_date().", userlevelid=".$this->get_user_level_id()."]";
     }
 
 

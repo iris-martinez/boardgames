@@ -5,7 +5,7 @@ require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-user.php");
 require_once(__DIR__ . "/../model/class-usercommentgame.php");
 
-class commentsDAO
+class commentDAO
 {
 
     private $datasource;
@@ -26,10 +26,10 @@ class commentsDAO
         $stmt->bind_result($id, $user_id, $game_id, $comment, $date);
         $comments = [];
         while ($stmt->fetch()) {
-            $comentario = new Comments();
+            $comentario = new Comment();
             $comentario->set_id($id);
             $comentario->set_user_id($user_id);
-            $comentario>set_game_id($game_id);
+            $comentario->set_game_id($game_id);
             $comentario->set_comment($comment);
             $comentario->set_date($date);
             $comments[] = $comentario;
@@ -39,7 +39,7 @@ class commentsDAO
 
     }
 
-    public function update_comments($comment)
+    public function update_comment($comment)
     {
         $conn = $this->datasource->get_connection();
         $sql = "UPDATE Usercommentgame SET comment = ? WHERE user_id = ?";
@@ -48,30 +48,31 @@ class commentsDAO
         $id = $comment->get_id();
         $user_id = $comment->get_user_id();
         $game_id = $comment->get_game_id();
-        $comentario = $comment->get_score();
+        $comentario = $comment->get_comment();
         $stmt->bind_param('ddds', $id, $user_id, $game_id, $comentario);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido actualizar la categoría correctamente" . $conn->error);
+            throw new Exception("No has podido actualizar el comentario correctamente" . $conn->error);
         }
     }
 
-    public function insert_comments($comment)
+    public function insert_comment($comment)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "INSERT INTO Usercommentgame(comment) VALUES (?)";
+        $sql = "INSERT INTO usercommentgame (id_user, id_game, comment, create_date) VALUES (?,?,?,?)";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $user_id = $comment->get_user_id();
         $game_id = $comment->get_game_id();
         $comentario = $comment->get_comment();
-        $stmt->bind_param('dds', $user_id, $game_id, $comentario);
+        $date = $comment->get_date();
+        $stmt->bind_param('ddss', $user_id, $game_id, $comentario, $date);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido crear la categoría correctamente" . $conn->error);
+            throw new Exception("No has podido crear el comentario correctamente" . $conn->error);
         }
         $category->set_id($conn->insert_id);
     }
 
-    public function delete_comments($comment)
+    public function delete_comment($comment)
     {
         $conn = $this->datasource->get_connection();
         $sql = "DELETE FROM Userpunctuategame WHERE id_comment = ?";
@@ -80,7 +81,7 @@ class commentsDAO
         $id = $comment->get_id();
         $stmt->bind_param('d', $id);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido eliminar la categoría correctamente" . $conn->error);
+            throw new Exception("No has podido eliminar el comentario correctamente" . $conn->error);
         }
     }
 }

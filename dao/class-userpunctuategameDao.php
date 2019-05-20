@@ -19,18 +19,18 @@ class punctuationsDAO
     {
 
         $conn = $this->datasource->get_connection();
-        $sql = "SELECT * FROM Userpunctuategame";
+        $sql = "SELECT * FROM userpunctuategame";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        $stmt->bind_result($id, $user_id, $game_id, $punctuation, $date, $user_level_id);
+        $stmt->bind_result($id, $user_id, $game_id, $punct, $date, $user_level_id);
         $punctuations = [];
         while ($stmt->fetch()) {
             $punctuation = new punctuations();
             $punctuation->set_id($id);
             $punctuation->set_user_id($user_id);
             $punctuation->set_game_id($game_id);
-            $punctuation->set_score($score);
+            $punctuation->set_punctuation($punct);
             $punctuation->set_date($date);
             $punctuation->set_user_level_id($user_level_id);
             $punctuations[] = $punctuation;
@@ -43,15 +43,15 @@ class punctuationsDAO
     public function update_punctuations($punctuation)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "UPDATE Userpunctuategame SET punctuation = ? WHERE user_id = ?";
+        $sql = "UPDATE userpunctuategame SET punctuation = ? WHERE user_id = ?";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $id = $punctuation->get_id();
         $user_id = $punctuation->get_user_id();
         $game_id = $punctuation->get_game_id();
-        $score = $punctuation->get_score();
+        $punct = $punctuation->get_punctuation();
         $user_level_id = $punctuation->get_user_level_id();
-        $stmt->bind_param('ddddd', $id, $user_id, $game_id, $score, $user_level_id);
+        $stmt->bind_param('ddddd', $id, $user_id, $game_id, $punct, $user_level_id);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido actualizar la categoría correctamente" . $conn->error);
         }
@@ -60,14 +60,14 @@ class punctuationsDAO
     public function insert_punctuations($punctuation)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "INSERT INTO Userpunctuategame(punctuation) VALUES (?)";
+        $sql = "INSERT INTO userpunctuategame(punctuation) VALUES (?)";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $user_id = $punctuation->get_user_id();
         $game_id = $punctuation->get_game_id();
-        $score = $punctuation->get_score();
+        $punctuation = $punctuation->get_punctuation();
         $user_level_id = $punctuation->get_user_level_id();
-        $stmt->bind_param('dddd', $user_id, $game_id, $score, $user_level_id);
+        $stmt->bind_param('dddd', $user_id, $game_id, $punctuation, $user_level_id);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido crear la categoría correctamente" . $conn->error);
         }
