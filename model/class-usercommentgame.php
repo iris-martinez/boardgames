@@ -85,7 +85,7 @@ class comment
      */
     public function set_date($date): void
     {
-        $this->create_date = $date;
+        $this->date = $date;
     }
 
     

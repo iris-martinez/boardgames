@@ -69,7 +69,7 @@ class commentDAO
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido crear el comentario correctamente" . $conn->error);
         }
-        $category->set_id($conn->insert_id);
+        $comment->set_id($conn->insert_id);
     }
 
     public function delete_comment($comment)
