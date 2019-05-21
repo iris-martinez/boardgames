@@ -60,18 +60,19 @@ class punctuationsDAO
     public function insert_punctuations($punctuation)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "INSERT INTO userpunctuategame(punctuation) VALUES (?)";
+        $sql = "INSERT INTO userpunctuategame(id_user, id_game, punctuation, create_date, id_user_level) VALUES (?,?,?,?,?)";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $user_id = $punctuation->get_user_id();
         $game_id = $punctuation->get_game_id();
-        $punctuation = $punctuation->get_punctuation();
+        $puntuation = $punctuation->get_punctuation();
+        $date = $punctuation->get_date();
         $user_level_id = $punctuation->get_user_level_id();
-        $stmt->bind_param('dddd', $user_id, $game_id, $punctuation, $user_level_id);
+        $stmt->bind_param('dddsd', $user_id, $game_id, $puntuation, $date, $user_level_id);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido crear la categoría correctamente" . $conn->error);
+            throw new Exception("No has podido crear la puntuación correctamente" . $conn->error);
         }
-        $category->set_id($conn->insert_id);
+        $punctuation->set_id($conn->insert_id);
     }
 
     public function delete_punctuations($punctuation_id)

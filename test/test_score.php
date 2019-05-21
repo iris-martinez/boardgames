@@ -6,7 +6,7 @@ require_once(__DIR__ . "/../model/class-userpunctuategame.php");
 try {
 
     /**
-     * test list_comments method
+     * test list_punctuations method
      */
 
     $punctuationDAO = new punctuationsDAO();
@@ -15,6 +15,19 @@ try {
         echo "Test listar puntuaciones" . " " . $punctuation->get_punctuation() . '<br>';
     }
   
+    /**
+     * test insert_punctuation method
+     */
+
+    echo "---------------------------<br>";
+    echo "test insert_punctuation method<br>";
+    $punctuation = new punctuations();
+    $punctuation->set_user_id(3);
+    $punctuation->set_game_id(2);
+    $punctuation->set_punctuation(5);
+    $punctuation->set_date("2019-05-19");
+    $punctuation->set_user_level_id(2);
+    $punctuationDAO->insert_punctuations($punctuation);
 
 } finally {
     datasource::get_instance()->close_connection();
