@@ -12,7 +12,7 @@ $userDAO = new userDAO();
 $rolDAO = new roleDAO();
 try {
 
-    $conn = new PDO("mysql:dbname=rottenBoardEN;host=localhost", "root", "oxieva");
+    $conn = new PDO("mysql:dbname=rottenBoardEN;host=localhost", "root", "");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
@@ -23,11 +23,9 @@ try {
     $email = htmlentities(addslashes($_POST['email']));
     $password = htmlentities(addslashes($_POST['password']));
 
-    //var_dump($email . $password); exit();
     $stmt->bindValue(":email", $email, PDO::PARAM_STR);
     $stmt->bindValue(":password", $password, PDO::PARAM_STR);
 
-    //var_dump($stmt); exit();
 
     $stmt->execute();
 
@@ -44,7 +42,6 @@ try {
         $_SESSION['email'] = $userData->email;
         $_SESSION['id_user'] =(int) $userData->id_user;
 
-        //var_dump($_SESSION['id_user'] ); exit();
 
         $user_rol = (int)$userData->id_role;
 
@@ -52,6 +49,7 @@ try {
         if($user_rol == 1){
             header("location: ../views/templates/admin/admin_index.php");
 
+            //Si l'usuari està registrat
         } elseif ($user_rol == 2){
             header("location: ../views/templates/public/index.html");
         }

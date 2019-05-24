@@ -1,3 +1,14 @@
+<?php
+
+require_once(__DIR__ . "/../../../dao/class-datasource.php");
+require_once(__DIR__ . "/../../../dao/class-userDAO.php");
+require_once(__DIR__ . "/../../../dao/class-roleDAO.php");
+require_once(__DIR__ . "/../../../model/class-role.php");
+require_once(__DIR__ . "/../../../model/class-user.php");
+require_once (__DIR__ . "/../../../logic/session.php");
+
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -52,9 +63,9 @@
                 <li class="nav-item">
                     <a class="nav-link js-scroll-trigger" href="../../../logic/login.php">Login</a>
                 </li>
-                <li class="nav-item">
+                <!--<li class="nav-item">
                     <a class="nav-link js-scroll-trigger" href="../../../logic/register.php">Registro</a>
-                </li>
+                </li>-->
             </ul>
         </div>
     </div>
@@ -64,8 +75,8 @@
 <header class="masthead">
     <div class="container">
         <div class="intro-text">
-            <div class="intro-lead-in">"No dejamos de jugar porque nos hacemos viejos, nos hacemos viejos porque dejamos de jugar"</div>
-            <div class="intro-heading text-uppercase">Bienvenidos</div>
+            <div class="intro-lead-in">"No dejamos de jugar <?php echo 'hooooooola'?> nos hacemos viejos, nos hacemos viejos porque dejamos de jugar"</div>
+            <div class="intro-heading text-uppercase">Bienvenidos <?php echo $_SESSION['email']?></div>
             <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#boardgames">Encuentra tu juego</a>
         </div>
     </div>

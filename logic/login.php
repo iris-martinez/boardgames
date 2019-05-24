@@ -125,8 +125,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <button type="submit" a class="btn btn-primary btn-block" value="login">Entrar</button>
 
                     </form>
-                    <div class="text-center">
-                        <a class="d-block small mt-3" href="register.php">Registrate</a>
+                    <div class="text-center" style="margin-top: 20px">
+                        <a href="register.php"><button style="" class="btn btn-primary btn-block" value="register"> Registrate</button></a>
                         <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
                     </div>
                 </div>

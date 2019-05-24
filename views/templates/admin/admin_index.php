@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,10 +15,10 @@
   <title>Admin - Index</title>
 
   <!-- Custom fonts for this template-->
-  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="../public/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
   <!-- Page level plugin CSS-->
-  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <link href="../public/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
   <!-- Custom styles for this template-->
   <link href="css/sb-admin.css" rel="stylesheet">
@@ -26,7 +29,7 @@
 
   <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Administrador</a>
+    <a class="navbar-brand mr-1" href="admin_index.php">Administrador</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
       <i class="fas fa-bars"></i>
@@ -143,10 +146,9 @@
         </ol>
 
         <!-- Page Content-->
-        <h1>Inicio</h1>
+        <h1>Inicio para el usuario <?php echo   $_SESSION['email']?></h1>
         <hr>
         <p>Introducir contenido para la pagina de inicio de administración.</p>
-
       </div>
 
       <!-- /.container-fluid -->
@@ -191,16 +193,16 @@
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="vendor/jquery/jquery.min.js"></script>
-  <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../public/vendor/jquery/jquery.min.js"></script>
+  <script src="../public/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="../public/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Page level plugin JavaScript-->
-  <script src="vendor/chart.js/Chart.min.js"></script>
-  <script src="vendor/datatables/jquery.dataTables.js"></script>
-  <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+  <script src="../public/vendor/chart.js/Chart.min.js"></script>
+  <script src="../public/vendor/datatables/jquery.dataTables.js"></script>
+  <script src="../public/vendor/datatables/dataTables.bootstrap4.js"></script>
 
   <!-- Custom scripts for all pages-->
   <script src="js/sb-admin.min.js"></script>
