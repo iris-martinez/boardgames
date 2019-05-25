@@ -51,7 +51,7 @@ try {
 
             //Si l'usuari està registrat
         } elseif ($user_rol == 2){
-            header("location: ../views/templates/public/index.html");
+            header("location: public_index.php");
         }
 
         echo 'hola ' . $user_rol;
