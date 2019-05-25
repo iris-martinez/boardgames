@@ -17,7 +17,6 @@ class commentDAO
 
     public function list_comments()
     {
-
         $conn = $this->datasource->get_connection();
         $sql = "SELECT * FROM Usercommentgame";
         // Vincular variables a una instrucción preparada como parámetros
@@ -75,7 +74,7 @@ class commentDAO
     public function delete_comment($comment)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "DELETE FROM Userpunctuategame WHERE id_comment = ?";
+        $sql = "DELETE FROM usercommentgame WHERE id_comment = ?";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $id = $comment->get_id();

@@ -19,7 +19,7 @@ try {
      * test insert_punctuation method
      */
 
-    echo "---------------------------<br>";
+    /* echo "---------------------------<br>";
     echo "test insert_punctuation method<br>";
     $punctuation = new punctuations();
     $punctuation->set_user_id(3);
@@ -27,7 +27,17 @@ try {
     $punctuation->set_punctuation(5);
     $punctuation->set_date("2019-05-19");
     $punctuation->set_user_level_id(2);
-    $punctuationDAO->insert_punctuations($punctuation);
+    $punctuationDAO->insert_punctuations($punctuation); */
+
+    /**
+     * test delete_comment method
+     */
+    echo "---------------------------<br>";
+    echo "test delete_comment method<br>";
+    $punctuation = $punctuation->get_id(6);
+    $punctuationDAO->delete_punctuation($punctuation);
+    $punctuation = $punctuationDAO->get_id(6);
+    echo (!empty($punctuation) ? 'existe' : 'no existe') . '<br>';
 
 } finally {
     datasource::get_instance()->close_connection();
