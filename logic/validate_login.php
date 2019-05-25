@@ -47,7 +47,7 @@ try {
 
         //Si l'usuari és admin
         if($user_rol == 1){
-            header("location: ../views/templates/admin/admin_index.php");
+            header("location: admin_index.php");
 
             //Si l'usuari està registrat
         } elseif ($user_rol == 2){

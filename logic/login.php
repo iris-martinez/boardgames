@@ -28,9 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $password = trim($_POST["password"]);
     }
 
-
-
-
 }
 ?>
 
@@ -134,9 +131,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </div>
     </div>
 </section>
-
-
-
 
 <!-- Footer -->
 <footer>
