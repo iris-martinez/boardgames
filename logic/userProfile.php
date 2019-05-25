@@ -1,5 +1,8 @@
 <?php
 
+session_start();
+
+
 require_once(__DIR__."/../dao/class-datasource.php");
 require_once(__DIR__."/../dao/class-userDAO.php");
 require_once(__DIR__."/../dao/class-roleDAO.php");
@@ -22,10 +25,10 @@ require_once(__DIR__."/../model/class-user.php");
     <title>Admin - Users list</title>
 
     <!-- Custom fonts for this template-->
-    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="../vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../views/templates/admin/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
     <link href="../views/templates/admin/css/sb-admin.css" rel="stylesheet">
@@ -126,7 +129,7 @@ require_once(__DIR__."/../model/class-user.php");
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Admin</a>
+                    <a href="admin_index.php">Admin</a>
                 </li>
                 <li class="breadcrumb-item active">Listado de usuarios</li>
             </ol>
@@ -145,6 +148,18 @@ require_once(__DIR__."/../model/class-user.php");
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Nombre</th>
+                                    <th>Apellidos</th>
+                                    <th>Email</th>
+                                    <th>Contraseña</th>
+                                    <th>Nacimiento</th>
+                                    <th>Registro</th>
+                                    <th>Rol</th>
+                                </tr>
+                            </thead>
                             <?php
 
                             $user = new user();
@@ -156,18 +171,7 @@ require_once(__DIR__."/../model/class-user.php");
 
                             foreach ($users as $user) {
                                 ?>
-                            <thead>
-                            <tr>
-                                <th></th>
-                                <th>Nombre</th>
-                                <th>Apellidos</th>
-                                <th>Email</th>
-                                <th>Contraseña</th>
-                                <th>Nacimiento</th>
-                                <th>Registro</th>
-                                <th>Rol</th>
-                            </tr>
-                            </thead>
+                            
                             <tbody>
                             <tr>
                                 <th><a href="userManagement.php?id_user=<?= $user->get_id(); ?>"><?= $user->get_id(); ?></a></th>
@@ -239,26 +243,30 @@ require_once(__DIR__."/../model/class-user.php");
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="login.php">Logout</a>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Bootstrap core JavaScript-->
-<script src="../vendor/jquery/jquery.min.js"></script>
-<script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap core JavaScript-->
+    <script src="../views/templates/admin/vendor/jquery/jquery.min.js"></script>
+    <script src="../views/templates/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-<!-- Core plugin JavaScript-->
-<script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="../views/templates/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-<!-- Page level plugin JavaScript-->
-<script src="../vendor/chart.js/Chart.min.js"></script>
-<script src="../vendor/datatables/jquery.dataTables.js"></script>
-<script src="../vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <script src="../views/templates/admin/vendor/chart.js/Chart.min.js"></script>
+    <script src="../views/templates/admin/vendor/datatables/jquery.dataTables.js"></script>
+    <script src="../views/templates/admin/vendor/datatables/dataTables.bootstrap4.js"></script>
 
-<!-- Custom scripts for all pages-->
-<script src="../views/templates/admin/js/sb-admin.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="../views/templates/admin/js/sb-admin.min.js"></script>
+
+    <!-- Demo scripts for this page-->
+    <script src="../views/templates/admin/js/demo/datatables-demo.js"></script>
+    <script src="../views/templates/admin/js/demo/chart-area-demo.js"></script>
 
 
 </body>

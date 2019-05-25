@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+require_once(__DIR__."/../dao/class-datasource.php");
+require_once(__DIR__."/../dao/class-userpunctuategameDao.php");
+require_once(__DIR__."/../model/class-userpunctuategame.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +18,7 @@ session_start();
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Admin Index Page</title>
+  <title>Admin Punctuations Page</title>
 
   <!-- Custom fonts for this template-->
   <link href="../views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -146,15 +151,85 @@ session_start();
           <li class="breadcrumb-item">
             <a href="admin_index.php">Admin</a>
           </li>
-          <li class="breadcrumb-item active">Index</li>
+          <li class="breadcrumb-item active">Valoraciones</li>
         </ol>
 
         <!-- Page Content-->
-        <h1>Inicio</h1>
+        <h1>Listado de valoraciones</h1>
         <hr>
-        <p>Bienvenido <?php echo $_SESSION['email'] ?>.</p>
 
-      </div>
+        <!-- DataTables -->
+        <!-- The list returns all the DB games -->
+        <div class="card mb-5">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                Listar valoraciones</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Nivel de usuario</th>
+                        <th>Juego</th>
+                        <th>Puntuación</th>
+                        <th>Fecha</th>
+                    </tr>
+                    </thead>
+                    <?php
+                            $punctuation = new punctuations();
+                            $punctuationDAO = new punctuationsDAO();
+
+                            $punctuations = $punctuationDAO->list_punctuations();
+
+                            foreach ($punctuations as $punctuation) {
+                                ?>
+                            
+                            <tbody>
+                            <tr>
+                                <th><?= $punctuation->get_id(); ?></th>
+                                <td><?= $punctuation->get_user_id(); ?></td>
+                                <td><?= $punctuation->get_user_level_id(); ?></td>
+                                <td><?= $punctuation->get_game_id() ?></td>
+                                <td><?= $punctuation->get_punctuation(); ?></td>
+                                <td><?= $punctuation->get_date(); ?></td>
+                            </tr>
+                            </tbody>
+                                <?php
+                            }
+                            ?>
+                    <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Nivel de usuario</th>
+                        <th>Juego</th>
+                        <th>Puntuación</th>
+                        <th>Fecha</th>
+                    </tr>
+                    </tfoot>
+                </table>
+                </div>
+            </div>
+            <div class="card-footer small text-muted">
+                <form action="" class="">
+                    <div class="form-group input-group">
+                        <div class="form-label-group">
+                            <input type="text" id="category" class="form-control" placeholder="Categoría" required="required">
+                            <label for="category">ID</label>
+                        </div>
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button">
+                              <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
+                          </button>
+                      </div>
+                    </div> 
+                </form>
+            </div>
+        </div>
+
+    </div>
 
       <!-- /.container-fluid -->
 

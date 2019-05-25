@@ -1,5 +1,10 @@
 <?php
 session_start();
+
+require_once(__DIR__."/../dao/class-datasource.php");
+require_once(__DIR__."/../dao/class-usercommentgameDAO.php");
+require_once(__DIR__."/../model/class-usercommentgame.php");
+
 ?>
 
 <!DOCTYPE html>
@@ -13,7 +18,7 @@ session_start();
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Admin Index Page</title>
+  <title>Admin Comments Page</title>
 
   <!-- Custom fonts for this template-->
   <link href="../views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -83,7 +88,7 @@ session_start();
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
           <a class="dropdown-item" href="#">Ajustes</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="" data-toggle="modal" data-target="#logoutModal">Logout</a>
+          <a class="dropdown-item" href="<?php session_destroy() ?>" data-toggle="modal" data-target="#logoutModal">Logout</a>
         </div>
       </li>
     </ul>
@@ -146,15 +151,82 @@ session_start();
           <li class="breadcrumb-item">
             <a href="admin_index.php">Admin</a>
           </li>
-          <li class="breadcrumb-item active">Index</li>
+          <li class="breadcrumb-item active">Comentarios</li>
         </ol>
 
         <!-- Page Content-->
-        <h1>Inicio</h1>
+        <h1>Listado de comentarios</h1>
         <hr>
-        <p>Bienvenido <?php echo $_SESSION['email'] ?>.</p>
 
-      </div>
+        <!-- DataTables -->
+        <!-- The list returns all the DB games -->
+        <div class="card mb-5">
+            <div class="card-header">
+                <i class="fas fa-table"></i>
+                Listar comentarios</div>
+            <div class="card-body">
+                <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Juego</th>
+                        <th>Comentario</th>
+                        <th>Fecha</th>
+                    </tr>
+                    </thead>
+                    <?php
+                            $comment = new comment();
+                            $commentDAO = new commentDAO();
+
+                            $comments = $commentDAO->list_comments();
+
+                            foreach ($comments as $comment) {
+                                ?>
+                            
+                            <tbody>
+                            <tr>
+                                <th><?= $comment->get_id(); ?></th>
+                                <td><?= $comment->get_user_id(); ?></td>
+                                <td><?= $comment->get_game_id() ?></td>
+                                <td><?= $comment->get_comment(); ?></td>
+                                <td><?= $comment->get_date(); ?></td>
+                            </tr>
+                            </tbody>
+                                <?php
+                            }
+                            ?>
+                    <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Juego</th>
+                        <th>Comentario</th>
+                        <th>Fecha</th>
+                    </tr>
+                    </tfoot>
+                </table>
+                </div>
+            </div>
+            <div class="card-footer small text-muted">
+                <form action="" class="">
+                    <div class="form-group input-group">
+                        <div class="form-label-group">
+                            <input type="text" id="category" class="form-control" placeholder="Categoría" required="required">
+                            <label for="category">ID</label>
+                        </div>
+                        <div class="input-group-append">
+                          <button class="btn btn-primary" type="button">
+                              <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
+                          </button>
+                      </div>
+                    </div> 
+                </form>
+            </div>
+        </div>
+
+    </div>
 
       <!-- /.container-fluid -->
 
@@ -191,7 +263,7 @@ session_start();
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.php">Logout <?php session_destroy() ?></a>
+          <a class="btn btn-primary" href="login.php">Logout</a>
         </div>
       </div>
     </div>
