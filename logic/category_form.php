@@ -1,7 +1,7 @@
 <?php
-require_once ("dao/class-categoryDAO.php");
-require_once ("model/class-category.php");
-require_once ("dao/class-datasource.php");
+require_once(__DIR__ . "/../dao/class-datasource.php");
+require_once(__DIR__ . "/../dao/class-categoryDAO.php");
+require_once(__DIR__ . "/../model/class-category.php");
 
 /* Insert new category*/
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -16,19 +16,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $category = new Category();
         $category->set_name($name);
         $category_dao->insert_category($category);
-        echo "<h3 style='color: green'> Nueva categoria subida en la base de datos con éxito</h3>" . "<br>";
+        $_COOKIE['exitAdd'] = ' Nueva categoria borrada en la base de datos con éxito';
     }
 
 
 }
 
 /*Delete a category*/
+
 if(isset($_POST['delete_category']) == 'eliminar'){
-
-    $category = new Category();
-    $category_dao->delete_category($category);
-
-}
+    $category_id=(int)$_POST['delete_category'];
+    if($category_dao->delete_category_by_id($category_id)){
+        $_COOKIE['exitDelete'] = ' Nueva categoria borrada en la base de datos con éxito';
+        //echo "<h3 style='color: green'> Nueva categoria borrada en la base de datos con éxito</h3>" . "<br>";
+    }else{
+        echo "<h3 style='color: red'> No se ha podido borrar la categoría</h3>" . "<br>";
+    }
+   }
 
 ?>
 
@@ -44,15 +48,14 @@ if(isset($_POST['delete_category']) == 'eliminar'){
     <meta name="author" content="">
 
     <title>Admin - New category</title>
-
     <!-- Custom fonts for this template-->
-    <link href="views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="views/templates/admin/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../views/templates/admin/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="views/templates/admin/css/sb-admin.css" rel="stylesheet">
+    <link href="../views/templates/admin/css/sb-admin.css" rel="stylesheet">
 
 </head>
 
@@ -60,7 +63,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Administrador</a>
+    <a class="navbar-brand mr-1" href="admin_index.php">Administrador</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -120,9 +123,9 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="searchGame.html">Buscar</a>
-                <a class="dropdown-item" href="newGame.html">Añadir</a>
-                <a class="dropdown-item" href="manageGame.html">Actualizar/Eliminar</a>
+                <a class="dropdown-item" href="game_search.php">Buscar</a>
+                <a class="dropdown-item" href="game_form.php">Añadir</a>
+                <a class="dropdown-item" href="game_update.php">Actualizar/Eliminar</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -132,7 +135,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar categorías:</h6>
-                <a class="dropdown-item" href="newCategory.html">Añadir/Eliminar</a>
+                <a class="dropdown-item" href="category_form.php">Añadir/Eliminar</a>
             </div>
         </li>
     </ul>
@@ -144,7 +147,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Admin</a>
+                    <a href="admin_index.php">Admin</a>
                 </li>
                 <li class="breadcrumb-item active">Añadir o Eliminar categoría</li>
             </ol>
@@ -152,6 +155,16 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             <!-- Page Content -->
             <h1>Añadir o Eliminar categoría</h1>
             <hr>
+            <?php
+            if (isset($_COOKIE['exitDelete'])){
+                echo "<div style='color: green'>Categoria borrada en la base de datos con éxito</div>";
+            }
+            ?>
+            <?php
+            if (isset($_COOKIE['exitAdd'])){
+                echo "<div style='color: green'>Nueva categoria añadida en la base de datos con éxito</div>";
+            }
+            ?>
             <!-- DataTables -->
             <!-- The list returns all the DB categories -->
             <div class="card mb-3">
@@ -179,9 +192,10 @@ if(isset($_POST['delete_category']) == 'eliminar'){
                                     <td><?= $category->get_id()?> </td>
                                     <td><?= $category->get_name()?> </td>
                                     <td>
-                                        <button class="btn btn-danger" type="button" >
-                                            <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
-                                        </button>
+                                        <form name="delete-form" method="post" action="category_form.php">
+                                            <button class="btn btn-danger" type="submit" name="delete_category" value="<?=  $category->get_id(); ?>" >Eliminar</button>
+
+                                        </form>
                                     </td>
                                 </tr>
                                 <?php
@@ -193,7 +207,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
                     </div>
                 </div>
                 <div class="card-footer small text-muted">
-                    <form method="post" action="category-form.php">
+                    <form method="post" action="category_form.php">
 
                     <div class="form-group input-group">
                             <div class="form-label-group">
@@ -205,11 +219,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
                                     <i class="fas fa-plus"></i>
                                 </button>
                             </div>
-                            <!--<div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
-                                </button>
-                            </div>-->
+
                         </div>
                     </form>
 
@@ -252,7 +262,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             <div class="modal-body">Seleccione "Logout" a continuación si está listo para finalizar su sesión actual</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="logout.php">Logout</a>
             </div>
         </div>
     </div>
@@ -269,7 +279,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
                 </button>
             </div>
             <div class="modal-body">Seleccione "Eliminar" si desea eliminar definitivamente</div>
-            <form method="post" action="category-form.php" id="delete-form">
+            <form method="post" action="category_form.php" id="delete-form">
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
                 <button class="btn btn-danger" type="submit" name="delete_category" value="eliminar" form="delete-form" >Eliminar</button>
@@ -280,14 +290,14 @@ if(isset($_POST['delete_category']) == 'eliminar'){
 </div>
 
 <!-- Bootstrap core JavaScript--><!--/var/www/html/boardgames/views/templates/admin/vendor-->
-<script src="views/templates/admin/vendor/jquery/jquery.min.js"></script>
-<script src="views/templates/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../views/templates/admin/vendor/jquery/jquery.min.js"></script>
+<script src="../views/templates/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="views/templates/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="../views/templates/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="views/templates/admin/js/sb-admin.min.js"></script>
+<script src="../views/templates/admin/js/sb-admin.min.js"></script>
 
 </body>
 
