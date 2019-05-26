@@ -101,11 +101,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $stmt->execute();
 
 
-
-                header("location: ../views/templates/public/index.html");
+                header("location:public_index.php");
 
             } else {
-                  echo "Este email ya está registrado"; exit();
+
+             $_SESSION['fallo_registro'] = 'Este correo ya está registrado';
 
             }
             $stmt->close();
@@ -152,30 +152,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color: #f73b51">
     <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="../views/templates/public/index.html">Rotten Board Games</a>
+        <a class="navbar-brand js-scroll-trigger" href="public_index.php">Rotten Board Games</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars"></i>
         </button>
-        <!--<div class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav text-uppercase ml-auto">
                 <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#ranking">Ranking</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#boardgames">Juegos de mesa</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#about">Sobre RBG</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#team">Nosotras</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="../../../logic/login.php">Login</a>
+                    <a class="nav-link js-scroll-trigger" href="logout.php">Logout</a>
                 </li>
             </ul>
-        </div>-->
+        </div>
     </div>
 </nav>
 
@@ -239,31 +227,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                     <label for="birth_date">Fecha de nacimiento</label>
                                 </div>
                             </div>
-                            <!--<div class="col-md-6">
-                                <div class="form-label-group">
-                                    <input type="date" id="register_date" class="form-control"
-                                           placeholder="Registro" value=""
-                                           required="required" readonly>
-                                    <label for="register_date">Fecha de registro</label>
-                                </div>
-                            </div>-->
+
                         </div>
                     </div>
 
-
+                    <div>
+                        <?php
+                        if(isset($_SESSION['fallo_registro'])){
+                            echo "<div style='color: red'>Este correo ya está registrado </div>";
+                        }
+                        ?>
+                    </div>
                     <button type="submit" a class="btn btn-primary btn-block" name="action" value="register">Register</button>
-                      </form>
+                </form>
             </div>
         </div>
     </div>
     <!-- end -->
-            <div class="card-body">
-
-                <div class="text-center">
-                    <a class="d-block small mt-3" href="login.php">Login Page</a>
-                    <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
-                </div>
-            </div>
 
 </section>
 
@@ -293,13 +273,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a href="#">
                             <i class="fab fa-linkedin-in"></i>
                         </a>
-                    </li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-                <ul class="list-inline quicklinks">
-                    <li class="list-inline-item">
-                        <a href="#">Admin</a>
                     </li>
                 </ul>
             </div>

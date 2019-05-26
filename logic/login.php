@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once(__DIR__ . "/../dao/class-datasource.php");
 require_once(__DIR__ . "/../dao/class-userDAO.php");
 require_once(__DIR__ . "/../dao/class-roleDAO.php");
@@ -64,30 +64,19 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color: #f73b51">
     <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="../views/templates/public/index.html">Rotten Board Games</a>
+        <a class="navbar-brand js-scroll-trigger" href="public_index.php">Rotten Board Games</a>
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars"></i>
         </button>
-        <!--<div class="collapse navbar-collapse" id="navbarResponsive">
+        <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav text-uppercase ml-auto">
+
                 <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#ranking">Ranking</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#boardgames">Juegos de mesa</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#about">Sobre RBG</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="#team">Nosotras</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="../../../logic/login.php">Login</a>
+                    <a class="nav-link js-scroll-trigger" href="logout.php">Logout</a>
                 </li>
             </ul>
-        </div>-->
+        </div>
     </div>
 </nav>
 
@@ -111,20 +100,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label for="inputPassword">Password</label>
                             </div>
                         </div>
-                        <!--<div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="remember-me">
-                                    Remember Password
-                                </label>
-                            </div>
-                        </div>-->
+
+                        <?php
+                        if(isset($_SESSION['fallo_login'])){
+                            echo "<div style='color: red'>Los datos introducidos son incorrectos</div>";
+                        }
+                        ?>
                         <button type="submit" a class="btn btn-primary btn-block" value="login">Entrar</button>
 
                     </form>
                     <div class="text-center" style="margin-top: 20px">
                         <a href="register.php"><button style="" class="btn btn-primary btn-block" value="register"> Registrate</button></a>
-                        <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+
                     </div>
                 </div>
             </div>
@@ -158,13 +145,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </li>
                 </ul>
             </div>
-            <div class="col-md-4">
-                <ul class="list-inline quicklinks">
-                    <li class="list-inline-item">
-                        <a href="#">Admin</a>
-                    </li>
-                </ul>
-            </div>
+
         </div>
     </div>
 </footer>
