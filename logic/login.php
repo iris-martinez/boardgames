@@ -1,5 +1,5 @@
 <?php
-
+session_start();
 require_once(__DIR__ . "/../dao/class-datasource.php");
 require_once(__DIR__ . "/../dao/class-userDAO.php");
 require_once(__DIR__ . "/../dao/class-roleDAO.php");
@@ -111,20 +111,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                                 <label for="inputPassword">Password</label>
                             </div>
                         </div>
-                        <!--<div class="form-group">
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" value="remember-me">
-                                    Remember Password
-                                </label>
-                            </div>
-                        </div>-->
+
+                        <?php
+                        if(isset($_SESSION['fallo_login'])){
+                            echo "<div style='color: red'>Los datos introducidos son incorrectos</div>";
+                        }
+                        ?>
                         <button type="submit" a class="btn btn-primary btn-block" value="login">Entrar</button>
 
                     </form>
                     <div class="text-center" style="margin-top: 20px">
                         <a href="register.php"><button style="" class="btn btn-primary btn-block" value="register"> Registrate</button></a>
-                        <a class="d-block small" href="forgot-password.html">Forgot Password?</a>
+
                     </div>
                 </div>
             </div>

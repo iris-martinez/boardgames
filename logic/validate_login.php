@@ -58,8 +58,12 @@ try {
 
     //Si el login no és correcte
     } else {
+        $_SESSION['fallo_login'] = 'fallo inicio de sesion, datos incorrectos';
+        //print "alert(Usuario o contraseña incorrectos)";
+        header("location: login.php");
 
-        header("location: register.php");
+        //echo "<div class=\"notificacion error\">Usuario o contraseña incorrectos</div>";
+
 
     }
 }catch (Exception $e){
