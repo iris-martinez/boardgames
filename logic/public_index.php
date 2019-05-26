@@ -131,14 +131,13 @@ require_once (__DIR__ . "/../logic/session.php");
                             <i class="fas fa-plus fa-2x"></i>
                         </div>
                     </div>
-                    <img class="img-fluid" src="img/portfolio/01-thumbnail.jpg" alt="">
+                    <img class="img-fluid" src="" alt="">
                 </a>
                 <div class="portfolio-caption">
-                    <img height="150" src="img/<?=$game->get_id()?>.jpg" style="float: left; margin-right: 10px"><br>
+                    <img height="150" src="../views/templates/public/img/portfolio/<?=$game->get_name()?>.jpg" style="float: left; margin-right: 10px"><br>
                     <h4><?= $game->get_name(); ?></h4><br>
-                    <p class="text-muted">Categoría</p>
+                    <p class="text-muted"><?= $game->get_category(); ?></p>
                     <p><?= $game->get_description(); ?></p><br>
-                    <p><?= $game->get_punctuation(); ?></p><br>
                 </div>
             </div>
                 <?php
