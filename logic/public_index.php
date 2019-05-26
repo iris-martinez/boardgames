@@ -7,11 +7,9 @@ require_once(__DIR__ . "/../dao/class-gameDAO.php");
 require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-user.php");
-require_once (__DIR__ . "/../logic/session.php");
 
-//session_start();
 ?>
-<!DOCTYPE html
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -63,11 +61,11 @@ require_once (__DIR__ . "/../logic/session.php");
                     <a class="nav-link js-scroll-trigger" href="#team">Nosotras</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="../../../logic/login.php">Login</a>
+                    <a class="nav-link js-scroll-trigger" href="login.php">Login</a>
                 </li>
-                <!--<li class="nav-item">
-                    <a class="nav-link js-scroll-trigger" href="../../../logic/register.php">Registro</a>
-                </li>-->
+                <li class="nav-item">
+                    <a class="nav-link js-scroll-trigger" href="logout.php">Logout</a>
+                </li>
             </ul>
         </div>
     </div>
@@ -77,8 +75,8 @@ require_once (__DIR__ . "/../logic/session.php");
 <header class="masthead">
     <div class="container">
         <div class="intro-text">
-            <div class="intro-lead-in">"No dejamos de jugar <?php echo 'hooooooola'?> nos hacemos viejos, nos hacemos viejos porque dejamos de jugar"</div>
-            <div class="intro-heading text-uppercase">Bienvenidos <?php echo $_SESSION['email']?></div>
+            <div class="intro-lead-in">"No dejamos de jugar nos hacemos viejos, nos hacemos viejos porque dejamos de jugar"</div>
+            <div class="intro-heading text-uppercase">Bienvenidos</div>
             <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#boardgames">Encuentra tu juego</a>
         </div>
     </div>
@@ -279,13 +277,7 @@ require_once (__DIR__ . "/../logic/session.php");
                     </li>
                 </ul>
             </div>
-            <div class="col-md-4">
-                <ul class="list-inline quicklinks">
-                    <li class="list-inline-item">
-                        <a href="#">Admin</a>
-                    </li>
-                </ul>
-            </div>
+
         </div>
     </div>
 </footer>
