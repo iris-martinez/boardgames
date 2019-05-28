@@ -5,7 +5,7 @@ class comment
     private $id;
     private $user_id;
     private $game_id;
-    private $comment;
+    private $comment_name;
     private $date;
 
     /**
@@ -19,7 +19,7 @@ class comment
     /**
      * @param mixed $id
      */
-    public function set_id($id): void
+    public function set_id($id)
     {
         $this->id = $id;
     }
@@ -35,7 +35,7 @@ class comment
     /**
      * @param mixed $user_id
      */
-    public function set_user_id($user_id): void
+    public function set_user_id($user_id)
     {
         $this->user_id = $user_id;
     }
@@ -51,7 +51,7 @@ class comment
     /**
      * @param mixed $game_id
      */
-    public function set_game_id($game_id): void
+    public function set_game_id($game_id)
     {
         $this->game_id = $game_id;
     }
@@ -61,15 +61,15 @@ class comment
      */
     public function get_comment()
     {
-        return $this->comment;
+        return $this->comment_name;
     }
 
     /**
      * @param mixed $comment
      */
-    public function set_comment($comment): void
+    public function set_comment($comment_name)
     {
-        $this->comment = $comment;
+        $this->comment_name = $comment_name;
     }
 
     /**
@@ -83,11 +83,10 @@ class comment
     /**
      * @param mixed $date
      */
-    public function set_date($date): void
+    public function set_date($date)
     {
         $this->date = $date;
     }
-
     
     public function __toString()
     {
