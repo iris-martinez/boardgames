@@ -19,17 +19,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $birth_date = $_POST['birth_date'] ?? '';
 
     $birthdate_converted = date("Y-m-d", strtotime($birth_date));
-
-    //$birthdate_converted = date("Y-m-d", strtotime($birth_date));
     $register_date = date('Y-m-d');
 
-    //var_dump($register_date); exit();
-    //$registerdate_converted = date("Y-m-d", strtotime($register_date));
-    $id_role = 1;
+    $id_role = 2;
     $id_user_level = 1;
     $counter_punctuation = 0;
-
-    //var_dump($birthdate_converted); exit();
 
     $error = false;
 
@@ -72,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $host = "localhost";
         $dbUsername = "root";
-        $dbPassword = "";
+        $dbPassword = "oxieva";
         $dbname = "rottenBoardEN";
         //create connection
         $conn = new mysqli($host, $dbUsername, $dbPassword, $dbname);
