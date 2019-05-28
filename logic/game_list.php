@@ -30,7 +30,7 @@ if(isset($_POST['delete_game']) == 'eliminar'){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin - Search game</title>
+    <title>Admin - Lista de juegos</title>
 
     <!-- Custom fonts for this template-->
     <link href="../views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -47,7 +47,7 @@ if(isset($_POST['delete_game']) == 'eliminar'){
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Administrador</a>
+    <a class="navbar-brand mr-1" href="admin_index.php">Administrador</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -107,9 +107,9 @@ if(isset($_POST['delete_game']) == 'eliminar'){
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="searchGame.html">Buscar</a>
-                <a class="dropdown-item" href="game-form.php">Añadir</a>
-                <a class="dropdown-item" href="manageGame.html">Actualizar/Eliminar</a>
+                <a class="dropdown-item" href="game_search.php">Buscar</a>
+                <a class="dropdown-item" href="game_form.php">Añadir</a>
+                <a class="dropdown-item" href="game_list.php">Actualizar/Eliminar</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -185,7 +185,7 @@ if(isset($_POST['delete_game']) == 'eliminar'){
                                     <td><?= $id_category ?></td>
                                     <td>
 
-                                        <form name="update-game" method="post" action="game-update.php">
+                                        <form name="update-game" method="post" action="game_update.php">
                                             <button class="btn btn-info" type="submit" name="update_game" value="<?= $game->get_id(); ?>" >Modificar</button>
 
                                         </form>

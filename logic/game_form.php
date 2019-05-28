@@ -4,11 +4,8 @@ require_once ("../dao/class-categoryDAO.php");
 require_once ("../model/class-game.php");
 require_once ("../dao/class-datasource.php");
 
-
-//$name= $author = $number_players =$description = $id_category = $duration = $image = $id_user = null;
-
-///aaaaaa
-if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda') {
+session_start();
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'crear') {
 
     // var_dump($_FILES);exit();
     $game = new Game();
@@ -24,7 +21,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
     $image = $_FILES['image']['name'] ?? '';
     $punctuation = (int)$_POST['punctuation'] ?? '';
     $category_id =(int) $_POST['id'] ?? '';
-    $id_user = (int)$_POST['id_user'];
+    $id_user = $_SESSION['id_user'];
 //var_dump($game); exit();
 
     $error = false;
@@ -122,10 +119,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
         $game_dao = new gameDAO();
         $game_dao->insert_game($game);
 
-        echo "<script>alert('Nuevo juego subido en la base de datos con éxito') </script>";
+
+        echo "<h3 style='color: green'>Nuevo juego subido en la base de datos con éxito</h3>";
+        //$miss = 'Nuevo juego subido en la base de datos con éxito';
 
 
-        //return $game[];
+
     }
 
 }
@@ -158,7 +157,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Administrador</a>
+    <a class="navbar-brand mr-1" href="admin_index.php">Administrador</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -219,10 +218,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="game-list.php">Buscar</a>
-                <a class="dropdown-item" href="game-form.php">Añadir</a>
-                <a class="dropdown-item" href="game-update.php">Actualizar/Modificar</a>
-                <a class="dropdown-item" href="#">Eliminar</a>
+                <a class="dropdown-item" href="game_list.php">Buscar</a>
+                <a class="dropdown-item" href="game_form.php">Añadir</a>
+                <a class="dropdown-item" href="game_update.php">Actualizar/Modificar</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -232,9 +230,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar categorías:</h6>
-                <a class="dropdown-item" href="category-form.php">Añadir</a>
-                <a class="dropdown-item" href="#">Modifica/Eliminar</a>
-                <a class="dropdown-item" href="#"></a>
+                <a class="dropdown-item" href="category_form.php">Añadir/Eliminar</a>
             </div>
         </li>
     </ul>
@@ -246,7 +242,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Admin</a>
+                    <a href="admin_index.php">Admin</a>
                 </li>
                 <li class="breadcrumb-item active">Añadir juego</li>
             </ol>
@@ -254,6 +250,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             <!-- Page Content -->
             <h1>Añadir Juego</h1>
             <hr>
+
             <div class="container">
                 <div class="card card-register mx-auto mt-5">
                     <div class="card-header">Introducir juego</div>
@@ -350,7 +347,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
                                 </div>
                             </div>
                             <div class="input-group-append">
-                                <input type="submit" name="add_game" value="manda">
+                                <button type="submit" a class="btn btn-primary btn-block" name="add_game" value="crear">Crear juego</button>
+
+                                <!--<input type="submit" name="add_game" value="manda">-->
 
                             </div>
                         </form>
@@ -390,7 +389,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                <a class="btn btn-primary" href="login.html">Logout</a>
+                <a class="btn btn-primary" href="logout.php">Logout</a>
             </div>
         </div>
     </div>

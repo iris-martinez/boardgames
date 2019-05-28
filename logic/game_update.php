@@ -65,15 +65,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
                 echo "Error fichero subido parcialment, fichero corrupto";
                 break;
 
-            /* case 4: //Error no sha pujat cap fitxer
-                 echo "Error no se ha subido ningun fichero";
-                 break;*/
-
         }
 
     } else {
-
-        //echo "Has subido la imagen correctamente <br>";
 
         if((isset($_FILES['image']['name']) && ($_FILES['image']['error'] == UPLOAD_ERR_OK))){
 
@@ -119,10 +113,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
         $game_dao = new gameDAO();
         $game_dao->update_game($game);
 
-        echo "<script>alert('Nuevo juego subido en la base de datos con éxito') </script>";
+        echo "<script>alert('Juego modificado en la base de datos con éxito') </script>";
 
-
-        //return $game[];
     }
 
 }
@@ -138,7 +130,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin - Update game</title>
+    <title>Admin - Modificar juego</title>
 
     <!-- Custom fonts for this template-->
     <link href="../views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -155,7 +147,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Administrador</a>
+    <a class="navbar-brand mr-1" href="admin_index.php">Administrador</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -216,10 +208,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="game-list.php">Buscar</a>
-                <a class="dropdown-item" href="game-form.php">Añadir</a>
-                <a class="dropdown-item" href="game-update.php">Actualizar/Modificar</a>
-                <a class="dropdown-item" href="#">Eliminar</a>
+                <a class="dropdown-item" href="game_search.php">Buscar</a>
+                <a class="dropdown-item" href="game_form.php">Añadir</a>
+                <a class="dropdown-item" href="game_list.php">Actualizar/Eliminar</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -229,9 +220,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar categorías:</h6>
-                <a class="dropdown-item" href="category-form.php">Añadir</a>
-                <a class="dropdown-item" href="#">Modifica/Eliminar</a>
-                <a class="dropdown-item" href="#"></a>
+                <a class="dropdown-item" href="category_form.php">Añadir/Eliminar</a>
             </div>
         </li>
     </ul>
@@ -243,17 +232,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Admin</a>
+                    <a href="admin_index.php">Admin</a>
                 </li>
-                <li class="breadcrumb-item active">Añadir juego</li>
+                <li class="breadcrumb-item active">Modificar juego</li>
             </ol>
 
             <!-- Page Content -->
-            <h1>Añadir Juego</h1>
+            <h1>Modificar Juego</h1>
             <hr>
             <div class="container">
                 <div class="card card-register mx-auto mt-5">
-                    <div class="card-header">Introducir juego</div>
+                    <div class="card-header">Modificar juego</div>
                     <div class="card-body">
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" enctype="multipart/form-data">
                             <input type="hidden" name="update_game" value="<?php echo $game->get_id(); ?>">
@@ -362,7 +351,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
                                 </div>
                             </div>
                             <div class="input-group-append">
-                                <input type="submit" name="add_game" value="manda">
+                                <button type="submit" a class="btn btn-primary btn-block" name="add_game" value="crear">Modificar juego</button>
+
 
                             </div>
                         </form>
