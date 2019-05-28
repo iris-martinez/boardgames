@@ -1,8 +1,13 @@
 <?php
-require_once ("../dao/class-gameDAO.php");
-require_once ("../dao/class-categoryDAO.php");
-require_once ("../model/class-game.php");
-require_once ("../dao/class-datasource.php");
+require_once (__DIR__ . "/../dao/class-gameDAO.php");
+require_once (__DIR__ . "/../dao/class-categoryDAO.php");
+require_once (__DIR__ ."/../model/class-game.php");
+require_once (__DIR__ . "/../dao/class-datasource.php");
+
+require_once(__DIR__ . "/../dao/class-userDAO.php");
+require_once(__DIR__ . "/../dao/class-roleDAO.php");
+require_once(__DIR__ . "/../model/class-role.php");
+require_once(__DIR__ . "/../model/class-user.php");
 
 session_start();
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'crear') {
@@ -218,9 +223,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'crear'
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="game_list.php">Buscar</a>
+                <a class="dropdown-item" href="game_search.php">Buscar</a>
                 <a class="dropdown-item" href="game_form.php">Añadir</a>
-                <a class="dropdown-item" href="game_update.php">Actualizar/Modificar</a>
+                <a class="dropdown-item" href="game_list.php">Actualizar/Modificar</a>
             </div>
         </li>
         <li class="nav-item dropdown">

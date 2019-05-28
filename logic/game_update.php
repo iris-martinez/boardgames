@@ -1,11 +1,15 @@
 <?php
-require_once ("../dao/class-gameDAO.php");
-require_once ("../dao/class-categoryDAO.php");
-require_once ("../model/class-game.php");
-require_once ("../dao/class-datasource.php");
+require_once (__DIR__ . "/../dao/class-gameDAO.php");
+require_once (__DIR__ . "/../dao/class-categoryDAO.php");
+require_once (__DIR__ ."/../model/class-game.php");
+require_once (__DIR__ . "/../dao/class-datasource.php");
+
+require_once(__DIR__ . "/../dao/class-userDAO.php");
+require_once(__DIR__ . "/../dao/class-roleDAO.php");
+require_once(__DIR__ . "/../model/class-role.php");
+require_once(__DIR__ . "/../model/class-user.php");
 
 $game_id;
-//var_dump($_POST); exit();
 
 $game_id = $_POST['update_game'];
 
@@ -46,8 +50,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
         $name_error = "La duración del juego es requerida";
         $error = true;
     }
-    /*Per pujar imatges*/
-    /*Mirem els diferents tipus d'error*/
 
     if($_FILES['image']['error']){
 
@@ -93,7 +95,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
 
     if (!$error) {
         $game = $game_dao->get_game_by_id($game_id);
-        /*Estic aquí, falta l'id del joc???*/
         /* $game->get_id_game();*/
         $game->set_name($name);
         $game->set_author($author);
@@ -108,8 +109,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
         $game->set_punctuation($punctuation);
         $game->set_category($category_id);
         $game->set_user($id_user);
-       // var_dump($game); exit();
-        //$game = $game_dao->insert_game($game);
         $game_dao = new gameDAO();
         $game_dao->update_game($game);
 

@@ -1,9 +1,13 @@
 <?php
-require_once ("../dao/class-gameDAO.php");
-require_once ("../dao/class-categoryDAO.php");
-require_once ("../model/class-game.php");
-require_once ("../dao/class-datasource.php");
+require_once (__DIR__ . "/../dao/class-gameDAO.php");
+require_once (__DIR__ . "/../dao/class-categoryDAO.php");
+require_once (__DIR__ ."/../model/class-game.php");
+require_once (__DIR__ . "/../dao/class-datasource.php");
 
+require_once(__DIR__ . "/../dao/class-userDAO.php");
+require_once(__DIR__ . "/../dao/class-roleDAO.php");
+require_once(__DIR__ . "/../model/class-role.php");
+require_once(__DIR__ . "/../model/class-user.php");
 
 /*Delete a game*/
 if(isset($_POST['delete_game']) == 'eliminar'){
@@ -11,8 +15,6 @@ if(isset($_POST['delete_game']) == 'eliminar'){
     $game_dao = new gameDAO();
 
     $game=(int)$_POST['delete_game'];
-
-    //var_dump($game); exit();
     $game_dao->delete_game($game);
 
     echo "<h3 style='color: green'> Nuevo juego borrado en la base de datos con éxito</h3>" . "<br>";
@@ -119,7 +121,7 @@ if(isset($_POST['delete_game']) == 'eliminar'){
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar categorías:</h6>
-                <a class="dropdown-item" href="newCategory.html">Añadir/Eliminar</a>
+                <a class="dropdown-item" href="category_form.php">Añadir/Eliminar</a>
             </div>
         </li>
     </ul>
@@ -131,13 +133,13 @@ if(isset($_POST['delete_game']) == 'eliminar'){
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Admin</a>
+                    <a href="admin_index.php">Admin</a>
                 </li>
                 <li class="breadcrumb-item active">Buscar juego</li>
             </ol>
 
             <!-- Page Content-->
-            <h1>Buscar juego</h1>
+            <h1>Listado de juegos</h1>
             <hr>
 
             <!-- DataTables -->
@@ -205,7 +207,8 @@ if(isset($_POST['delete_game']) == 'eliminar'){
                         </table>
                     </div>
                 </div>
-                <div class="card-footer small text-muted">Actualizado ayer a las 19:42</div>
+                <div class="card-footer small text-muted"><?php echo "Última modificación: " . date ("d F Y H:i", getlastmod()); ?></div>
+
             </div>
 
         </div>

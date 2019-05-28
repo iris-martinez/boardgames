@@ -1,8 +1,13 @@
 <?php
-require_once ("../dao/class-gameDAO.php");
-require_once ("../dao/class-categoryDAO.php");
-require_once ("../model/class-game.php");
-require_once ("../dao/class-datasource.php");
+require_once (__DIR__ . "/../dao/class-gameDAO.php");
+require_once (__DIR__ . "/../dao/class-categoryDAO.php");
+require_once (__DIR__ ."/../model/class-game.php");
+require_once (__DIR__ . "/../dao/class-datasource.php");
+
+require_once(__DIR__ . "/../dao/class-userDAO.php");
+require_once(__DIR__ . "/../dao/class-roleDAO.php");
+require_once(__DIR__ . "/../model/class-role.php");
+require_once(__DIR__ . "/../model/class-user.php");
 
 
 /*Search a game*/
