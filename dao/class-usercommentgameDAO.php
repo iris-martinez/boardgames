@@ -26,9 +26,21 @@ class commentDAO
         return $comments;
     }
     //TODO
-    public function get_comments_by_game(): array
+    public function get_comments_by_game($id_game): array
     {
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT *
+                FROM UserCommentGame
+                WHERE id_game = ?";
 
+        $id = null;
+        // Vincular variables a una instrucción preparada como parámetros
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('d', $id_game);
+        $stmt->execute();
+        $comments = $this->extract_result_list($stmt);
+        $stmt->close();
+        return $comments;
     }
 
     public function get_comment_by_id($id): ?Comment

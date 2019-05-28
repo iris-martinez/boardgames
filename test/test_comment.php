@@ -24,9 +24,21 @@ try {
     }
 
     /**
-     * test update_comment method
+     * test get_comments_by_game method
      */
     echo "---------------------------<br>";
+    echo "test get_comments_by_game method<br>";
+    $comments = $commentDAO->get_comments_by_game(2);
+    foreach ($comments as $comment) {
+        echo (ISSET($comment) ? 'existe' : 'no existe') . '<br>';
+        echo $comment->get_comment() . '<br>';
+    }
+    echo "---------------------------<br>";
+
+    /**
+     * test update_comment method
+     */
+    /*echo "---------------------------<br>";
     echo "test update_comment method<br>";
     $comment = $commentDAO->get_comment_by_id(2);
     $comment->set_comment("Esto es un nuevo comentario");
