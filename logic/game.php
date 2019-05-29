@@ -12,12 +12,10 @@ $gameDAO = new gameDAO();
 $commentDAO = new commentDAO();
 $userDAO = new userDAO();
 
-$id_game = 2;
-$id_user = 11;
+$id_game = $_GET["id_game"];
 
 $game = $gameDAO->get_game_by_id($id_game);
 $comments = $commentDAO->get_comments_by_game($id_game);
-$user = $userDAO->get_user_by_id($id_user);
 
 ?>
 
@@ -83,6 +81,7 @@ $user = $userDAO->get_user_by_id($id_user);
                             echo "<b>comentarios de usuarios:</b>" . '<br>';
 
                             foreach ($comments as $comment) {
+                                $user = $userDAO->get_user_by_id($comment->get_user_id());
                                 echo '</br>';
                                 echo $user->get_name() . '<br>';
                                 echo $comment->get_comment() . '<br>';

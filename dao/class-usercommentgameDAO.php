@@ -79,17 +79,12 @@ class commentDAO
         $stmt->bind_result($id, $id_user, $id_game, $comment_name, $create_date);
         $comments = [];
         while ($stmt->fetch()) {
-
-            $user = new user();
-            $user->set_id($id_user);
-
-            $game = new game();
-            $game->set_id($id_game);
-
             $comment = new comment();
             $comment->set_id($id);
             $comment->set_comment($comment_name);
             $comment->set_date($create_date);
+            $comment->set_user_id($id_user);
+            $comment->set_game_id($id_game);
 
             $comments[] = $comment;
         }

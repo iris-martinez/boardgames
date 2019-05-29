@@ -123,7 +123,7 @@ require_once(__DIR__ . "/../model/class-user.php");
             foreach ($games as $game) {
             ?>
             <div class="col-md-4 col-sm-6 portfolio-item">
-                <a class="portfolio-link" href="game.html">
+                <a class="portfolio-link" href="game.php?id_game=<?= $game->get_id(); ?>">
                     <div class="portfolio-hover">
                         <div class="portfolio-hover-content">
                             <i class="fas fa-plus fa-2x"></i>
@@ -136,6 +136,7 @@ require_once(__DIR__ . "/../model/class-user.php");
                     <h4><?= $game->get_name(); ?></h4><br>
                     <p class="text-muted"><?= $game->get_category(); ?></p>
                     <p><?= $game->get_description(); ?></p><br>
+                    <p><?= $game->get_id(); ?></p><br>
                 </div>
             </div>
                 <?php
