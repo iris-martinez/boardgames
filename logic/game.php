@@ -3,16 +3,21 @@
 require_once(__DIR__ . "/../dao/class-datasource.php");
 require_once(__DIR__ . "/../dao/class-gameDAO.php");
 require_once(__DIR__ . "/../dao/class-usercommentgameDAO.php");
+require_once(__DIR__ . "/../dao/class-userDAO.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-usercommentgame.php");
+require_once(__DIR__ . "/../model/class-user.php");
 
 $gameDAO = new gameDAO();
 $commentDAO = new commentDAO();
+$userDAO = new userDAO();
 
 $id_game = 2;
+$id_user = 11;
 
 $game = $gameDAO->get_game_by_id($id_game);
 $comments = $commentDAO->get_comments_by_game($id_game);
+$user = $userDAO->get_user_by_id($id_user);
 
 ?>
 
@@ -76,6 +81,8 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                             <?php
 
                             foreach ($comments as $comment) {
+                                echo '</br>';
+                                echo $user->get_name() . '<br>';
                                 echo $comment->get_comment() . '<br>';
                             }
 
