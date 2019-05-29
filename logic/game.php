@@ -77,8 +77,10 @@ $user = $userDAO->get_user_by_id($id_user);
                         <li><b>Autor:</b> <?= $game->get_author(); ?> </li>
                         <li><b>Duración:</b> <?= $game->get_duration(); ?></li>
                         <li><b>Nº Jugadores:</b> <?= $game->get_number_players(); ?></li>
-                        <li><b>Comentarios:</b><br>
-                            <?php
+                        <li><?php
+
+                            echo count($comments) . " ";
+                            echo "<b>comentarios de usuarios:</b>" . '<br>';
 
                             foreach ($comments as $comment) {
                                 echo '</br>';
@@ -86,7 +88,8 @@ $user = $userDAO->get_user_by_id($id_user);
                                 echo $comment->get_comment() . '<br>';
                             }
 
-                            ?></li>
+                            ?>
+                        </li>
                     </ul>
                 </div>
             </div>
