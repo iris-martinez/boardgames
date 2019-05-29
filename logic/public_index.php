@@ -136,7 +136,6 @@ require_once(__DIR__ . "/../model/class-user.php");
                     <h4><?= $game->get_name(); ?></h4><br>
                     <p class="text-muted"><?= $game->get_category(); ?></p>
                     <p><?= $game->get_description(); ?></p><br>
-                    <p><?= $game->get_id(); ?></p><br>
                 </div>
             </div>
                 <?php
