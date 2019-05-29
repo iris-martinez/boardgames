@@ -6,8 +6,13 @@ require_once(__DIR__ . "/../dao/class-usercommentgameDAO.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-usercommentgame.php");
 
-$game = new game();
 $gameDAO = new gameDAO();
+$commentDAO = new commentDAO();
+
+$id_game = 2;
+
+$game = $gameDAO->get_game_by_id($id_game);
+$comments = $commentDAO->get_comments_by_game($id_game);
 
 ?>
 
@@ -59,14 +64,22 @@ $gameDAO = new gameDAO();
             <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
                     <!-- Game Details Go Here -->
-                    <h2 class="text-uppercase">Título</h2>
-                    <p class="item-intro text-muted">Categoría.</p>
+                    <h2 class="text-uppercase">Título <?= $game->get_name(); ?></h2>
+                    <p class="item-intro text-muted">Categoría <?= $game->get_category(); ?></p>
                     <img class="img-fluid d-block mx-auto" src="../views/templates/public/img/portfolio/<?=$game->get_name()?>.jpg" alt="">
-                    <p>Descripción del juego</p>
+                    <p><?= $game->get_description(); ?></p>
                     <ul class="list-inline">
-                        <li>Autor: </li>
-                        <li>Duración: </li>
-                        <li>Nº Jugadores:</li>
+                        <li><b>Autor:</b> <?= $game->get_author(); ?> </li>
+                        <li><b>Duración:</b> <?= $game->get_duration(); ?></li>
+                        <li><b>Nº Jugadores:</b> <?= $game->get_number_players(); ?></li>
+                        <li><b>Comentarios:</b><br>
+                            <?php
+
+                            foreach ($comments as $comment) {
+                                echo $comment->get_comment() . '<br>';
+                            }
+
+                            ?></li>
                     </ul>
                 </div>
             </div>
