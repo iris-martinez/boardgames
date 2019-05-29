@@ -173,8 +173,8 @@ class gameDAO
         $duration = $game->get_duration();
         $image = $game->get_image();
         $punctuation = $game->get_punctuation();
-        $id_user = $game->get_user()->get_id();
-        $id_category = $game->get_category()->get_id();
+        $id_user = $game->get_user();
+        $id_category = $game->get_category();
 
         $stmt->bind_param('ssdsssdddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category, $id);
         if ($stmt->execute() === FALSE) {
@@ -189,7 +189,6 @@ class gameDAO
         $sql = "INSERT INTO Game (name, author, number_players, description, duration, image, punctuation, id_user, id_category) VALUES (?,?,?,?,?,?,?,?,?)";
         $stmt = $conn->prepare($sql);
 
-
         $name = $game->get_name();
         $author = $game->get_author();
         $number_players= $game->get_number_players();
@@ -197,8 +196,8 @@ class gameDAO
         $duration = $game->get_duration();
         $image = $game->get_image();
         $punctuation = $game->get_punctuation();
-        $id_user = $game->get_user()->get_id();
-        $id_category = $game->get_category()->get_id();
+        $id_user = $game->get_user();
+        $id_category = $game->get_category();
 
         $stmt->bind_param('ssdsssddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category);
         if ($stmt->execute() === FALSE) {
@@ -208,12 +207,14 @@ class gameDAO
         $game->set_id($conn->insert_id);
     }
 
-    public function delete_game($game)
+    public function delete_game($id_game)
     {
+        //El game ya es
         $conn = $this->datasource->get_connection();
         $sql = "DELETE FROM Game WHERE id_game = ?";
         $stmt = $conn->prepare($sql);
-        $id = $game->get_id();
+        //Ya pasamos el id
+        $id = $id_game;
         $stmt->bind_param('d', $id);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido eliminar el juego." . $conn->error);

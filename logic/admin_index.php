@@ -102,7 +102,7 @@ session_start();
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar usuarios:</h6>
-                <a class="dropdown-item" href="../userManagement.php">Crear usuario</a>
+                <a class="dropdown-item" href="userManagement.php">Crear usuario</a>
                 <a class="dropdown-item" href="usersManagement.html">Modificaciones/Bajas</a>
                 <a class="dropdown-item" href="userProfile.php">Listado de usuarios</a>
                 <div class="dropdown-divider"></div>
@@ -119,9 +119,9 @@ session_start();
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="searchGame.html">Buscar</a>
-                <a class="dropdown-item" href="newGame.html">Añadir</a>
-                <a class="dropdown-item" href="manageGame.html">Actualizar/Eliminar</a>
+                <a class="dropdown-item" href="game_search.php">Buscar</a>
+                <a class="dropdown-item" href="game_form.php">Añadir</a>
+                <a class="dropdown-item" href="game_list.php">Actualizar/Eliminar</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -132,7 +132,7 @@ session_start();
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar categorías:</h6>
-                <a class="dropdown-item" href="newCategory.html">Añadir/Eliminar</a>
+                <a class="dropdown-item" href="category_form.php">Añadir/Eliminar</a>
             </div>
         </li>
     </ul>
@@ -152,7 +152,7 @@ session_start();
         <!-- Page Content-->
         <h1>Inicio</h1>
         <hr>
-        <p>Bienvenido <?php echo $_SESSION['email'] ?>.</p>
+        <p>Bienvenido <?php echo $_SESSION['email'] ?>. <?php /*echo $_SESSION['id_user'] */?></p>
 
       </div>
 
@@ -191,7 +191,7 @@ session_start();
         <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-          <a class="btn btn-primary" href="login.php">Logout <?php session_destroy() ?></a>
+          <a class="btn btn-primary" href="logout.php">Logout</a>
         </div>
       </div>
     </div>

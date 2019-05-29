@@ -1,37 +1,26 @@
 <?php
-require_once ("dao/class-categoryDAO.php");
-require_once ("model/class-category.php");
-require_once ("dao/class-datasource.php");
+require_once (__DIR__ . "/../dao/class-gameDAO.php");
+require_once (__DIR__ . "/../dao/class-categoryDAO.php");
+require_once (__DIR__ ."/../model/class-game.php");
+require_once (__DIR__ . "/../dao/class-datasource.php");
 
-/* Insert new category*/
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $category_dao = new CategoryDAO();
-    $name = $_POST['name'] ?? '';
-    $error = false;
-    if (empty($name)) {
-        $name_error = "Name is required!";
-        $error = true;
-    }
-    if (!$error) {
-        $category = new Category();
-        $category->set_name($name);
-        $category_dao->insert_category($category);
-        echo "<h3 style='color: green'> Nueva categoria subida en la base de datos con éxito</h3>" . "<br>";
-    }
+require_once(__DIR__ . "/../dao/class-userDAO.php");
+require_once(__DIR__ . "/../dao/class-roleDAO.php");
+require_once(__DIR__ . "/../model/class-role.php");
+require_once(__DIR__ . "/../model/class-user.php");
 
+/*Delete a game*/
+if(isset($_POST['delete_game']) == 'eliminar'){
 
-}
+    $game_dao = new gameDAO();
 
-/*Delete a category*/
-if(isset($_POST['delete_category']) == 'eliminar'){
+    $game=(int)$_POST['delete_game'];
+    $game_dao->delete_game($game);
 
-    $category = new Category();
-    $category_dao->delete_category($category);
+    echo "<h3 style='color: green'> Nuevo juego borrado en la base de datos con éxito</h3>" . "<br>";
 
 }
-
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -43,16 +32,16 @@ if(isset($_POST['delete_category']) == 'eliminar'){
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Admin - New category</title>
+    <title>Admin - Lista de juegos</title>
 
     <!-- Custom fonts for this template-->
-    <link href="views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../views/templates/admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
 
     <!-- Page level plugin CSS-->
-    <link href="views/templates/admin/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+    <link href="../views/templates/admin/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="views/templates/admin/css/sb-admin.css" rel="stylesheet">
+    <link href="../views/templates/admin/css/sb-admin.css" rel="stylesheet">
 
 </head>
 
@@ -60,7 +49,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
 
 <nav class="navbar navbar-expand navbar-dark bg-dark static-top">
 
-    <a class="navbar-brand mr-1" href="index.html">Administrador</a>
+    <a class="navbar-brand mr-1" href="admin_index.php">Administrador</a>
 
     <button class="btn btn-link btn-sm text-white order-1 order-sm-0" id="sidebarToggle" href="#">
         <i class="fas fa-bars"></i>
@@ -120,9 +109,9 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="searchGame.html">Buscar</a>
-                <a class="dropdown-item" href="newGame.html">Añadir</a>
-                <a class="dropdown-item" href="manageGame.html">Actualizar/Eliminar</a>
+                <a class="dropdown-item" href="game_search.php">Buscar</a>
+                <a class="dropdown-item" href="game_form.php">Añadir</a>
+                <a class="dropdown-item" href="game_list.php">Actualizar/Eliminar</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -132,7 +121,7 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar categorías:</h6>
-                <a class="dropdown-item" href="newCategory.html">Añadir/Eliminar</a>
+                <a class="dropdown-item" href="category_form.php">Añadir/Eliminar</a>
             </div>
         </li>
     </ul>
@@ -144,44 +133,70 @@ if(isset($_POST['delete_category']) == 'eliminar'){
             <!-- Breadcrumbs-->
             <ol class="breadcrumb">
                 <li class="breadcrumb-item">
-                    <a href="index.html">Admin</a>
+                    <a href="admin_index.php">Admin</a>
                 </li>
-                <li class="breadcrumb-item active">Añadir o Eliminar categoría</li>
+                <li class="breadcrumb-item active">Buscar juego</li>
             </ol>
 
-            <!-- Page Content -->
-            <h1>Añadir o Eliminar categoría</h1>
+            <!-- Page Content-->
+            <h1>Listado de juegos</h1>
             <hr>
+
             <!-- DataTables -->
-            <!-- The list returns all the DB categories -->
+            <!-- The list returns all the DB games -->
             <div class="card mb-3">
                 <div class="card-header">
                     <i class="fas fa-table"></i>
-                    Listado de categorías</div>
+                    Listado de juegos</div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
                                 <th>ID</th>
+                                <th>Nombre</th>
                                 <th>Categoría</th>
-                                <th>Acción</th>
+                                <th colspan="2">Acción</th>
                             </tr>
                             </thead>
-
+                            <tfoot>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Categoría</th>
+                                <th colspan="2">Acción</th>
+                            </tr>
+                            </tfoot>
                             <tbody>
                             <?php
-                            $category_dao = new CategoryDAO();
-                            $categories = $category_dao->list_categories();
-                            foreach ($categories as $category) {
+                            $game_dao = new gameDAO();
+                            $games = $game_dao->list_games();
+
+                            foreach ($games as $game) {
                                 ?>
                                 <tr>
-                                    <td><?= $category->get_id()?> </td>
-                                    <td><?= $category->get_name()?> </td>
+                                    <td><?= $game->get_id()?> </td>
+                                    <td><?= $game->get_name()?> </td>
+
+                                    <?php
+                                    $category_dao = new categoryDAO();
+                                    $id_category = ($game->get_category());
+
+
+                                    ?>
+                                    <td><?= $id_category ?></td>
                                     <td>
-                                        <button class="btn btn-danger" type="button" >
-                                            <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
-                                        </button>
+
+                                        <form name="update-game" method="post" action="game_update.php">
+                                            <button class="btn btn-info" type="submit" name="update_game" value="<?= $game->get_id(); ?>" >Modificar</button>
+
+                                        </form>
+                                    </td>
+                                    <td>
+                                        <form name="delete-game" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                                            <button class="btn btn-danger" type="submit" name="delete_game" value="<?= $game->get_id(); ?>" >Eliminar</button>
+
+                                        </form>
                                     </td>
                                 </tr>
                                 <?php
@@ -192,31 +207,12 @@ if(isset($_POST['delete_category']) == 'eliminar'){
                         </table>
                     </div>
                 </div>
-                <div class="card-footer small text-muted">
-                    <form method="post" action="category-form.php">
+                <div class="card-footer small text-muted"><?php echo "Última modificación: " . date ("d F Y H:i", getlastmod()); ?></div>
 
-                    <div class="form-group input-group">
-                            <div class="form-label-group">
-                                <input type="text" id="category" name="name" class="form-control" placeholder="Categoría" required="required">
-                                <label for="category">Categoría</label>
-                            </div>
-                            <div class="input-group-append">
-                                <button class="btn btn-primary" type="submit">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <!--<div class="input-group-append">
-                                <button class="btn btn-primary" type="button">
-                                    <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
-                                </button>
-                            </div>-->
-                        </div>
-                    </form>
-
-                </div>
             </div>
 
         </div>
+
         <!-- /.container-fluid -->
 
         <!-- Sticky Footer -->
@@ -258,38 +254,25 @@ if(isset($_POST['delete_category']) == 'eliminar'){
     </div>
 </div>
 
-<!-- Delete Modal-->
-<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">¿Seguro que desea eliminar?</h5>
-                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">×</span>
-                </button>
-            </div>
-            <div class="modal-body">Seleccione "Eliminar" si desea eliminar definitivamente</div>
-            <form method="post" action="category-form.php" id="delete-form">
-            <div class="modal-footer">
-                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
-                <button class="btn btn-danger" type="submit" name="delete_category" value="eliminar" form="delete-form" >Eliminar</button>
-            </div>
-            </form>
-        </div>
-    </div>
-</div>
-
-<!-- Bootstrap core JavaScript--><!--/var/www/html/boardgames/views/templates/admin/vendor-->
-<script src="views/templates/admin/vendor/jquery/jquery.min.js"></script>
-<script src="views/templates/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap core JavaScript-->
+<script src="../views/templates/admin/vendor/jquery/jquery.min.js"></script>
+<script src="../views/templates/admin/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 <!-- Core plugin JavaScript-->
-<script src="views/templates/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+<script src="../views/templates/admin/vendor/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Page level plugin JavaScript-->
+<script src="../views/templates/admin/vendor/chart.js/Chart.min.js"></script>
+<script src="../views/templates/admin/vendor/datatables/jquery.dataTables.js"></script>
+<script src="../views/templates/admin/vendor/datatables/dataTables.bootstrap4.js"></script>
 
 <!-- Custom scripts for all pages-->
-<script src="views/templates/admin/js/sb-admin.min.js"></script>
+<script src="../views/templates/admin/js/sb-admin.min.js"></script>
+
+<!-- Demo scripts for this page-->
+<script src="../views/templates/admin/js/demo/datatables-demo.js"></script>
+<script src="../views/templates/admin/js/demo/chart-area-demo.js"></script>
 
 </body>
 
 </html>
-

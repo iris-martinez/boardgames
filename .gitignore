@@ -6,6 +6,8 @@ Homestead.yaml
 Homestead.json
 .env
 
+# ============= Images ======================
+/views/images
 # ====== OS X ===========================================
 .DS_Store
 .AppleDouble
