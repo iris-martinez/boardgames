@@ -45,6 +45,7 @@ class CategoryDAO
         $stmt->bind_param('s', $name);
         $stmt->execute();
         $stmt->bind_result($id, $name);
+
         $category = null;
         if ($stmt->fetch()) {
             $category = new Category();
@@ -54,6 +55,17 @@ class CategoryDAO
         $stmt->close();
         return $category;
 
+    }
+
+    public function delete_category_by_id($id)
+    {
+        $conn = $this->datasource->get_connection();
+        $sql = "DELETE FROM Category WHERE id_category = ?";
+
+        // Vincular variables a una instrucción preparada como parámetros
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('i', $id);
+        return $stmt->execute();
     }
 
     public function update_category($category)

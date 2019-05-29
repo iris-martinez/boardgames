@@ -119,6 +119,14 @@ class game
     }
 
     /**
+     * @return mixed
+     */
+    public function get_image_path()
+    {
+        return "/boardgames/views/images/". $this->image;
+    }
+
+    /**
      * @param mixed $image
      */
     public function set_image($image)
