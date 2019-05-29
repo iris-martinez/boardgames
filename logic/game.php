@@ -51,12 +51,11 @@ $comments = $commentDAO->get_comments_by_game($id_game);
 <!-- Navigation -->
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
     <div class="container">
-        <a class="navbar-brand js-scroll-trigger" href="index.html">Rotten Board Games</a>
-        <a class="btn btn-secondary" href="index.html" role="button">
+        <a class="navbar-brand js-scroll-trigger" href="public_index.php">Rotten Board Games</a>
+        <a class="btn btn-secondary" href="public_index.php" role="button">
             <i class="fas fa-times"></i>
         </a>
 
-    </div>
     </div>
 </nav>
 
@@ -69,7 +68,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                     <!-- Game Details Go Here -->
                     <h2 class="text-uppercase">Título <?= $game->get_name(); ?></h2>
                     <p class="item-intro text-muted">Categoría <?= $game->get_category(); ?></p>
-                    <img class="img-fluid d-block mx-auto" src="../views/templates/public/img/portfolio/<?=$game->get_name()?>.jpg" alt="">
+                    <img class="img-fluid d-block mx-auto" src="../views/images/<?=$game->get_image()?>" alt="">
                     <p><?= $game->get_description(); ?></p>
                     <ul class="list-inline">
                         <li><b>Autor:</b> <?= $game->get_author(); ?> </li>
@@ -125,7 +124,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             <div class="col-md-4">
                 <ul class="list-inline quicklinks">
                     <li class="list-inline-item">
-                        <a href="#">Admin</a>
+                        <a href="public_index.php">Home</a>
                     </li>
                 </ul>
             </div>

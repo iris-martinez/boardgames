@@ -132,7 +132,7 @@ require_once(__DIR__ . "/../model/class-user.php");
                     <img class="img-fluid" src="" alt="">
                 </a>
                 <div class="portfolio-caption">
-                    <img height="150" src="../views/templates/public/img/portfolio/<?=$game->get_name()?>.jpg" style="float: left; margin-right: 10px"><br>
+                    <img height="150" src="../views/images/<?= $game->get_image(); ?>" style="float: left; margin-right: 10px"><br>
                     <h4><?= $game->get_name(); ?></h4><br>
                     <p class="text-muted"><?= $game->get_category(); ?></p>
                     <p><?= $game->get_description(); ?></p><br>
