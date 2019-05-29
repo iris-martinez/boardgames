@@ -37,6 +37,7 @@ try {
     // Si l'usuari és a la bd
     if ($numRegistre == 1) {
 
+        session_destroy();
         session_start();
         $user = new userDAO();
         $_SESSION['email'] = $userData->email;
