@@ -25,7 +25,7 @@ class commentDAO
         $stmt->close();
         return $comments;
     }
-    //TODO
+
     public function get_comments_by_game($id_game): array
     {
         $conn = $this->datasource->get_connection();
