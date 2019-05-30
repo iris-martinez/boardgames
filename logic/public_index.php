@@ -89,8 +89,7 @@ $categories = $categoryDAO->list_categories();
 <header class="masthead">
     <div class="container">
         <div class="intro-text">
-            <div class="intro-lead-in">"No dejamos de jugar nos hacemos viejos, nos hacemos viejos porque dejamos de jugar"</div>
-            <div class="intro-heading text-uppercase">Bienvenidos</div>
+            <div class="intro-lead-in">"No dejamos de jugar porque nos hacemos viejos, nos hacemos viejos porque dejamos de jugar"</div>
             <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#boardgames">Encuentra tu juego</a>
         </div>
     </div>
@@ -117,7 +116,7 @@ $categories = $categoryDAO->list_categories();
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2 class="section-heading text-uppercase">Juegos de mesa</h2>
-                <h3 class="section-subheading text-muted">Juegos valoraciones y comentarios.</h3>
+                <h3 class="section-subheading text-muted">Busca, valora y opina.</h3>
             </div>
         </div>
         <!-- IMPORTANT, implement filtering by categories -->
@@ -182,7 +181,8 @@ $categories = $categoryDAO->list_categories();
     <div class="container">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">Sobre Rotten Board Games</h2>
-            <h3 class="section-subheading text-muted">Todo sobre nuestra web.</h3>
+            <h3 class="section-subheading text-muted">Donde se habla de juegos de mesa.</h3>
+            <p>Estás en una aplicación web donde encontrar los juegos de mesa que han marcado un antes y un después en tus tardes de domingo, donde puedes opinar sobre cualquier juego de mesa.</p>
         </div>
         <div class="text-center">
             <!-- FALTA CONTENIDO-->
