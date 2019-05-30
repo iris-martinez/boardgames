@@ -10,6 +10,7 @@ require_once(__DIR__ . "/../model/class-user.php");
 $userDAO = new userDAO();
 $rolDAO = new roleDAO();
 $roles = $rolDAO->list_roles();
+$modified = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
