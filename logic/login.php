@@ -90,14 +90,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <form method="post" action="validate_login.php">
                         <div class="form-group">
                             <div class="form-label-group">
-                                <input type="email" id="email" name="email" class="form-control" placeholder="Email address" required="required" autofocus="autofocus">
+                                <input type="email" id="email" name="email" class="form-control" placeholder="Email" required="required" autofocus="autofocus">
                                 <label for="email">Email</label>
                             </div>
                         </div>
                         <div class="form-group">
                             <div class="form-label-group">
-                                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required="required">
-                                <label for="inputPassword">Password</label>
+                                <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Contraseña" required="required">
+                                <label for="inputPassword">Contraseña</label>
                             </div>
                         </div>
 
@@ -110,7 +110,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     </form>
                     <div class="text-center" style="margin-top: 20px">
-                        <a href="register.php"><button style="" class="btn btn-primary btn-block" value="register"> Registrate</button></a>
+                        <a href="register.php"><button style="" class="btn btn-primary btn-block" value="register"> Registrar</button></a>
 
                     </div>
                 </div>
