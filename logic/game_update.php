@@ -79,7 +79,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             move_uploaded_file($_FILES['image']['tmp_name'], $destiRuta . $_FILES['image']['name']);
 
 
-            echo "<h3 style='color: green'>El archivo " . $_FILES['image']['name'] . " se ha copiado en el directorio de imagenes </h3>";
+            echo "<h3 style='color: green'>El archivo " . $_FILES['image']['name'] . " se ha copiado en el directorio de imágenes </h3>";
 
         } else {
 

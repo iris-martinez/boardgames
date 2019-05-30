@@ -152,7 +152,7 @@ session_start();
         <!-- Page Content-->
         <h1>Inicio</h1>
         <hr>
-        <p>Bienvenido <?php echo $_SESSION['email'] ?>. <?php /*echo $_SESSION['id_user'] */?></p>
+        <p>Bienvenido <?php echo $_SESSION['email'] ?>. <?php /*echo $_SESSION['id_user']*/ ?></p>
 
       </div>
 
