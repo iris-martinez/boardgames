@@ -9,12 +9,12 @@ require_once(__DIR__ . "/../dao/class-roleDAO.php");
 require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-user.php");
 
-$game_id;
-
 $game_id = $_POST['update_game'];
 
 $game_dao = new gameDAO();
+$category_dao = new CategoryDAO();
 $game = $game_dao->get_game_by_id($game_id);
+$modified = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda') {
 
@@ -94,7 +94,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
     }
 
     if (!$error) {
+
         $game = $game_dao->get_game_by_id($game_id);
+        $category = $category_dao->get_category_by_id($category_id);
         /* $game->get_id_game();*/
         $game->set_name($name);
         $game->set_author($author);
@@ -107,13 +109,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             $game->set_image($game->get_image());
         }
         $game->set_punctuation($punctuation);
-        $game->set_category($category_id);
+        $game->set_category($category);
         $game->set_user($id_user);
-        $game_dao = new gameDAO();
         $game_dao->update_game($game);
 
-        echo "<script>alert('Juego modificado en la base de datos con éxito') </script>";
-
+        $modified = true;
     }
 
 }
@@ -240,6 +240,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             <h1>Modificar Juego</h1>
             <hr>
             <div class="container">
+
+                <?php if ($error) { ?>
+                <div class="alert alert-danger" role="alert">
+                    <?=$name_error?>
+                </div>
+                <?php } ?>
+                <?php if ($modified) { ?>
+                <div class="alert alert-success" role="alert">
+                    Juego modificado en la base de datos con éxito
+                </div>
+                <?php } ?>
+
                 <div class="card card-register mx-auto mt-5">
                     <div class="card-header">Modificar juego</div>
                     <div class="card-body">
@@ -289,12 +301,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
                                                 <option value="0">Selecciona la categoría</option>
                                                 <?php
 
-                                                $category_dao = new CategoryDAO();
                                                 $categories = $category_dao->list_categories();
                                                 // error_log(var_export($categories,true)); exit();
                                                 foreach ($categories as $category) {
                                                     ?>
-                                                    <option <? if($game->get_category() == $category->get_id() ){echo 'selected="selected"';}?> value="<?=$category->get_id() ?>"><?= $category->get_name()?></option>
+                                                    <option <? if($game->get_category() != null && $game->get_category()->get_id() == $category->get_id() ){echo 'selected="selected"';}?> value="<?=$category->get_id() ?>"><?= $category->get_name()?></option>
                                                     <?php
                                                 }
                                                 ?>

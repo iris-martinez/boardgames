@@ -108,8 +108,26 @@ require_once(__DIR__ . "/../model/class-user.php");
         </div>
         <!-- IMPORTANT, implement filtering by categories -->
         <div class="text-center">
-            <p>IMPLEMENTAR SISTEMA DE FILTRADO POR CATEGORÍAS!!</p>
         </div>
+        </div><div class="text-center">
+            <!-- Categories dropdown -->
+        <form action="/action_page.php" method="get" id="form1">
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Filtrar juegos
+                </button>
+                <button class="btn btn-info" type="submit" form="form1" value="Submit">Submit</button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="#">Todos los juegos</a>
+                    <a class="dropdown-item" href="#">Filler</a>
+                    <a class="dropdown-item" href="#">Eurogame</a>
+                    <a class="dropdown-item" href="#">Abstracto</a>
+                    <a class="dropdown-item" href="#">Wargame</a>
+                    <a class="dropdown-item" href="#">Temático</a>
+                </div>
+            </div>
+         </div>
+        </form>
         <div class="row">
             <!-- Sample content (sacar contenido con un bucle) -->
 

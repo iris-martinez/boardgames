@@ -174,7 +174,7 @@ class gameDAO
         $image = $game->get_image();
         $punctuation = $game->get_punctuation();
         $id_user = $game->get_user();
-        $id_category = $game->get_category();
+        $id_category = $game->get_category()->get_id();
 
         $stmt->bind_param('ssdsssdddd', $name, $author, $number_players, $description, $duration, $image, $punctuation, $id_user, $id_category, $id);
         if ($stmt->execute() === FALSE) {

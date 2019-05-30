@@ -57,6 +57,28 @@ class CategoryDAO
 
     }
 
+    public function get_category_by_id($id_category)
+    {
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT * FROM Category WHERE id_category = ?";
+
+        // Vincular variables a una instrucción preparada como parámetros
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('d', $id_category);
+        $stmt->execute();
+        $stmt->bind_result($id, $name);
+
+        $category = null;
+        if ($stmt->fetch()) {
+            $category = new Category();
+            $category->set_id($id);
+            $category->set_name($name);
+        }
+        $stmt->close();
+        return $category;
+
+    }
+
     public function delete_category_by_id($id)
     {
         $conn = $this->datasource->get_connection();
