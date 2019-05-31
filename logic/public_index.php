@@ -4,9 +4,23 @@ require_once(__DIR__ . "/../dao/class-datasource.php");
 require_once(__DIR__ . "/../dao/class-userDAO.php");
 require_once(__DIR__ . "/../dao/class-roleDAO.php");
 require_once(__DIR__ . "/../dao/class-gameDAO.php");
+require_once(__DIR__ . "/../dao/class-categoryDAO.php");
 require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-user.php");
+require_once(__DIR__ . "/../model/class-category.php");
+
+$gameDAO = new gameDAO();
+$categoryDAO = new categoryDAO();
+
+if (isset($_GET['id_category'])) {
+    $games = $gameDAO->get_game_by_category($_GET['id_category']);
+} else {
+    $games = $gameDAO->list_games();
+}
+
+
+$categories = $categoryDAO->list_categories();
 
 ?>
 <!DOCTYPE html>
@@ -75,8 +89,7 @@ require_once(__DIR__ . "/../model/class-user.php");
 <header class="masthead">
     <div class="container">
         <div class="intro-text">
-            <div class="intro-lead-in">"No dejamos de jugar nos hacemos viejos, nos hacemos viejos porque dejamos de jugar"</div>
-            <div class="intro-heading text-uppercase">Bienvenidos</div>
+            <div class="intro-lead-in">"No dejamos de jugar porque nos hacemos viejos, nos hacemos viejos porque dejamos de jugar"</div>
             <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#boardgames">Encuentra tu juego</a>
         </div>
     </div>
@@ -103,40 +116,39 @@ require_once(__DIR__ . "/../model/class-user.php");
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2 class="section-heading text-uppercase">Juegos de mesa</h2>
-                <h3 class="section-subheading text-muted">Juegos valoraciones y comentarios.</h3>
+                <h3 class="section-subheading text-muted">Busca, valora y opina.</h3>
             </div>
         </div>
         <!-- IMPORTANT, implement filtering by categories -->
         <div class="text-center">
         </div>
-        </div><div class="text-center">
+        </div>
+        <div class="text-center">
             <!-- Categories dropdown -->
-        <form action="/action_page.php" method="get" id="form1">
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Filtrar juegos
                 </button>
-                <button class="btn btn-info" type="submit" form="form1" value="Submit">Submit</button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" href="#">Todos los juegos</a>
-                    <a class="dropdown-item" href="#">Filler</a>
-                    <a class="dropdown-item" href="#">Eurogame</a>
-                    <a class="dropdown-item" href="#">Abstracto</a>
-                    <a class="dropdown-item" href="#">Wargame</a>
-                    <a class="dropdown-item" href="#">Temático</a>
+                    <a class="dropdown-item <?=!isset($_GET['id_category']) ? 'active' : ''?>" href="public_index.php">Todos los juegos</a>
+                    <?php
+
+                    foreach ($categories as $category) {
+
+                        ?>
+                        <a class="dropdown-item <?=isset($_GET['id_category']) && $_GET['id_category'] == $category->get_id() ? 'active' : ''?>" href="public_index.php?id_category=<?= $category->get_id(); ?>"><?= $category->get_name(); ?></a>
+
+                        <?php
+                    }
+
+                    ?>
                 </div>
             </div>
          </div>
-        </form>
         <div class="row">
             <!-- Sample content (sacar contenido con un bucle) -->
 
             <?php
-
-            $game = new game();
-            $gameDAO = new gameDAO();
-
-            $games = $gameDAO->list_games();
 
             foreach ($games as $game) {
             ?>
@@ -169,7 +181,8 @@ require_once(__DIR__ . "/../model/class-user.php");
     <div class="container">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">Sobre Rotten Board Games</h2>
-            <h3 class="section-subheading text-muted">Todo sobre nuestra web.</h3>
+            <h3 class="section-subheading text-muted">Donde se habla de juegos de mesa.</h3>
+            <p>Estás en una aplicación web donde encontrar los juegos de mesa que han marcado un antes y un después en tus tardes de domingo, donde puedes opinar sobre cualquier juego de mesa.</p>
         </div>
         <div class="text-center">
             <!-- FALTA CONTENIDO-->

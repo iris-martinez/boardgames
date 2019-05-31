@@ -15,6 +15,7 @@ $game_dao = new gameDAO();
 $category_dao = new CategoryDAO();
 $game = $game_dao->get_game_by_id($game_id);
 $modified = false;
+$error = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda') {
 
@@ -27,8 +28,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
     $punctuation = (int)$_POST['punctuation'] ?? '';
     $category_id =(int) $_POST['id'] ?? '';
     $id_user = (int)$_POST['id_user'];
-
-    $error = false;
 
     if (empty($name)) {
         $name_error = "El nombre del juego es requerido";
