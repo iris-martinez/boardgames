@@ -1,13 +1,11 @@
 <?php
-
 require_once(__DIR__ . "/../dao/class-datasource.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-user.php");
 require_once(__DIR__ . "/../model/class-userpunctuategame.php");
 
-class punctuationsDAO
+class punctuationDAO
 {
-
     private $datasource;
 
     public function __construct()
@@ -15,36 +13,24 @@ class punctuationsDAO
         $this->datasource = datasource::get_instance();
     }
 
-    public function list_punctuations()
+    public function list_punctuations(): array
     {
-
         $conn = $this->datasource->get_connection();
-        $sql = "SELECT * FROM userpunctuategame";
+        $sql = "SELECT *
+                FROM UserPunctuateGame";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $stmt->execute();
-        $stmt->bind_result($id, $user_id, $game_id, $punct, $date, $user_level_id);
-        $punctuations = [];
-        while ($stmt->fetch()) {
-            $punctuation = new punctuations();
-            $punctuation->set_id($id);
-            $punctuation->set_user_id($user_id);
-            $punctuation->set_game_id($game_id);
-            $punctuation->set_punctuation($punct);
-            $punctuation->set_date($date);
-            $punctuation->set_user_level_id($user_level_id);
-            $punctuations[] = $punctuation;
-        }
+        $punctuations = $this->extract_result_list($stmt);
         $stmt->close();
         return $punctuations;
-
     }
 
     public function get_punctuations_by_game($id_game): array
     {
         $conn = $this->datasource->get_connection();
         $sql = "SELECT *
-                FROM UserPunctuateGame
+                FROM UserpunctuateGame
                 WHERE id_game = ?";
 
         $id = null;
@@ -57,12 +43,12 @@ class punctuationsDAO
         return $punctuations;
     }
 
-    public function get_punctuation_by_id($id): ?Punctuation
+    public function get_punctuation_by_id($id): ?punctuation
     {
         $conn = $this->datasource->get_connection();
         $sql = "SELECT *
                 FROM UserPunctuateGame 
-                WHERE id_punctuation = ?";
+                WHERE id_punctuatecion = ?";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $stmt->bind_param('d', $id);
@@ -75,7 +61,7 @@ class punctuationsDAO
     public function update_punctuation($punctuation)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "UPDATE UserPunctuatetGame SET punctuation = ? WHERE id_punctuation = ?";
+        $sql = "UPDATE UserpunctuateGame SET punctuation = ? WHERE id_punctuatecion = ?";
         $stmt = $conn->prepare($sql);
 
         $id = $punctuation->get_id();
@@ -83,7 +69,7 @@ class punctuationsDAO
 
         $stmt->bind_param('sd', $punctuation_name, $id);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido actualizar la puntuación ." . $conn->error);
+            throw new Exception("No has podido actualizar la puntuación." . $conn->error);
         }
         $stmt->close();
     }
@@ -93,7 +79,7 @@ class punctuationsDAO
         $stmt->bind_result($id, $id_user, $id_game, $punctuation_name, $create_date, $id_user_level);
         $punctuations = [];
         while ($stmt->fetch()) {
-            $punctuation = new punctuations();
+            $punctuation = new punctuation();
             $punctuation->set_id($id);
             $punctuation->set_punctuation($punctuation_name);
             $punctuation->set_date($create_date);
@@ -108,49 +94,49 @@ class punctuationsDAO
 
     private function extract_single_result($stmt): ?punctuation
     {
-        $stmt->bind_result($id, $user_id, $game_id, $punctuation_name, $date);
+        $stmt->bind_result($id, $user_id, $game_id, $punctuation_name, $date, $id_user_level);
         $punctuation = null;
         if ($stmt->fetch()) {
 
-            $punctuation = new punctuations();
+            $punctuation = new punctuation();
             $punctuation->set_id($id);
             $punctuation->set_user_id($user_id);
             $punctuation->set_game_id($game_id);
             $punctuation->set_punctuation($punctuation_name);
             $punctuation->set_date($date);
+            $punctuation->set_user_level_id($id_user_level);
         }
 
         return $punctuation;
     }
 
-    public function insert_punctuations($punctuation)
+    public function insert_punctuation($punctuation)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "INSERT INTO userpunctuategame(id_user, id_game, punctuation, create_date, id_user_level) VALUES (?,?,?,?,?)";
+        $sql = "INSERT INTO UserpunctuationGame (id_user, id_game, punctuation, create_date) VALUES (?,?,?,?)";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $user_id = $punctuation->get_user_id();
         $game_id = $punctuation->get_game_id();
-        $puntuation = $punctuation->get_punctuation();
+        $comentario = $punctuation->get_punctuation();
         $date = $punctuation->get_date();
-        $user_level_id = $punctuation->get_user_level_id();
-        $stmt->bind_param('dddsd', $user_id, $game_id, $puntuation, $date, $user_level_id);
+        $stmt->bind_param('ddss', $user_id, $game_id, $comentario, $date);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido crear la puntuación correctamente" . $conn->error);
         }
         $punctuation->set_id($conn->insert_id);
     }
 
-    public function delete_punctuations($punctuation_id)
+    public function delete_punctuation($punctuation)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "DELETE FROM Userpunctuategame WHERE id_punctuaetion = ?";
+        $sql = "DELETE FROM UserpunctuateGame WHERE id_punctuatecion = ?";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
-        $id = $punctuation_id;
+        $id = $punctuation->get_id();
         $stmt->bind_param('d', $id);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido eliminar la categoría correctamente" . $conn->error);
+            throw new Exception("No has podido eliminar la puntuación correctamente" . $conn->error);
         }
     }
 }

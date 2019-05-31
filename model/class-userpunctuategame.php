@@ -1,6 +1,6 @@
 <?php
 
-class punctuations
+class punctuation
 {
     private $id;
     private $user_id;
