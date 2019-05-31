@@ -7,18 +7,25 @@ require_once(__DIR__ . "/../dao/class-userDAO.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-usercommentgame.php");
 require_once(__DIR__ . "/../model/class-user.php");
+require_once (__DIR__ . "/../logic/session.php");
 
+session_start();
 $gameDAO = new gameDAO();
 $commentDAO = new commentDAO();
 $userDAO = new userDAO();
 
 $id_game = $_GET["id_game"];
+//$id_user = $_GET["id_user"];
+//var_dump($_GET); exit();
 
 $game = $gameDAO->get_game_by_id($id_game);
 $comments = $commentDAO->get_comments_by_game($id_game);
 
 ?>
+<!--<script>
+    window.rating = <?php /*$_GET["id_game"];*/?>
 
+</script>-->
 <!DOCTYPE html>
 <html lang="en">
 
@@ -66,6 +73,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
                     <!-- Game Details Go Here -->
+                    <h1 class="text-uppercase">Usuario <?php echo $_SESSION['id_user']; ?></h1>
                     <h2 class="text-uppercase">Título <?= $game->get_name(); ?></h2>
                     <p class="item-intro text-muted">Categoría <?= $game->get_category(); ?></p>
                     <img class="img-fluid d-block mx-auto" src="../views/images/<?=$game->get_image()?>" alt="">
@@ -89,6 +97,43 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                             ?>
                         </li>
                     </ul>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <?php $user_already_rated = false ;?>
+                            <h2 id="rating-title"><?= $user_already_rated ? 'Ya has votado! gracias! La media del juego es' : 'Vota para ver la media del juego'?></h2>
+                            <div id="game-info" class="hidden" data-game-id="<?= $game->get_id()?>" data-user-id="<?=  $_SESSION['id_user']; ?>"></div>
+<!--                            <div id="data-stars">
+                               <span class="fa fa-star" data-rating="1"></span>
+                               <span class="fa fa-star" data-rating="2"></span>
+                               <span class="fa fa-star" data-rating="3"></span>
+                               <span class="fa fa-star" data-rating="4"></span>
+                               <span class="fa fa-star" data-rating="5"></span>
+
+
+                            </div>-->
+
+                            <div id="<?= $user_already_rated ? 'average-rating' : 'data-stars'?>">
+                                <span class="fa fa-star" data-rating="1"></span>
+                                <span class="fa fa-star" data-rating="2"></span>
+                                <span class="fa fa-star" data-rating="3"></span>
+                                <span class="fa fa-star" data-rating="4"></span>
+                                <span class="fa fa-star" data-rating="5"></span>
+
+
+                            </div>
+                            <!--<form id="ratingForm" method="POST">
+                                <div class="form-group">
+
+
+                                    <input type="hidden" class="form-control" id="rating" name="rating" value="1">
+                                    <input type="hidden" class="form-control" id="game_id" name="game_id" value="12345678">
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-info" id="save_punctuaction">Save Review</button> <button type="button" class="btn btn-info" id="cancelReview">Cancel</button>
+                                </div>
+                            </form>-->
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -135,38 +180,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
 <!-- Games Modals -->
 
 <!-- Modal  -->
-<div class="portfolio-modal modal fade" id="gameModal" tabindex="-1" role="dialog" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="close-modal" data-dismiss="modal">
-                <div class="lr">
-                    <div class="rl"></div>
-                </div>
-            </div>
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-8 mx-auto">
-                        <div class="modal-body">
-                            <!-- Project Details Go Here -->
-                            <h2 class="text-uppercase">Project Name</h2>
-                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
-                            <img class="img-fluid d-block mx-auto" src="img/portfolio/01-full.jpg" alt="">
-                            <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
-                            <ul class="list-inline">
-                                <li>Date: January 2017</li>
-                                <li>Client: Threads</li>
-                                <li>Category: Illustration</li>
-                            </ul>
-                            <button class="btn btn-primary" data-dismiss="modal" type="button">
-                                <i class="fas fa-times"></i>
-                                Close Project</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 
 <!-- Bootstrap core JavaScript -->
@@ -182,6 +196,79 @@ $comments = $commentDAO->get_comments_by_game($id_game);
 
 <!-- Custom scripts for this template -->
 <script src="../views/templates/public/js/agency.min.js"></script>
+
+<script type="text/javascript">
+
+    /*$(document).ready(function(){
+        $("*[data-stars]").on("click", function(event){
+            alert(event.currentTarget === this);
+        });
+    });*/
+    $(document).ready(function(){
+
+        $('#data-stars > span').on('click', function(event){
+            var rating = $(event.currentTarget).attr('data-rating');
+            var hiddenInfoDiv = $('#game-info');
+            var userId = hiddenInfoDiv.attr('data-user-id');
+            var gameId = hiddenInfoDiv.attr('data-game-id');
+
+            $.ajax({
+                type : 'POST',
+                url : 'save_punctuaction.php',
+                data : {'rating':rating, 'user_id': userId, 'game_id': gameId},
+                success:function(response){
+                    var jsonResponse = JSON.parse(response);
+                    var currentRating = jsonResponse.users_rating;
+
+                    $('#data-stars > span').each(function(i){
+                        if(i+1 <= currentRating){
+                            $(this).attr('class', 'fa fa-star');
+                        }else{
+                            $(this).attr('class', 'fa icon-star-empty');
+                        }
+                    });
+
+                    $('#rating-title').html('Ya has votado! gracias! La media del juego es');
+                    console.log(jsonResponse.users_rating);
+
+  /*                  $("#ratingForm")[0].reset();
+                    window.setTimeout(function(){window.location.reload()},1000)*/
+                }
+            });
+        });
+
+
+/*        $("[data-rating]").each(function(i){
+            $(this).on("click", {x:i}, function(event){
+
+            //alert("Aquesta estrella  " + $(this).index() + ". té valor: " + event.data.x);
+
+
+                var puntuacion = (event.data.x) +1;
+                $("p").append(" <b>Puntuacion </b>." + puntuacion);
+
+                console.log(puntuacion);
+            });
+        });*/
+    });
+</script>
+
+<!-- Rating Form Submit with jQuery Ajax -------------------->
+<script>
+    $('#ratingForm').on('submit', function(event){
+        event.preventDefault();
+        var formData = $(this).serialize();
+        $.ajax({
+            type : 'POST',
+            url : 'save_punctuaction.php',
+            data : formData,
+            success:function(response){
+                $("#ratingForm")[0].reset();
+                window.setTimeout(function(){window.location.reload()},1000)
+            }
+        });
+    });
+</script>
 
 </body>
 

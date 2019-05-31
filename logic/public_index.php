@@ -8,6 +8,7 @@ require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-user.php");
 
+require_once (__DIR__ . "/../logic/save_punctuaction.php");
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,6 +143,8 @@ require_once(__DIR__ . "/../model/class-user.php");
             }
 
             ?>
+
+
         </div>
     </div>
 </section>
