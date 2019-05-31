@@ -23,7 +23,7 @@ class datasource
     {
         $servername = "localhost";
         $username = "root";
-        $password = "";
+        $password = "oxieva";
         $schema = "rottenBoardEN";
 
         // Conectar DB

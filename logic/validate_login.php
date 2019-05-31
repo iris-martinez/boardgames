@@ -12,7 +12,7 @@ $userDAO = new userDAO();
 $rolDAO = new roleDAO();
 try {
 
-    $conn = new PDO("mysql:dbname=rottenBoardEN;host=localhost", "root", "");
+    $conn = new PDO("mysql:dbname=rottenBoardEN;host=localhost", "root", "oxieva");
     $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 
