@@ -14,7 +14,7 @@ session_start();
 $gameDAO = new gameDAO();
 $commentDAO = new commentDAO();
 $userDAO = new userDAO();
-$punctuation_dao = new punctuationsDAO();
+$punctuation_dao = new punctuationDAO();
 $user_id = $_SESSION['id_user'];
 //$user_id = null;
 

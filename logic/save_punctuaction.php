@@ -17,7 +17,7 @@ $gameInfo =($_POST);
 //echo ( 'User id is    ' . $user_id  . '        and number of stars ' . $rating . '         game id is ' . $game_id);
 if($_SERVER["REQUEST_METHOD"] == "POST") {
 
-    $punctuation = new punctuations();
+    $punctuation = new punctuation();
 
     //var_dump($punctuation); exit();
     $id_user = (int)$gameInfo['user_id'];
@@ -47,7 +47,7 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = true;
     }
     if (!$error) {
-        $punctuations = new punctuations();
+        $punctuations = new punctuation();
 
         $punctuations->set_user_id($id_user);
         $punctuations->set_game_id($id_game);
@@ -55,8 +55,8 @@ if($_SERVER["REQUEST_METHOD"] == "POST") {
         $punctuations->set_date($create_date);
         $punctuations->set_user_level_id($id_user_level);
 
-        $punctuation_dao = new punctuationsDAO();
-        $punctuation_dao->insert_punctuations($punctuations);
+        $punctuation_dao = new punctuationDAO();
+        $punctuation_dao->insert_punctuation($punctuations);
 
         $users_rating = $punctuation_dao->getRatingByGame($game);
 
