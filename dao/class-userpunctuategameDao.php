@@ -133,7 +133,7 @@ class punctuationDAO
         $sql = "DELETE FROM UserpunctuateGame WHERE id_punctuatecion = ?";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
-        $id = $punctuation->get_id();
+        $id = $punctuation;
         $stmt->bind_param('d', $id);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido eliminar la puntuación correctamente" . $conn->error);

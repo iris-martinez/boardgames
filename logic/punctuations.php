@@ -5,6 +5,22 @@ require_once(__DIR__."/../dao/class-datasource.php");
 require_once(__DIR__."/../dao/class-userpunctuategameDao.php");
 require_once(__DIR__."/../model/class-userpunctuategame.php");
 
+require_once (__DIR__ . "/../dao/class-gameDAO.php");
+require_once (__DIR__ ."/../model/class-game.php");
+
+require_once(__DIR__ . "/../dao/class-userDAO.php");
+require_once(__DIR__ . "/../model/class-user.php");
+
+/*Delete a punctuation*/
+$punctuationDAO = new punctuationDAO();
+$punctuation = new punctuation();
+
+if(isset($_POST['delete_punctuation']) == 'eliminar'){
+  $score_id = $punctuation->get_id($_POST['delete_punctuation']);
+  $punctuationDAO->delete_punctuation($score_id);
+  echo 'OK';
+ }
+
 ?>
 
 <!DOCTYPE html>
@@ -55,32 +71,6 @@ require_once(__DIR__."/../model/class-userpunctuategame.php");
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
-      <!-- Alerts  
-      <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-bell fa-fw"></i>
-          <span class="badge badge-danger">9+</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-envelope fa-fw"></i>
-          <span class="badge badge-danger">7</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      -->
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i>
@@ -175,30 +165,46 @@ require_once(__DIR__."/../model/class-userpunctuategame.php");
                         <th>Juego</th>
                         <th>Puntuación</th>
                         <th>Fecha</th>
+                        <th>Acción</th>
                     </tr>
                     </thead>
+                    <tbody>
                     <?php
-                            $punctuation = new punctuations();
-                            $punctuationDAO = new punctuationsDAO();
+                      $punctuation = new punctuation();
+                      $punctuationDAO = new punctuationDAO();
 
-                            $punctuations = $punctuationDAO->list_punctuations();
+                      $punctuations = $punctuationDAO->list_punctuations();
 
-                            foreach ($punctuations as $punctuation) {
-                                ?>
-                            
-                            <tbody>
-                            <tr>
-                                <th><?= $punctuation->get_id(); ?></th>
-                                <td><?= $punctuation->get_user_id(); ?></td>
-                                <td><?= $punctuation->get_user_level_id(); ?></td>
-                                <td><?= $punctuation->get_game_id() ?></td>
-                                <td><?= $punctuation->get_punctuation(); ?></td>
-                                <td><?= $punctuation->get_date(); ?></td>
-                            </tr>
-                            </tbody>
-                                <?php
-                            }
-                            ?>
+                      foreach ($punctuations as $punctuation) {
+                          ?>
+                      <tr>
+                          <th><?= $punctuation->get_id(); ?></th>
+                          
+                          <?php  
+                          $user_dao = new userDAO();
+                          $user = $user_dao->get_user_by_id($punctuation->get_user_id());
+                          ?>
+                          <td><?= $user->get_email() ?></td>
+                          <td><?= $punctuation->get_user_level_id(); ?></td>
+
+                          <?php  
+                          $game_dao = new gameDAO();
+                          $game = $game_dao->get_game_by_id($punctuation->get_game_id());
+                          ?>
+
+                          <td><?= $game->get_name() ?></td>
+                          <td><?= $punctuation->get_punctuation(); ?></td>
+                          <td><?= $punctuation->get_date(); ?></td>
+                          <td>
+                            <form name="delete-form" method="post" action="punctuations.php">
+                                <button class="btn btn-danger" type="submit" name="delete_punctuation" value="<?=  $punctuation->get_id(); ?>" >Eliminar</button>
+                            </form>
+                          </td>
+                      </tr>
+                          <?php
+                      }
+                      ?>
+                    </tbody>
                     <tfoot>
                     <tr>
                         <th>ID</th>
@@ -207,25 +213,14 @@ require_once(__DIR__."/../model/class-userpunctuategame.php");
                         <th>Juego</th>
                         <th>Puntuación</th>
                         <th>Fecha</th>
+                        <th>Acción</th>
                     </tr>
                     </tfoot>
                 </table>
                 </div>
             </div>
             <div class="card-footer small text-muted">
-                <form action="" class="">
-                    <div class="form-group input-group">
-                        <div class="form-label-group">
-                            <input type="text" id="category" class="form-control" placeholder="Categoría" required="required">
-                            <label for="category">ID</label>
-                        </div>
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" type="button">
-                              <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
-                          </button>
-                      </div>
-                    </div> 
-                </form>
+            <?php echo "Última modificación: " . date ("d F Y H:i", getlastmod()); ?>
             </div>
         </div>
 

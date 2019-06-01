@@ -1,39 +1,8 @@
 <?php
 
-require_once(__DIR__ . "/../dao/class-datasource.php");
-require_once(__DIR__ . "/../dao/class-userDAO.php");
-require_once(__DIR__ . "/../dao/class-roleDAO.php");
-require_once(__DIR__ . "/../dao/class-gameDAO.php");
-require_once(__DIR__ . "/../dao/class-categoryDAO.php");
-require_once(__DIR__ . "/../model/class-role.php");
-require_once(__DIR__ . "/../model/class-game.php");
-require_once(__DIR__ . "/../model/class-user.php");
-require_once(__DIR__ . "/../model/class-category.php");
+header("location:logic/public_index.php");
+die();
 
-$gameDAO = new gameDAO();
-$game = new game();
-$categoryDAO = new categoryDAO();
-
-if (isset($_GET['id_category'])) {
-    $games = $gameDAO->get_game_by_category($_GET['id_category']);
-} else {
-    $games = $gameDAO->list_games();
-}
-
-/* Ranking */
-
-$categories = $categoryDAO->list_categories();
-$juegos = $gameDAO->list_games();
-    
-    function compare($a, $b)
-    {
-        if ($a->get_punctuation() ==  $b->get_punctuation()) {
-            return 0 ;
-        }
-        return ($a->get_punctuation() > $b->get_punctuation()) ? -1 : 1;
-    }
-    
-    usort($juegos, 'compare');
 ?>
 
 <!DOCTYPE html>
@@ -59,7 +28,7 @@ $juegos = $gameDAO->list_games();
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="../views/templates/public/css/agency.css" rel="stylesheet">
+    <link href="../views/templates/public/css/agency.min.css" rel="stylesheet">
 
 </head>
 
@@ -117,16 +86,8 @@ $juegos = $gameDAO->list_games();
         </div>
         <!-- show the 10 best rated games with a loop -->
         <div class="text-center">
-            <?php
-
-                foreach ($juegos as $juego) {
-                    ?>
-                    <h4><?= $juego->get_name(); ?></h4>
-                    <p><?= $juego->get_punctuation(); ?></p>
-
-                    <?php
-                }     
-            ?>
+            <h4>Juego 1</h4>
+            <p>Valoración</p>
         </div>
     </div>
 </section>
@@ -143,36 +104,35 @@ $juegos = $gameDAO->list_games();
         <!-- IMPORTANT, implement filtering by categories -->
         <div class="text-center">
         </div>
-        </div>
-        <div class="text-center">
-            <!-- Categories dropdown -->
-            <div class="dropdown">
-                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Filtrar juegos
-                </button>
-                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item <?=!isset($_GET['id_category']) ? 'active' : ''?>" href="public_index.php">Todos los juegos</a>
-                    <?php
+    </div>
+    <div class="text-center">
+        <!-- Categories dropdown -->
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Filtrar juegos
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item <?=!isset($_GET['id_category']) ? 'active' : ''?>" href="public_index.php">Todos los juegos</a>
+                <?php
 
-                    foreach ($categories as $category) {
-
-                        ?>
-                        <a class="dropdown-item <?=isset($_GET['id_category']) && $_GET['id_category'] == $category->get_id() ? 'active' : ''?>" href="public_index.php?id_category=<?= $category->get_id(); ?>"><?= $category->get_name(); ?></a>
-
-                        <?php
-                    }
+                foreach ($categories as $category) {
 
                     ?>
-                </div>
+                    <a class="dropdown-item <?=isset($_GET['id_category']) && $_GET['id_category'] == $category->get_id() ? 'active' : ''?>" href="public_index.php?id_category=<?= $category->get_id(); ?>"><?= $category->get_name(); ?></a>
+
+                    <?php
+                }
+
+                ?>
             </div>
-         </div>
-        <div class="row">
-            <div class="container">
-            <!-- Sample content (sacar contenido con un bucle) -->
+        </div>
+    </div>
+    <div class="row">
+        <!-- Sample content (sacar contenido con un bucle) -->
 
-            <?php
+        <?php
 
-            foreach ($games as $game) {
+        foreach ($games as $game) {
             ?>
             <div class="col-md-4 col-sm-6 portfolio-item">
                 <a class="portfolio-link" href="game.php?id_game=<?= $game->get_id(); ?>">
@@ -187,16 +147,14 @@ $juegos = $gameDAO->list_games();
                     <img height="150" src="../views/images/<?= $game->get_image(); ?>" style="float: left; margin-right: 10px"><br>
                     <h4><?= $game->get_name(); ?></h4><br>
                     <p class="text-muted"><?= $game->get_category(); ?></p>
-                    <br>
-                    <p align="justify"><?= $game->get_description(); ?></p><br>
+                    <p><?= $game->get_description(); ?></p><br>
                 </div>
             </div>
-                <?php
-            }
+            <?php
+        }
 
-            ?>
-            </div>
-        </div>
+        ?>
+    </div>
     </div>
 </section>
 
@@ -205,7 +163,7 @@ $juegos = $gameDAO->list_games();
     <div class="container">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">Sobre Rotten Board Games</h2>
-            <h3 class="section-subheading text-muted">Todo sobre los juegos de mesa.</h3>
+            <h3 class="section-subheading text-muted">Donde se habla de juegos de mesa.</h3>
             <p>Estás en una aplicación web donde encontrar los juegos de mesa que han marcado un antes y un después en tus tardes de domingo, donde puedes opinar sobre cualquier juego de mesa.</p>
         </div>
         <div class="text-center">

@@ -69,6 +69,24 @@ class userDAO
 
     }
 
+    public function get_user_by_email($email): ?user
+    {
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT u.id_user, u.name, u.surname, u.email, u.password, u.birth_date, u.register_date, r.id_role, r.role, l.id_user_level, l.user_level, u.counter_punctuation
+                FROM User u 
+                JOIN Role r USING (id_role)
+                JOIN User_level l USING (id_user_level) 
+                WHERE u.email = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('s', $email);
+        $stmt->execute();
+        $user = $this->extract_single_result($stmt);
+        $stmt->close();
+        return $user;
+
+    }
+
     public function update_user($user)
     {
         $conn = $this->datasource->get_connection();
