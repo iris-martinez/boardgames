@@ -187,7 +187,8 @@ $juegos = $gameDAO->list_games();
                     <img height="150" src="../views/images/<?= $game->get_image(); ?>" style="float: left; margin-right: 10px"><br>
                     <h4><?= $game->get_name(); ?></h4><br>
                     <p class="text-muted"><?= $game->get_category(); ?></p>
-                    <p><?= $game->get_description(); ?></p><br>
+                    <br>
+                    <p align="justify"><?= $game->get_description(); ?></p><br>
                 </div>
             </div>
                 <?php
