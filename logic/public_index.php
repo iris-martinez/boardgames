@@ -17,6 +17,7 @@ $game = new game();
 $categoryDAO = new categoryDAO();
 
 if (isset($_GET['id_category'])) {
+
     $games = $gameDAO->get_game_by_category($_GET['id_category']);
 } else {
     $games = $gameDAO->list_games();
@@ -143,9 +144,6 @@ $juegos = $gameDAO->list_games();
             </div>
         </div>
         <!-- IMPORTANT, implement filtering by categories -->
-        <div class="text-center">
-            <p>IMPLEMENTAR SISTEMA DE FILTRADO POR CATEGORÍAS!!</p>
-        </div>
         </div>
         <div class="text-center">
             <!-- Categories dropdown -->
@@ -156,15 +154,12 @@ $juegos = $gameDAO->list_games();
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item <?=!isset($_GET['id_category']) ? 'active' : ''?>" href="public_index.php">Todos los juegos</a>
                     <?php
-
                     foreach ($categories as $category) {
-
                         ?>
                         <a class="dropdown-item <?=isset($_GET['id_category']) && $_GET['id_category'] == $category->get_id() ? 'active' : ''?>" href="public_index.php?id_category=<?= $category->get_id(); ?>"><?= $category->get_name(); ?></a>
 
                         <?php
                     }
-
                     ?>
                 </div>
             </div>
@@ -175,11 +170,7 @@ $juegos = $gameDAO->list_games();
 
             <?php
 
-            $game = new game();
-            $gameDAO = new gameDAO();
-            $puntuactionsDAO = new punctuationsDAO();
-
-            $games = $gameDAO->list_games();
+            $puntuactionsDAO = new punctuationDAO();
 
             foreach ($games as $game) {
 
@@ -197,8 +188,7 @@ $juegos = $gameDAO->list_games();
                 <div class="portfolio-caption">
                     <img height="150" src="../views/images/<?= $game->get_image(); ?>" style="float: left; margin-right: 10px"><br>
                     <h4><?= $game->get_name(); ?></h4><br>
-                    <p class="text-muted"><?= $game->get_category(); ?></p>
-                    <p><?= $game->get_description(); ?></p><br>
+                    <p><?= $game->get_category(); ?></p><br>
                     <div id="average-rating">
                         <span class="fa-star <?= 1 <= $stars ? 'fa' : 'far' ?>" data-rating="1"></span>
                         <span class="fa-star <?= 2 <= $stars ? 'fa' : 'far' ?>" data-rating="2"></span>
