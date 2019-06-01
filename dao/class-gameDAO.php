@@ -28,8 +28,7 @@ class gameDAO
         $games = $this->extract_result_list($stmt);
         $stmt->close();
         return $games;
-
-    }
+    } 
 
     public function get_game_by_id($id): ?Game
     {

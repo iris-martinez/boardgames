@@ -11,6 +11,7 @@ require_once(__DIR__ . "/../model/class-user.php");
 require_once(__DIR__ . "/../model/class-category.php");
 
 $gameDAO = new gameDAO();
+$game = new game();
 $categoryDAO = new categoryDAO();
 
 if (isset($_GET['id_category'])) {
@@ -19,10 +20,22 @@ if (isset($_GET['id_category'])) {
     $games = $gameDAO->list_games();
 }
 
+/* Ranking */
 
 $categories = $categoryDAO->list_categories();
-
+$juegos = $gameDAO->list_games();
+    
+    function compare($a, $b)
+    {
+        if ($a->get_punctuation() ==  $b->get_punctuation()) {
+            return 0 ;
+        }
+        return ($a->get_punctuation() > $b->get_punctuation()) ? -1 : 1;
+    }
+    
+    usort($juegos, 'compare');
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -46,7 +59,7 @@ $categories = $categoryDAO->list_categories();
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="../views/templates/public/css/agency.min.css" rel="stylesheet">
+    <link href="../views/templates/public/css/agency.css" rel="stylesheet">
 
 </head>
 
@@ -104,8 +117,16 @@ $categories = $categoryDAO->list_categories();
         </div>
         <!-- show the 10 best rated games with a loop -->
         <div class="text-center">
-            <h4>Juego 1</h4>
-            <p>Valoración</p>
+            <?php
+
+                foreach ($juegos as $juego) {
+                    ?>
+                    <h4><?= $juego->get_name(); ?></h4>
+                    <p><?= $juego->get_punctuation(); ?></p>
+
+                    <?php
+                }     
+            ?>
         </div>
     </div>
 </section>
@@ -126,7 +147,7 @@ $categories = $categoryDAO->list_categories();
         <div class="text-center">
             <!-- Categories dropdown -->
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Filtrar juegos
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -146,6 +167,7 @@ $categories = $categoryDAO->list_categories();
             </div>
          </div>
         <div class="row">
+            <div class="container">
             <!-- Sample content (sacar contenido con un bucle) -->
 
             <?php
@@ -172,6 +194,7 @@ $categories = $categoryDAO->list_categories();
             }
 
             ?>
+            </div>
         </div>
     </div>
 </section>
@@ -181,7 +204,7 @@ $categories = $categoryDAO->list_categories();
     <div class="container">
         <div class="text-center">
             <h2 class="section-heading text-uppercase">Sobre Rotten Board Games</h2>
-            <h3 class="section-subheading text-muted">Donde se habla de juegos de mesa.</h3>
+            <h3 class="section-subheading text-muted">Todo sobre los juegos de mesa.</h3>
             <p>Estás en una aplicación web donde encontrar los juegos de mesa que han marcado un antes y un después en tus tardes de domingo, donde puedes opinar sobre cualquier juego de mesa.</p>
         </div>
         <div class="text-center">

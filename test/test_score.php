@@ -9,7 +9,7 @@ try {
      * test list_punctuations method
      */
 
-    $punctuationDAO = new punctuationsDAO();
+    $punctuationDAO = new punctuationDAO();
     $punctuations = $punctuationDAO->list_punctuations();
     foreach ($punctuations as $punctuation) {
         echo "Test listar puntuaciones" . " " . $punctuation->get_punctuation() . '<br>';
@@ -19,7 +19,7 @@ try {
      * test insert_punctuation method
      */
 
-    /* echo "---------------------------<br>";
+    /*  echo "---------------------------<br>";
     echo "test insert_punctuation method<br>";
     $punctuation = new punctuations();
     $punctuation->set_user_id(3);
@@ -30,13 +30,24 @@ try {
     $punctuationDAO->insert_punctuations($punctuation); */
 
     /**
-     * test delete_comment method
+     * test update_punctuation method
      */
     echo "---------------------------<br>";
-    echo "test delete_comment method<br>";
-    $punctuation = $punctuation->get_id(6);
+    echo "test update_punctuation method<br>";
+    $punctuation = $punctuationDAO->get_punctuation_by_id(2);
+    $punctuation->set_punctuation(4);
+    $punctuationDAO->update_punctuation($punctuation);
+    $punctuation = $punctuationDAO->get_punctuation_by_id(2);
+    echo 'First update' . ' ' . $punctuation->get_punctuation() . '<br>';
+
+    /**
+     * test delete_punctuation method
+     */
+    echo "---------------------------<br>";
+    echo "test delete_punctuation method<br>";
+    $punctuation = $punctuationDAO->get_punctuation_by_id(5);
     $punctuationDAO->delete_punctuation($punctuation);
-    $punctuation = $punctuationDAO->get_id(6);
+    $punctuation = $punctuationDAO->get_punctuation_by_id(5);
     echo (!empty($punctuation) ? 'existe' : 'no existe') . '<br>';
 
 } finally {
