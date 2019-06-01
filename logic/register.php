@@ -3,8 +3,13 @@
 require_once(__DIR__ . "/../dao/class-datasource.php");
 require_once(__DIR__ . "/../dao/class-userDAO.php");
 require_once(__DIR__ . "/../dao/class-roleDAO.php");
+require_once(__DIR__ . "/../dao/class-user_levelDAO.php");
 require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-user.php");
+
+$userDAO = new userDAO();
+$roleDAO = new roleDAO();
+$userLevelDAO = new user_levelDAO();
 
 $modified = false;
 $error = false;
@@ -21,10 +26,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $birthdate_converted = date("Y-m-d", strtotime($birth_date));
     $register_date = date('Y-m-d');
-
-    $id_role = 2;
-    $id_user_level = 1;
-    $counter_punctuation = 0;
 
     $error = false;
 
@@ -63,53 +64,36 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $birthDate = trim($_POST["birth_date"]);
     }
 
+
     if (!$error) {
 
-        $host = "localhost";
-        $dbUsername = "root";
-        $dbPassword = "";
-        $dbname = "rottenBoardEN";
-        //create connection
-        $conn = new mysqli($host, $dbUsername, $dbPassword, $dbname);
-        if (mysqli_connect_error()) {
-            die('Connect Error(' . mysqli_connect_errno() . ')' . mysqli_connect_error());
-        } else {
-            $SELECT = "SELECT email From User Where email = ? Limit 1";
-            $INSERT = "INSERT INTO User (name, surname, email, password, birth_date, register_date, id_role, id_user_level, counter_punctuation) 
-                        values(?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            //Prepare statement
-            $stmt = $conn->prepare($SELECT);
-            $stmt->bind_param("s", $email);
-            $stmt->execute();
-
-            $stmt->bind_result($email);
-            $stmt->store_result();
-            $rnum = $stmt->num_rows;
-
-            if ($rnum == 0) {
-                $stmt->close();
-                $stmt = $conn->prepare($INSERT);
-                $stmt->bind_param("ssssssiii", $name, $surname, $email, $password, $birth_date, $register_date, $id_role,
-                    $id_user_level, $counter_punctuation);
-
-
-                $stmt->execute();
-
-                $modified = true;
-
-
-                header("location:public_index.php");
-
-            } else {
-
+        try {
+            $user = $userDAO->get_user_by_email($email);
+            if (isset($user)) {
                 $_SESSION['fallo_registro'] = 'Este correo ya está registrado';
-
             }
-            $stmt->close();
-            $conn->close();
+
+            $user_level = $userLevelDAO->get_user_level_by_name('Novato')[0];
+            $rol = $roleDAO->get_a_role('USUARIO');
+
+            $user = new user();
+            $user->set_name($name);
+            $user->set_surname($surname);
+            $user->set_email($email);
+            $user->set_password($password);
+            $user->set_birthDate($birth_date);
+            $user->set_registerDate($register_date);
+            $user->set_role($rol);
+            $user->set_userLevel($user_level);
+            $user->set_counterPunctuation(0);
+
+            $userDAO->insert_user($user);
+            $modified = true;
+            header("location:public_index.php");
+        } finally {
+            datasource::get_instance()->close_connection();
         }
     }
-
 
 }
 
