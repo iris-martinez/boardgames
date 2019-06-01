@@ -5,6 +5,17 @@ require_once(__DIR__."/../dao/class-datasource.php");
 require_once(__DIR__."/../dao/class-usercommentgameDAO.php");
 require_once(__DIR__."/../model/class-usercommentgame.php");
 
+/*Delete a comment*/
+
+
+if(isset($_POST['delete_comment']) == 'eliminar'){
+  
+  $commentDAO = new commentDAO();
+  $comment = (int)$_POST['delete_comment'] ;
+  $commentDAO->delete_comment($comment);
+  echo "OK";
+  }
+
 ?>
 
 <!DOCTYPE html>
@@ -55,32 +66,6 @@ require_once(__DIR__."/../model/class-usercommentgame.php");
 
     <!-- Navbar -->
     <ul class="navbar-nav ml-auto ml-md-0">
-      <!-- Alerts  
-      <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-bell fa-fw"></i>
-          <span class="badge badge-danger">9+</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="alertsDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown no-arrow mx-1">
-        <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class="fas fa-envelope fa-fw"></i>
-          <span class="badge badge-danger">7</span>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="messagesDropdown">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Something else here</a>
-        </div>
-      </li>
-      -->
       <li class="nav-item dropdown no-arrow">
         <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <i class="fas fa-user-circle fa-fw"></i>
@@ -174,8 +159,20 @@ require_once(__DIR__."/../model/class-usercommentgame.php");
                         <th>Juego</th>
                         <th>Comentario</th>
                         <th>Fecha</th>
+                        <th>Acción</th>
                     </tr>
                     </thead>
+                    <tfoot>
+                    <tr>
+                        <th>ID</th>
+                        <th>Usuario</th>
+                        <th>Juego</th>
+                        <th>Comentario</th>
+                        <th>Fecha</th>
+                        <th>Acción</th>
+                    </tr>
+                    </tfoot>
+                    <tbody>
                     <?php
                             $comment = new comment();
                             $commentDAO = new commentDAO();
@@ -184,49 +181,32 @@ require_once(__DIR__."/../model/class-usercommentgame.php");
 
                             foreach ($comments as $comment) {
                                 ?>
-                            
-                            <tbody>
                             <tr>
                                 <th><?= $comment->get_id(); ?></th>
                                 <td><?= $comment->get_user_id(); ?></td>
                                 <td><?= $comment->get_game_id() ?></td>
                                 <td><?= $comment->get_comment(); ?></td>
                                 <td><?= $comment->get_date(); ?></td>
+                                <td>
+                                  <form name="delete-form" method="post" action="comments.php">
+                                      <button class="btn btn-danger" type="submit" name="delete_comment" value="<?=  $comment->get_id(); ?>" >Eliminar</button>
+                                  </form>
+                                </td>
                             </tr>
-                            </tbody>
                                 <?php
                             }
                             ?>
-                    <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>Usuario</th>
-                        <th>Juego</th>
-                        <th>Comentario</th>
-                        <th>Fecha</th>
-                    </tr>
-                    </tfoot>
+                    </tbody>
                 </table>
                 </div>
             </div>
             <div class="card-footer small text-muted">
-                <form action="" class="">
-                    <div class="form-group input-group">
-                        <div class="form-label-group">
-                            <input type="text" id="category" class="form-control" placeholder="Categoría" required="required">
-                            <label for="category">ID</label>
-                        </div>
-                        <div class="input-group-append">
-                          <button class="btn btn-primary" type="button">
-                              <i class="fas fa-minus" data-toggle="modal" data-target="#deleteModal"></i>
-                          </button>
-                      </div>
-                    </div> 
-                </form>
+            <?php echo "Última modificación: " . date ("d F Y H:i", getlastmod()); ?>
             </div>
         </div>
-
     </div>
+
+    
 
       <!-- /.container-fluid -->
 
