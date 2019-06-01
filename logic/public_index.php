@@ -132,6 +132,7 @@ $juegos = $gameDAO->list_games();
 </section>
 
 <!-- Board Games -->
+
 <section class="bg-light" id="boardgames">
     <div class="container">
         <div class="row">
@@ -141,9 +142,6 @@ $juegos = $gameDAO->list_games();
             </div>
         </div>
         <!-- IMPORTANT, implement filtering by categories -->
-        <div class="text-center">
-        </div>
-        </div>
         <div class="text-center">
             <!-- Categories dropdown -->
             <div class="dropdown">
@@ -165,9 +163,8 @@ $juegos = $gameDAO->list_games();
                     ?>
                 </div>
             </div>
-         </div>
+        </div><br><br>
         <div class="row">
-            <div class="container">
             <!-- Sample content (sacar contenido con un bucle) -->
 
             <?php
@@ -195,8 +192,7 @@ $juegos = $gameDAO->list_games();
             }
 
             ?>
-            </div>
-        </div>
+        
     </div>
 </section>
 
