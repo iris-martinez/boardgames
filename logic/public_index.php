@@ -11,6 +11,7 @@ require_once(__DIR__ . "/../model/class-user.php");
 require_once(__DIR__ . "/../model/class-category.php");
 
 $gameDAO = new gameDAO();
+$game = new game();
 $categoryDAO = new categoryDAO();
 
 if (isset($_GET['id_category'])) {
@@ -19,10 +20,22 @@ if (isset($_GET['id_category'])) {
     $games = $gameDAO->list_games();
 }
 
+/* Ranking */
 
 $categories = $categoryDAO->list_categories();
-
+$juegos = $gameDAO->list_games();
+    
+    function compare($a, $b)
+    {
+        if ($a->get_punctuation() ==  $b->get_punctuation()) {
+            return 0 ;
+        }
+        return ($a->get_punctuation() > $b->get_punctuation()) ? -1 : 1;
+    }
+    
+    usort($juegos, 'compare');
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -104,8 +117,16 @@ $categories = $categoryDAO->list_categories();
         </div>
         <!-- show the 10 best rated games with a loop -->
         <div class="text-center">
-            <h4>Juego 1</h4>
-            <p>Valoración</p>
+            <?php
+
+                foreach ($juegos as $juego) {
+                    ?>
+                    <h4><?= $juego->get_name(); ?></h4>
+                    <p><?= $juego->get_punctuation(); ?></p>
+
+                    <?php
+                }     
+            ?>
         </div>
     </div>
 </section>
