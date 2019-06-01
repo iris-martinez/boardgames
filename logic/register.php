@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $host = "localhost";
         $dbUsername = "root";
-        $dbPassword = "oxieva";
+        $dbPassword = "";
         $dbname = "rottenBoardEN";
         //create connection
         $conn = new mysqli($host, $dbUsername, $dbPassword, $dbname);
