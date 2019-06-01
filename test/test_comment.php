@@ -38,7 +38,7 @@ try {
     /**
      * test update_comment method
      */
-    /*echo "---------------------------<br>";
+    echo "---------------------------<br>";
     echo "test update_comment method<br>";
     $comment = $commentDAO->get_comment_by_id(2);
     $comment->set_comment("Esto es un nuevo comentario");
@@ -49,24 +49,24 @@ try {
     /**
      * test insert_comment method
      */
-    /*echo "---------------------------<br>";
+    echo "---------------------------<br>";
     echo "test insert_comment method<br>";
     $comment = new comment();
     $comment->set_user_id(3);
     $comment->set_game_id(2);
     $comment->set_comment("Muy lento de aprender!");
     $comment->set_date("2019-05-25");
-    $commentDAO->insert_comment($comment);*/
+    $commentDAO->insert_comment($comment);
 
     /**
      * test delete_comment method
      */
-    /*echo "---------------------------<br>";
+    echo "---------------------------<br>";
     echo "test delete_comment method<br>";
     $comment = $commentDAO->get_comment_by_id(1);
     $commentDAO->delete_comment($comment);
     $comment = $commentDAO->get_comment_by_id(1);
-    echo (!empty($comment) ? 'existe' : 'no existe') . '<br>';*/
+    echo (!empty($comment) ? 'existe' : 'no existe') . '<br>';
 
 
 } finally {

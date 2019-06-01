@@ -27,7 +27,9 @@ if($user_id == null){
 $game = $gameDAO->get_game_by_id($id_game);
 $current_rating = $punctuation_dao->getRatingByGame($game);
 $comments = $commentDAO->get_comments_by_game($id_game);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -75,15 +77,18 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
                     <!-- Game Details Go Here -->
-                    <h1 class="text-uppercase">Usuario <?php echo $_SESSION['id_user']; ?></h1>
                     <h2 class="text-uppercase">Título <?= $game->get_name(); ?></h2>
                     <p class="item-intro text-muted">Categoría <?= $game->get_category(); ?></p>
                     <img class="img-fluid d-block mx-auto" src="../views/images/<?=$game->get_image()?>" alt="">
-                    <p><?= $game->get_description(); ?></p>
+                    <br>
+                    <p align="justify"><?= $game->get_description(); ?></p>
                     <ul class="list-inline">
                         <li><b>Autor:</b> <?= $game->get_author(); ?> </li>
+                        <br>
                         <li><b>Duración:</b> <?= $game->get_duration(); ?></li>
-                        <li><b>Nº Jugadores:</b> <?= $game->get_number_players(); ?></li>
+                        <br>
+                        <li><b>Nº de jugadores:</b> <?= $game->get_number_players(); ?></li>
+                        <br>
                         <li><?php
 
                             echo count($comments) . " ";
@@ -162,7 +167,38 @@ $comments = $commentDAO->get_comments_by_game($id_game);
 <!-- Games Modals -->
 
 <!-- Modal  -->
-
+<div class="portfolio-modal modal fade" id="gameModal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="close-modal" data-dismiss="modal">
+                <div class="lr">
+                    <div class="rl"></div>
+                </div>
+            </div>
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 mx-auto">
+                        <div class="modal-body">
+                            <!-- Project Details Go Here -->
+                            <h2 class="text-uppercase">Project Name</h2>
+                            <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
+                            <img class="img-fluid d-block mx-auto" src="img/portfolio/01-full.jpg" alt="">
+                            <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                            <ul class="list-inline">
+                                <li>Date: January 2017</li>
+                                <li>Client: Threads</li>
+                                <li>Category: Illustration</li>
+                            </ul>
+                            <button class="btn btn-primary" data-dismiss="modal" type="button">
+                                <i class="fas fa-times"></i>
+                                Close Project</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Bootstrap core JavaScript -->

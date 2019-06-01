@@ -131,7 +131,7 @@ class commentDAO
         $sql = "DELETE FROM UserCommentGame WHERE id_comment = ?";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
-        $id = $comment->get_id();
+        $id = $comment;
         $stmt->bind_param('d', $id);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido eliminar el comentario correctamente" . $conn->error);

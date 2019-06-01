@@ -172,5 +172,6 @@ class user
     {
         $this->counter_punctuation = $counter_punctuation;
     }
+
 }
 

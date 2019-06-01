@@ -6,7 +6,8 @@ require_once(__DIR__ . "/../dao/class-roleDAO.php");
 require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-user.php");
 
-
+$modified = false;
+$error = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $user = new user();
@@ -28,35 +29,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $error = false;
 
     if (empty($_POST["name"])) {
-        $error_name = "Introduce el nombre del usuario.";
+        $name_error = "Introduce el nombre del usuario.";
         $error = true;
     } else {
         $name = trim($_POST["name"]);
     }
 
     if (empty($_POST["surname"])) {
-        $error_surname = "Introduce los apellidos del usuario.";
+        $name_error = "Introduce los apellidos del usuario.";
         $error = true;
     } else {
         $surname = trim($_POST["surname"]);
     }
 
     if (empty($_POST["email"])) {
-        $error_email = "Introduce el email del usuario.";
+        $name_error = "Introduce el email del usuario.";
         $error = true;
     } else {
         $email = trim($_POST["email"]);
     }
 
     if (empty($_POST["password"])) {
-        $error_password = "Introduce el password del usuario.";
+        $name_error = "Introduce el password del usuario.";
         $error = true;
     } else {
         $password = trim($_POST["password"]);
     }
 
     if (empty($_POST["birth_date"])) {
-        $errors_birthdate = "Introduce la fecha de nacimiento del usuario.";
+        $name_error = "Introduce la fecha de nacimiento del usuario.";
         $error = true;
     } else {
         $birthDate = trim($_POST["birth_date"]);
@@ -71,7 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         //create connection
         $conn = new mysqli($host, $dbUsername, $dbPassword, $dbname);
         if (mysqli_connect_error()) {
-            die('Connect Error('. mysqli_connect_errno().')'. mysqli_connect_error());
+            die('Connect Error(' . mysqli_connect_errno() . ')' . mysqli_connect_error());
         } else {
             $SELECT = "SELECT email From User Where email = ? Limit 1";
             $INSERT = "INSERT INTO User (name, surname, email, password, birth_date, register_date, id_role, id_user_level, counter_punctuation) 
@@ -85,21 +86,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->store_result();
             $rnum = $stmt->num_rows;
 
-            if ($rnum==0) {
+            if ($rnum == 0) {
                 $stmt->close();
                 $stmt = $conn->prepare($INSERT);
-                $stmt->bind_param("ssssssiii",$name, $surname, $email, $password, $birth_date, $register_date, $id_role,
+                $stmt->bind_param("ssssssiii", $name, $surname, $email, $password, $birth_date, $register_date, $id_role,
                     $id_user_level, $counter_punctuation);
 
 
                 $stmt->execute();
+
+                $modified = true;
 
 
                 header("location:public_index.php");
 
             } else {
 
-             $_SESSION['fallo_registro'] = 'Este correo ya está registrado';
+                $_SESSION['fallo_registro'] = 'Este correo ya está registrado';
 
             }
             $stmt->close();
@@ -133,7 +136,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <link href="../views/templates/public/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
@@ -147,7 +151,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav" style="background-color: #f73b51">
     <div class="container">
         <a class="navbar-brand js-scroll-trigger" href="public_index.php">Rotten Board Games</a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
             Menu
             <i class="fas fa-bars"></i>
         </button>
@@ -162,8 +168,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </nav>
 
 <!-- Formulario login-->
-<section class="bg-dark" >
+<section class="bg-dark">
     <div class="container"><!-- Manage user -->
+
+        <?php if ($error) { ?>
+            <div class="alert alert-danger" role="alert">
+                <?= $name_error ?>
+            </div>
+        <?php } ?>
+        <?php if ($modified) { ?>
+            <div class="alert alert-success" role="alert">
+                Te has registrado correctamente.
+            </div>
+        <?php } ?>
+
+
         <div class="card card-register mx-auto mt-5 mb-5">
             <div class="card-header">Registro</div>
 
@@ -174,14 +193,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-label-group">
-                                    <input type="text" id="name" maxlength="45" name="name" class="form-control" placeholder="Nombre"
+                                    <input type="text" id="name" maxlength="45" name="name" class="form-control"
+                                           placeholder="Nombre"
                                            value="" required="required" autofocus="autofocus">
                                     <label for="name">Nombre</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-label-group">
-                                    <input type="text" id="surname" maxlength="60" name="surname" class="form-control" placeholder="Apellidos"
+                                    <input type="text" id="surname" maxlength="60" name="surname" class="form-control"
+                                           placeholder="Apellidos"
                                            value="" required="required">
                                     <label for="surname">Apellidos</label>
                                 </div>
@@ -192,7 +213,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-label-group">
-                                    <input type="text" id="email" maxlength="50" name="email" class="form-control" placeholder="Email"
+                                    <input type="text" id="email" maxlength="50" name="email" class="form-control"
+                                           placeholder="Email"
                                            value=""
                                            required="required">
                                     <label for="email">Email</label>
@@ -200,13 +222,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <div class="col-md-6">
                                 <div class="form-label-group">
-                                    <input type="password" id="pass" name="password" maxlength="10" class="form-control" placeholder="Contraseña"
+                                    <input type="password" id="pass" name="password" maxlength="10" class="form-control"
+                                           placeholder="Contraseña"
                                            value=""
-                                           required="required" >
-                                    <small id="passwordHelpInline" class="text-muted">
-                                        Must be maximum 10 characters long.
-                                    </small>
+                                           required="required">
                                     <label for="pass">Contraseña</label>
+                                    <small id="passwordHelpInline" class="text-muted">
+                                        Debe tener un máximo de 10 caracteres.
+                                    </small>
+
                                 </div>
                             </div>
                         </div>
@@ -215,7 +239,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <div class="form-row">
                             <div class="col-md-6">
                                 <div class="form-label-group">
-                                    <input type="date" id="birth_date" name="birth_date" class="form-control" placeholder="Nacimiento"
+                                    <input type="date" id="birth_date" name="birth_date" class="form-control"
+                                           placeholder="Nacimiento"
                                            value=""
                                            required="required">
                                     <label for="birth_date">Fecha de nacimiento</label>
@@ -227,12 +252,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                     <div>
                         <?php
-                        if(isset($_SESSION['fallo_registro'])){
-                            echo "<div style='color: red'>Este correo ya está registrado </div>";
+                        if (isset($_SESSION['fallo_registro'])) {
+                            $name_error = "Este correo ya está registrado";
+                            echo "<div class=\"alert alert-danger\" role=\"alert\"> $name_error</div>";
                         }
                         ?>
+
                     </div>
-                    <button type="submit" a class="btn btn-primary btn-block" name="action" value="register">Register</button>
+                    <button type="submit" a class="btn btn-primary btn-block" name="action" value="register">Registrar
+                    </button>
                 </form>
             </div>
         </div>
@@ -240,8 +268,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <!-- end -->
 
 </section>
-
-
 
 
 <!-- Footer -->
