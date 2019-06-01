@@ -71,8 +71,11 @@ class punctuationsDAO
         $user_level_id = $punctuation->get_user_level_id();
         $stmt->bind_param('dddsd', $user_id, $game_id, $puntuation, $date, $user_level_id);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido crear la puntuación correctamente" . $conn->error);
+            throw new Exception("No has podido puntuar correctamente" . $conn->error);
         }
+
+        $total_rating= $this->getRatingByGameId($game_id);
+        $this->updatePunctuactionGame($game_id, $total_rating);
 
         return $punctuation;
     }
@@ -109,10 +112,56 @@ class punctuationsDAO
             $rating += ($id_user_level * $punctuation);
         }
         $total_rating = $rating / $number_of_rattings;
-        //insert game punctuation
+
+
+        return $total_rating;
+
+
+    }
+
+    //Funció a la home per mostrar estrelletes
+    public function getRatingByGameId($game_id){
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT id_user_level, punctuation FROM UserPunctuateGame WHERE id_game = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('d', $game_id);
+
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No se puede conectar con la base de datos" . $conn->error);
+        }
+        $stmt->bind_result($id_user_level, $punctuation);
+        $number_of_rattings = 0;
+        $rating = 0;
+        while ($stmt->fetch()) {
+            $number_of_rattings++;
+            $rating += ($id_user_level * $punctuation);
+        }
+        $total_rating = $rating / $number_of_rattings;
+
+
+        return $total_rating;
+    }
+
+    public function updatePunctuactionGame($game_id,$total_rating){
+
+        $conn = $this->datasource->get_connection();
+
+        //var_dump($total_rating); exit();
+
+        $sql = "UPDATE Game SET punctuation = ? WHERE  id_game = ? ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('dd',$total_rating, $game_id);
+
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No se puede conectar con la base de datos ahora" . $conn->error);
+        }
+        //var_dump($total_rating); exit();
 
         $stmt->close();
-        return $total_rating;
+
+
+
     }
 
 

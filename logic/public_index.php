@@ -7,6 +7,7 @@ require_once(__DIR__ . "/../dao/class-gameDAO.php");
 require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-user.php");
+require_once(__DIR__ . "/../dao/class-userpunctuategameDao.php");
 
 require_once (__DIR__ . "/../logic/save_punctuaction.php");
 ?>
@@ -118,10 +119,13 @@ require_once (__DIR__ . "/../logic/save_punctuaction.php");
 
             $game = new game();
             $gameDAO = new gameDAO();
+            $puntuactionsDAO = new punctuationsDAO();
 
             $games = $gameDAO->list_games();
 
             foreach ($games as $game) {
+
+                $stars = $puntuactionsDAO->getRatingByGameId($game->get_id());
             ?>
             <div class="col-md-4 col-sm-6 portfolio-item">
                 <a class="portfolio-link" href="game.php?id_game=<?= $game->get_id(); ?>">
@@ -137,6 +141,14 @@ require_once (__DIR__ . "/../logic/save_punctuaction.php");
                     <h4><?= $game->get_name(); ?></h4><br>
                     <p class="text-muted"><?= $game->get_category(); ?></p>
                     <p><?= $game->get_description(); ?></p><br>
+                    <div id="average-rating">
+                        <span class="fa-star <?= 1 <= $stars ? 'fa' : 'far' ?>" data-rating="1"></span>
+                        <span class="fa-star <?= 2 <= $stars ? 'fa' : 'far' ?>" data-rating="2"></span>
+                        <span class="fa-star <?= 3 <= $stars ? 'fa' : 'far' ?>" data-rating="3"></span>
+                        <span class="fa-star <?= 4 <= $stars ? 'fa' : 'far' ?>" data-rating="4"></span>
+                        <span class="fa-star <?= 5 <= $stars ? 'fa' : 'far' ?>" data-rating="5"></span>
+
+                    </div>
                 </div>
             </div>
                 <?php

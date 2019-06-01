@@ -102,6 +102,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                     <div class="row">
                         <div class="col-sm-12">
                             <h2 id="rating-title"><?= $user_already_rated ? 'La media del juego es:' : 'Vota para ver la media del juego'?></h2>
+
                             <div id="game-info" class="hidden" data-game-id="<?= $game->get_id()?>" data-user-id="<?=  $_SESSION['id_user']; ?>"></div>
 
                             <div id="<?= $user_already_rated ? 'average-rating' : 'data-stars'?>">
@@ -111,19 +112,8 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                                 <span class="fa-star <?= 4 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="4"></span>
                                 <span class="fa-star <?= 5 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="5"></span>
 
-
                             </div>
-                            <!--<form id="ratingForm" method="POST">
-                                <div class="form-group">
 
-
-                                    <input type="hidden" class="form-control" id="rating" name="rating" value="1">
-                                    <input type="hidden" class="form-control" id="game_id" name="game_id" value="12345678">
-                                </div>
-                                <div class="form-group">
-                                    <button type="submit" class="btn btn-info" id="save_punctuaction">Save Review</button> <button type="button" class="btn btn-info" id="cancelReview">Cancel</button>
-                                </div>
-                            </form>-->
                         </div>
                     </div>
                 </div>
@@ -196,6 +186,8 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             alert(event.currentTarget === this);
         });
     });*/
+
+    <!-- Rating Form Submit with jQuery Ajax -------------------->
     $(document).ready(function(){
 
         $('#data-stars > span').on('click', function(event){
@@ -216,48 +208,23 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                     $('#data-stars > span').each(function(i){
                         if(i+1 <= currentRating){
                             $(this).attr('class', 'fa fa-star');
+                            console.log(rating);
+
                         }else{
                             $(this).attr('class', 'far fa-star');
                         }
                     });
                     $('#data-stars > span').off();
-                    $('#rating-title').html('Ya has votado! gracias! La media del juego es');
+                    $('#rating-title').html('Ya has votado ! Gracias! La media del juego es');
                 }
             });
         });
 
 
-/*        $("[data-rating]").each(function(i){
-            $(this).on("click", {x:i}, function(event){
 
-            //alert("Aquesta estrella  " + $(this).index() + ". té valor: " + event.data.x);
-
-
-                var puntuacion = (event.data.x) +1;
-                $("p").append(" <b>Puntuacion </b>." + puntuacion);
-
-                console.log(puntuacion);
-            });
-        });*/
     });
 </script>
 
-<!-- Rating Form Submit with jQuery Ajax -------------------->
-<script>
-    $('#ratingForm').on('submit', function(event){
-        event.preventDefault();
-        var formData = $(this).serialize();
-        $.ajax({
-            type : 'POST',
-            url : 'save_punctuaction.php',
-            data : formData,
-            success:function(response){
-                $("#ratingForm")[0].reset();
-                window.setTimeout(function(){window.location.reload()},1000)
-            }
-        });
-    });
-</script>
 
 </body>
 
