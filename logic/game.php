@@ -2,19 +2,30 @@
 
 require_once(__DIR__ . "/../dao/class-datasource.php");
 require_once(__DIR__ . "/../dao/class-gameDAO.php");
+require_once(__DIR__ . "/../dao/class-userpunctuategameDao.php");
 require_once(__DIR__ . "/../dao/class-usercommentgameDAO.php");
 require_once(__DIR__ . "/../dao/class-userDAO.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-usercommentgame.php");
 require_once(__DIR__ . "/../model/class-user.php");
+require_once (__DIR__ . "/../logic/session.php");
 
+session_start();
 $gameDAO = new gameDAO();
 $commentDAO = new commentDAO();
 $userDAO = new userDAO();
+$punctuation_dao = new punctuationDAO();
+$user_id = $_SESSION['id_user'];
+//$user_id = null;
 
 $id_game = $_GET["id_game"];
-
+if($user_id == null){
+    $user_already_rated = true;
+}else{
+    $user_already_rated = $punctuation_dao->userHasRated($user_id, $id_game);
+}
 $game = $gameDAO->get_game_by_id($id_game);
+$current_rating = $punctuation_dao->getRatingByGame($game);
 $comments = $commentDAO->get_comments_by_game($id_game);
 
 ?>
@@ -66,8 +77,8 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
                     <!-- Game Details Go Here -->
-                    <h2 class="text-uppercase"><?= $game->get_name(); ?></h2>
-                    <p class="item-intro text-muted"><?= $game->get_category(); ?></p>
+                    <h2 class="text-uppercase">Título <?= $game->get_name(); ?></h2>
+                    <p class="item-intro text-muted">Categoría <?= $game->get_category(); ?></p>
                     <img class="img-fluid d-block mx-auto" src="../views/images/<?=$game->get_image()?>" alt="">
                     <br>
                     <p align="justify"><?= $game->get_description(); ?></p>
@@ -81,7 +92,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                         <li><?php
 
                             echo count($comments) . " ";
-                            echo "<b>comentarios de usuarios:</b>" . '<br>';
+                            echo "<b> comentarios de usuarios:</b>" . '<br>';
 
                             foreach ($comments as $comment) {
                                 $user = $userDAO->get_user_by_id($comment->get_user_id());
@@ -93,6 +104,23 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                             ?>
                         </li>
                     </ul>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h2 id="rating-title"><?= $user_already_rated ? 'La media del juego es:' : 'Vota para ver la media del juego'?></h2>
+
+                            <div id="game-info" class="hidden" data-game-id="<?= $game->get_id()?>" data-user-id="<?=  $_SESSION['id_user']; ?>"></div>
+
+                            <div id="<?= $user_already_rated ? 'average-rating' : 'data-stars'?>">
+                                <span class="fa-star <?= 1 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="1"></span>
+                                <span class="fa-star <?= 2 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="2"></span>
+                                <span class="fa-star <?= 3 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="3"></span>
+                                <span class="fa-star <?= 4 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="4"></span>
+                                <span class="fa-star <?= 5 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="5"></span>
+
+                            </div>
+
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -186,6 +214,53 @@ $comments = $commentDAO->get_comments_by_game($id_game);
 
 <!-- Custom scripts for this template -->
 <script src="../views/templates/public/js/agency.min.js"></script>
+
+<script type="text/javascript">
+
+    /*$(document).ready(function(){
+        $("*[data-stars]").on("click", function(event){
+            alert(event.currentTarget === this);
+        });
+    });*/
+
+    <!-- Rating Form Submit with jQuery Ajax -------------------->
+    $(document).ready(function(){
+
+        $('#data-stars > span').on('click', function(event){
+            var rating = $(event.currentTarget).attr('data-rating');
+            var hiddenInfoDiv = $('#game-info');
+            var userId = hiddenInfoDiv.attr('data-user-id');
+            var gameId = hiddenInfoDiv.attr('data-game-id');
+
+            $.ajax({
+                type : 'POST',
+                url : 'save_punctuaction.php',
+                data : {'rating':rating, 'user_id': userId, 'game_id': gameId},
+                success:function(response){
+
+                    var jsonResponse = JSON.parse(response);
+                    var currentRating = jsonResponse.users_rating;
+
+                    $('#data-stars > span').each(function(i){
+                        if(i+1 <= currentRating){
+                            $(this).attr('class', 'fa fa-star');
+                            console.log(rating);
+
+                        }else{
+                            $(this).attr('class', 'far fa-star');
+                        }
+                    });
+                    $('#data-stars > span').off();
+                    $('#rating-title').html('Ya has votado ! Gracias! La media del juego es');
+                }
+            });
+        });
+
+
+
+    });
+</script>
+
 
 </body>
 

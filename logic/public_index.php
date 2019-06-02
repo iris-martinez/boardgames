@@ -9,12 +9,15 @@ require_once(__DIR__ . "/../model/class-role.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-user.php");
 require_once(__DIR__ . "/../model/class-category.php");
+require_once(__DIR__ . "/../dao/class-userpunctuategameDao.php");
 
+require_once (__DIR__ . "/../logic/save_punctuaction.php");
 $gameDAO = new gameDAO();
 $game = new game();
 $categoryDAO = new categoryDAO();
 
 if (isset($_GET['id_category'])) {
+
     $games = $gameDAO->get_game_by_category($_GET['id_category']);
 } else {
     $games = $gameDAO->list_games();
@@ -24,7 +27,7 @@ if (isset($_GET['id_category'])) {
 
 $categories = $categoryDAO->list_categories();
 $juegos = $gameDAO->list_games();
-    
+
     function compare($a, $b)
     {
         if ($a->get_punctuation() ==  $b->get_punctuation()) {
@@ -32,7 +35,7 @@ $juegos = $gameDAO->list_games();
         }
         return ($a->get_punctuation() > $b->get_punctuation()) ? -1 : 1;
     }
-    
+
     usort($juegos, 'compare');
 ?>
 
@@ -59,7 +62,7 @@ $juegos = $gameDAO->list_games();
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
-    <link href="../views/templates/public/css/agency.css" rel="stylesheet">
+    <link href="../views/templates/public/css/agency.min.css" rel="stylesheet">
 
 </head>
 
@@ -125,24 +128,23 @@ $juegos = $gameDAO->list_games();
                     <p><?= $juego->get_punctuation(); ?></p>
 
                     <?php
-                }     
+                }
             ?>
         </div>
     </div>
 </section>
 
 <!-- Board Games -->
+
 <section class="bg-light" id="boardgames">
     <div class="container">
         <div class="row">
             <div class="col-lg-12 text-center">
                 <h2 class="section-heading text-uppercase">Juegos de mesa</h2>
-                <h3 class="section-subheading text-muted">Busca, valora y opina.</h3>
+                <h3 class="section-subheading text-muted">Juegos valoraciones y comentarios.</h3>
             </div>
         </div>
         <!-- IMPORTANT, implement filtering by categories -->
-        <div class="text-center">
-        </div>
         </div>
         <div class="text-center">
             <!-- Categories dropdown -->
@@ -153,26 +155,26 @@ $juegos = $gameDAO->list_games();
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item <?=!isset($_GET['id_category']) ? 'active' : ''?>" href="public_index.php">Todos los juegos</a>
                     <?php
-
                     foreach ($categories as $category) {
-
                         ?>
                         <a class="dropdown-item <?=isset($_GET['id_category']) && $_GET['id_category'] == $category->get_id() ? 'active' : ''?>" href="public_index.php?id_category=<?= $category->get_id(); ?>"><?= $category->get_name(); ?></a>
 
                         <?php
                     }
-
                     ?>
                 </div>
             </div>
-         </div>
+        </div><br><br>
         <div class="row">
-            <div class="container">
             <!-- Sample content (sacar contenido con un bucle) -->
 
             <?php
 
+            $puntuactionsDAO = new punctuationDAO();
+
             foreach ($games as $game) {
+
+                $stars = $puntuactionsDAO->getRatingByGameId($game->get_id());
             ?>
             <div class="col-md-4 col-sm-6 portfolio-item">
                 <a class="portfolio-link" href="game.php?id_game=<?= $game->get_id(); ?>">
@@ -186,7 +188,15 @@ $juegos = $gameDAO->list_games();
                 <div class="portfolio-caption">
                     <img height="150" src="../views/images/<?= $game->get_image(); ?>" style="float: left; margin-right: 10px"><br>
                     <h4><?= $game->get_name(); ?></h4><br>
-                    <p class="text-muted"><?= $game->get_category(); ?></p>
+                    <p><?= $game->get_category(); ?></p><br>
+                    <div id="average-rating">
+                        <span class="fa-star <?= 1 <= $stars ? 'fa' : 'far' ?>" data-rating="1"></span>
+                        <span class="fa-star <?= 2 <= $stars ? 'fa' : 'far' ?>" data-rating="2"></span>
+                        <span class="fa-star <?= 3 <= $stars ? 'fa' : 'far' ?>" data-rating="3"></span>
+                        <span class="fa-star <?= 4 <= $stars ? 'fa' : 'far' ?>" data-rating="4"></span>
+                        <span class="fa-star <?= 5 <= $stars ? 'fa' : 'far' ?>" data-rating="5"></span>
+
+                    </div>
                     <br>
                     <p align="justify"><?= $game->get_description(); ?></p><br>
                 </div>
@@ -195,7 +205,6 @@ $juegos = $gameDAO->list_games();
             }
 
             ?>
-            </div>
         </div>
     </div>
 </section>
