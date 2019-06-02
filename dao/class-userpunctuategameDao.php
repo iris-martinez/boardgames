@@ -1,4 +1,5 @@
 <?php
+
 require_once(__DIR__ . "/../dao/class-datasource.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-user.php");
@@ -6,6 +7,7 @@ require_once(__DIR__ . "/../model/class-userpunctuategame.php");
 
 class punctuationDAO
 {
+
     private $datasource;
 
     public function __construct()
@@ -24,6 +26,7 @@ class punctuationDAO
         $punctuations = $this->extract_result_list($stmt);
         $stmt->close();
         return $punctuations;
+
     }
 
     public function get_punctuations_by_game($id_game): array
@@ -113,18 +116,23 @@ class punctuationDAO
     public function insert_punctuation($punctuation)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "INSERT INTO UserpunctuationGame (id_user, id_game, punctuation, create_date) VALUES (?,?,?,?)";
+        $sql = "INSERT INTO UserPunctuateGame(id_user, id_game, punctuation, create_date, id_user_level) VALUES (?,?,?,?,?)";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $user_id = $punctuation->get_user_id();
         $game_id = $punctuation->get_game_id();
-        $comentario = $punctuation->get_punctuation();
+        $puntuation = $punctuation->get_punctuation();
         $date = $punctuation->get_date();
-        $stmt->bind_param('ddss', $user_id, $game_id, $comentario, $date);
+        $user_level_id = $punctuation->get_user_level_id();
+        $stmt->bind_param('dddsd', $user_id, $game_id, $puntuation, $date, $user_level_id);
         if ($stmt->execute() === FALSE) {
-            throw new Exception("No has podido crear la puntuación correctamente" . $conn->error);
+            throw new Exception("No has podido puntuar correctamente" . $conn->error);
         }
-        $punctuation->set_id($conn->insert_id);
+
+        $total_rating= $this->getRatingByGameId($game_id);
+        $this->updatePunctuactionGame($game_id, $total_rating);
+
+        return $punctuation;
     }
 
     public function delete_punctuation($punctuation)
@@ -138,5 +146,96 @@ class punctuationDAO
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido eliminar la puntuación correctamente" . $conn->error);
         }
+    }
+
+    public function getRatingByGame($game){
+        $conn = $this->datasource->get_connection();
+        $game_id = $game->get_id();
+        $sql = "SELECT id_user_level, punctuation FROM UserPunctuateGame WHERE id_game = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('d', $game_id);
+
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No se puede conectar con la base de datos" . $conn->error);
+        }
+        $stmt->bind_result($id_user_level, $punctuation);
+        $number_of_rattings = 0;
+        $rating = 0;
+        while ($stmt->fetch()) {
+            $number_of_rattings++;
+            $rating += ($id_user_level * $punctuation);
+        }
+        $total_rating = $rating / $number_of_rattings;
+
+
+        return $total_rating;
+
+
+    }
+
+    //Funció a la home per mostrar estrelletes
+    public function getRatingByGameId($game_id){
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT id_user_level, punctuation FROM UserPunctuateGame WHERE id_game = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('d', $game_id);
+
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No se puede conectar con la base de datos" . $conn->error);
+        }
+        $stmt->bind_result($id_user_level, $punctuation);
+        $number_of_rattings = 0;
+        $rating = 0;
+        while ($stmt->fetch()) {
+            $number_of_rattings++;
+            $rating += ($id_user_level * $punctuation);
+        }
+        $total_rating = $number_of_rattings != 0 ? $rating / $number_of_rattings : 0;
+
+        return $total_rating;
+    }
+
+    public function updatePunctuactionGame($game_id,$total_rating){
+
+        $conn = $this->datasource->get_connection();
+
+        //var_dump($total_rating); exit();
+
+        $sql = "UPDATE Game SET punctuation = ? WHERE  id_game = ? ";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('dd',$total_rating, $game_id);
+
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No se puede conectar con la base de datos ahora" . $conn->error);
+        }
+        //var_dump($total_rating); exit();
+
+        $stmt->close();
+
+
+
+    }
+
+
+
+
+    public function userHasRated($id_user, $id_game){
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT * FROM UserPunctuateGame WHERE id_game = ? AND id_user = ?";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('dd', $id_game, $id_user);
+
+
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No has podido actualizar la categoría correctamente" . $conn->error);
+        }
+
+        $stmt->store_result();
+        $rnum = $stmt->num_rows;
+
+        return $rnum > 0;
     }
 }

@@ -11,6 +11,7 @@ $userDAO = new userDAO();
 $rolDAO = new roleDAO();
 $roles = $rolDAO->list_roles();
 $modified = false;
+$error = false;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -79,6 +80,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user->set_role($rol);
 
         $userDAO->update_user($user);
+
+        $modified = true;
     }
 
 } else {
