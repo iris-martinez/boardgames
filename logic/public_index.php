@@ -135,6 +135,7 @@ $juegos = $gameDAO->list_games();
 </section>
 
 <!-- Board Games -->
+
 <section class="bg-light" id="boardgames">
     <div class="container">
         <div class="row">
@@ -163,9 +164,8 @@ $juegos = $gameDAO->list_games();
                     ?>
                 </div>
             </div>
-         </div>
+        </div><br><br>
         <div class="row">
-            <div class="container">
             <!-- Sample content (sacar contenido con un bucle) -->
 
             <?php

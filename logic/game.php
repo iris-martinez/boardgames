@@ -92,7 +92,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                         <li><?php
 
                             echo count($comments) . " ";
-                            echo "<b>comentarios de usuarios:</b>" . '<br>';
+                            echo "<b> comentarios de usuarios:</b>" . '<br>';
 
                             foreach ($comments as $comment) {
                                 $user = $userDAO->get_user_by_id($comment->get_user_id());
