@@ -190,13 +190,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar usuarios:</h6>
-                <a class="dropdown-item" href="#">Perfiles de usuario</a>
-                <a class="dropdown-item" href="#">Alta/Baja</a>
+                <a class="dropdown-item" href="userProfile.php">Perfiles de usuario</a>
+                <a class="dropdown-item" href="userProfile.php">Alta/Baja</a>
                 <a class="dropdown-item" href="#"></a>
                 <div class="dropdown-divider"></div>
                 <h6 class="dropdown-header">Feedback:</h6>
-                <a class="dropdown-item" href="#">Valoraciones</a>
-                <a class="dropdown-item" href="#">Comentarios</a>
+                <a class="dropdown-item" href="punctuations.php">Valoraciones</a>
+                <a class="dropdown-item" href="comments.php">Comentarios</a>
             </div>
         </li>
         <li class="nav-item dropdown">
