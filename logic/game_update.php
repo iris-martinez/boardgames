@@ -285,11 +285,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
                                             <select name="number_players" class="form-control" id="number_players" required>
                                                 <option>Nº de Jugadores</option>
 
-                                                <option <? if($game->get_number_players() == '1'){echo 'selected="selected"';}?> value="1">1</option>
-                                                <option <? if($game->get_number_players() == '2'){echo 'selected="selected"';}?> value="2">2</option>
-                                                <option <? if($game->get_number_players() == '3'){echo 'selected="selected"';}?> value="3">3</option>
-                                                <option <? if($game->get_number_players() == '4'){echo 'selected="selected"';}?> value="4">4</option>
-                                                <option <? if($game->get_number_players() == '5'){echo 'selected="selected"';}?> value="5">5</option>
+                                                <option <?php if($game->get_number_players() == '1'){echo 'selected="selected"';}?> value="1">1</option>
+                                                <option <?php if($game->get_number_players() == '2'){echo 'selected="selected"';}?> value="2">2</option>
+                                                <option <?php if($game->get_number_players() == '3'){echo 'selected="selected"';}?> value="3">3</option>
+                                                <option <?php if($game->get_number_players() == '4'){echo 'selected="selected"';}?> value="4">4</option>
+                                                <option <?php if($game->get_number_players() == '5'){echo 'selected="selected"';}?> value="5">5</option>
                                             </select>
                                         </div>
                                     </div>
@@ -304,7 +304,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['add_game']) == 'manda'
                                                 // error_log(var_export($categories,true)); exit();
                                                 foreach ($categories as $category) {
                                                     ?>
-                                                    <option <? if($game->get_category() != null && $game->get_category()->get_id() == $category->get_id() ){echo 'selected="selected"';}?> value="<?=$category->get_id() ?>"><?= $category->get_name()?></option>
+                                                    <option <?php if($game->get_category() != null && $game->get_category()->get_id() == $category->get_id() ){echo 'selected="selected"';}?> value="<?=$category->get_id() ?>"><?= $category->get_name()?></option>
                                                     <?php
                                                 }
                                                 ?>
