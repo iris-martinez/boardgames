@@ -106,7 +106,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                     </ul>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h2 id="rating-title"><?= $user_already_rated ? 'La media del juego es:' : 'Vota para ver la media del juego'?></h2>
+                            <h3 id="rating-title"><?= $user_already_rated ? 'La media del juego es:' : 'Vota para ver la media del juego'?></h3>
 
                             <div id="game-info" class="hidden" data-game-id="<?= $game->get_id()?>" data-user-id="<?=  $_SESSION['id_user']; ?>"></div>
 
@@ -118,7 +118,9 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                                 <span class="fa-star <?= 5 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="5"></span>
 
                             </div>
-
+                            <hr>
+                            <h3>Si quieres votar, registrate!</h3>
+                            <a class="btn btn-primary btn-xl text-uppercase" href="register.php">Registro</a>
                         </div>
                     </div>
                 </div>
@@ -156,7 +158,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             <div class="col-md-4">
                 <ul class="list-inline quicklinks">
                     <li class="list-inline-item">
-                        <a href="public_index.php">Home</a>
+                        <a class="btn btn-primary btn-xl text-uppercase" href="public_index.php">Volver</a>
                     </li>
                 </ul>
             </div>
