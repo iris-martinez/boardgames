@@ -86,8 +86,7 @@ require_once(__DIR__ . "/../model/class-user.php");
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar usuarios:</h6>
-                <a class="dropdown-item" href="userProfile.php">Listado de usuarios</a>
-                <a class="dropdown-item" href="userProfile.php">Modificaciones/Bajas</a>
+                <a class="dropdown-item" href="userProfile.php">Listar/Actualizar/Elim.</a>
                 <div class="dropdown-divider"></div>
                 <h6 class="dropdown-header">Feedback:</h6>
                 <a class="dropdown-item" href="punctuations.php">Valoraciones</a>
