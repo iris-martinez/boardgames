@@ -166,8 +166,7 @@ class punctuationDAO
             $number_of_rattings++;
             $rating += ($id_user_level * $punctuation);
         }
-        $total_rating = $rating / $number_of_rattings;
-
+        $total_rating = $number_of_rattings != 0 ? $rating / $number_of_rattings : 0;
 
         return $total_rating;
 

@@ -176,12 +176,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar usuario:</h6>
-                <a class="dropdown-item" href="userProfile.php">Listado de usuarios</a>
-                <a class="dropdown-item" href="usersManagement.html">Modificaciones/Bajas</a>
+                <a class="dropdown-item" href="userProfile.php">Listar/Actualizar/Elim.</a>
                 <div class="dropdown-divider"></div>
                 <h6 class="dropdown-header">Feedback:</h6>
-                <a class="dropdown-item" href="punctuations.html">Valoraciones</a>
-                <a class="dropdown-item" href="comments.html">Comentarios</a>
+                <a class="dropdown-item" href="punctuations.php">Valoraciones</a>
+                <a class="dropdown-item" href="comments.php">Comentarios</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -192,8 +191,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="searchGame.html">Buscar</a>
-                <a class="dropdown-item" href="newGame.html">Añadir</a>
+                <a class="dropdown-item" href="game_search.php">Buscar</a>
+                <a class="dropdown-item" href="game_form.php">Añadir</a>
                 <a class="dropdown-item" href="manageGame.html">Actualizar/Eliminar</a>
             </div>
         </li>

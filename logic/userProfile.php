@@ -87,13 +87,11 @@ require_once(__DIR__."/../model/class-user.php");
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar usuarios:</h6>
-                <a class="dropdown-item" href="../userManagement.php">Crear usuario</a>
-                <a class="dropdown-item" href="usersManagement.html">Modificaciones/Bajas</a>
-                <a class="dropdown-item" href="userProfile.php">Listado de usuarios</a>
+                <a class="dropdown-item" href="userProfile.php">Listar/Actualizar/Elim.</a>
                 <div class="dropdown-divider"></div>
                 <h6 class="dropdown-header">Feedback:</h6>
-                <a class="dropdown-item" href="punctuations.html">Valoraciones</a>
-                <a class="dropdown-item" href="comments.html">Comentarios</a>
+                <a class="dropdown-item" href="punctuations.php">Valoraciones</a>
+                <a class="dropdown-item" href="comments.php">Comentarios</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -104,9 +102,9 @@ require_once(__DIR__."/../model/class-user.php");
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar juegos:</h6>
-                <a class="dropdown-item" href="searchGame.html">Buscar</a>
-                <a class="dropdown-item" href="newGame.html">Añadir</a>
-                <a class="dropdown-item" href="manageGame.html">Actualizar/Eliminar</a>
+                <a class="dropdown-item" href="game_search.php">Buscar</a>
+                <a class="dropdown-item" href="game_form.php">Añadir</a>
+                <a class="dropdown-item" href="game_list.php">Actualizar/Eliminar</a>
             </div>
         </li>
         <li class="nav-item dropdown">
@@ -117,7 +115,7 @@ require_once(__DIR__."/../model/class-user.php");
             </a>
             <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                 <h6 class="dropdown-header">Gestionar categorías:</h6>
-                <a class="dropdown-item" href="newCategory.html">Añadir/Eliminar</a>
+                <a class="dropdown-item" href="category_form.php">Añadir/Eliminar</a>
             </div>
         </li>
     </ul>
