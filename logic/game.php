@@ -8,7 +8,7 @@ require_once(__DIR__ . "/../dao/class-userDAO.php");
 require_once(__DIR__ . "/../model/class-game.php");
 require_once(__DIR__ . "/../model/class-usercommentgame.php");
 require_once(__DIR__ . "/../model/class-user.php");
-require_once (__DIR__ . "/../logic/session.php");
+//require_once (__DIR__ . "/../logic/session.php");
 
 session_start();
 $gameDAO = new gameDAO();
