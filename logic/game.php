@@ -77,8 +77,9 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
                     <!-- Game Details Go Here -->
-                    <h2 class="text-uppercase"><?= $game->get_name(); ?></h2>
-                    <p class="item-intro text-muted"><?= $game->get_category(); ?></p>
+                    <h2 class="text-uppercase">Título <?= $game->get_name(); ?></h2>
+
+                    <p class="item-intro text-muted">Categoría <?= $game->get_category(); ?></p>
                     <img class="img-fluid d-block mx-auto" src="../views/images/<?=$game->get_image()?>" alt="">
                     <br>
                     <p align="justify"><?= $game->get_description(); ?></p>
@@ -119,8 +120,15 @@ $comments = $commentDAO->get_comments_by_game($id_game);
 
                             </div>
                             <hr>
-                            <h3>Si quieres votar, registrate!</h3>
-                            <a class="btn btn-primary btn-xl text-uppercase" href="register.php">Registro</a>
+                            <?php
+
+                                if($user_id == null){
+                                    echo "<h3>Si quieres votar, registrate!</h3>
+                                          <a class='btn btn-primary btn-xl text-uppercase' href='register.php'>Registro</a>";
+                                }
+                            ?>
+                            <!--<h3>Si quieres votar, registrate!</h3>
+                            <a class="btn btn-primary btn-xl text-uppercase" href="register.php">Registro</a>-->
                         </div>
                     </div>
                 </div>
