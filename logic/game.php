@@ -15,17 +15,49 @@ $gameDAO = new gameDAO();
 $commentDAO = new commentDAO();
 $userDAO = new userDAO();
 $punctuation_dao = new punctuationDAO();
+
 $user_id = $_SESSION['id_user'];
 //$user_id = null;
 
 $id_game = $_GET["id_game"];
-if($user_id == null){
+$commented = false;
+$error = false;
+
+if ($user_id == null) {
     $user_already_rated = true;
-}else{
+    $user_already_commented = true;
+} else {
     $user_already_rated = $punctuation_dao->userHasRated($user_id, $id_game);
+    $user_already_commented = $commentDAO->userHasCommented($user_id, $id_game);
 }
+
 $game = $gameDAO->get_game_by_id($id_game);
 $current_rating = $punctuation_dao->getRatingByGame($game);
+
+if (!$user_already_commented && $_SERVER["REQUEST_METHOD"] == "POST" &&
+    isset($_POST['add_comment']) && $_POST['add_comment'] == 'comentar') {
+
+    $comment_name = $_POST['comment'] ?? '';
+
+    if (empty($comment_name)) {
+        $name_error = "El comentario del juego es requerido.";
+        $error = true;
+    }
+
+    if (!$error) {
+
+        $comment = new comment();
+
+        $comment->set_user_id($user_id);
+        $comment->set_game_id($id_game);
+        $comment->set_comment($comment_name);
+
+        $commentDAO->insert_comment($comment);
+        $commented = true;
+        $user_already_commented = true;
+    }
+}
+
 $comments = $commentDAO->get_comments_by_game($id_game);
 
 ?>
@@ -49,7 +81,8 @@ $comments = $commentDAO->get_comments_by_game($id_game);
     <link href="../views/templates/public/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
     <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet'
+          type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
 
     <!-- Custom styles for this template -->
@@ -66,21 +99,32 @@ $comments = $commentDAO->get_comments_by_game($id_game);
         <a class="btn btn-secondary" href="public_index.php" role="button">
             <i class="fas fa-times"></i>
         </a>
-
     </div>
 </nav>
 
 <!-- Board Game info -->
 <section id="game">
     <div class="container">
+
+        <?php if ($error) { ?>
+            <div class="alert alert-danger" role="alert">
+                <?=$name_error?>
+            </div>
+        <?php } ?>
+        <?php if ($commented) { ?>
+            <div class="alert alert-success" role="alert">
+                Comentario añadido correctamente.
+            </div>
+        <?php } ?>
+
         <div class="row">
             <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
                     <!-- Game Details Go Here -->
-                    <h2 class="text-uppercase">Título <?= $game->get_name(); ?></h2>
+                    <h2 class="text-uppercase"><?= $game->get_name(); ?></h2>
 
-                    <p class="item-intro text-muted">Categoría <?= $game->get_category(); ?></p>
-                    <img class="img-fluid d-block mx-auto" src="../views/images/<?=$game->get_image()?>" alt="">
+                    <p class="item-intro text-muted"><?= $game->get_category(); ?></p>
+                    <img class="img-fluid d-block mx-auto" src="../views/images/<?= $game->get_image() ?>" alt="">
                     <br>
                     <p align="justify"><?= $game->get_description(); ?></p>
                     <ul class="list-inline">
@@ -107,34 +151,57 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                     </ul>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 id="rating-title"><?= $user_already_rated ? 'La media del juego es:' : 'Vota para ver la media del juego'?></h3>
+                            <h3 id="rating-title"><?= $user_already_rated ? 'La media del juego es:' : 'Vota para ver la media del juego' ?></h3>
 
-                            <div id="game-info" class="hidden" data-game-id="<?= $game->get_id()?>" data-user-id="<?=  $_SESSION['id_user']; ?>"></div>
+                            <div id="game-info" class="hidden" data-game-id="<?= $game->get_id() ?>"
+                                 data-user-id="<?= $_SESSION['id_user']; ?>"></div>
 
-                            <div id="<?= $user_already_rated ? 'average-rating' : 'data-stars'?>">
-                                <span class="fa-star <?= 1 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="1"></span>
-                                <span class="fa-star <?= 2 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="2"></span>
-                                <span class="fa-star <?= 3 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="3"></span>
-                                <span class="fa-star <?= 4 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="4"></span>
-                                <span class="fa-star <?= 5 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>" data-rating="5"></span>
+                            <div id="<?= $user_already_rated ? 'average-rating' : 'data-stars' ?>">
+                                <span class="fa-star <?= 1 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>"
+                                      data-rating="1"></span>
+                                <span class="fa-star <?= 2 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>"
+                                      data-rating="2"></span>
+                                <span class="fa-star <?= 3 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>"
+                                      data-rating="3"></span>
+                                <span class="fa-star <?= 4 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>"
+                                      data-rating="4"></span>
+                                <span class="fa-star <?= 5 <= $current_rating || !$user_already_rated ? 'fa' : 'far' ?>"
+                                      data-rating="5"></span>
 
                             </div>
                             <hr>
                             <?php
 
-                                if($user_id == null){
-                                    echo "<h3>Si quieres votar, registrate!</h3>
+                            if ($user_id == null) {
+                                echo "<h3>Si quieres votar, registrate!</h3>
                                           <a class='btn btn-primary btn-xl text-uppercase' href='register.php'>Registro</a>";
-                                }
+                            }
                             ?>
                             <!--<h3>Si quieres votar, registrate!</h3>
                             <a class="btn btn-primary btn-xl text-uppercase" href="register.php">Registro</a>-->
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3 id="comment-title"><?= $user_already_commented ? 'Ya has comentado este juego' : 'Añade un comentario' ?></h3>
+                            <?php if (!$user_already_commented) {?>
+                            <form method="post">
+                                <div class="form-group">
+                                    <textarea class="form-control" rows="5" id="comment" name="comment"></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary" name="add_comment" value="comentar">
+                                    Comentar
+                                </button><span style="float: right"><span id="commentLength">0</span>/255</span>
+                            </form>
+                            <?php } ?>
+                        </div>
+                        <div class="row">
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
 </section>
 
 <!-- Footer -->
@@ -193,7 +260,10 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                             <h2 class="text-uppercase">Project Name</h2>
                             <p class="item-intro text-muted">Lorem ipsum dolor sit amet consectetur.</p>
                             <img class="img-fluid d-block mx-auto" src="img/portfolio/01-full.jpg" alt="">
-                            <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae, nostrum, reiciendis facere nemo!</p>
+                            <p>Use this area to describe your project. Lorem ipsum dolor sit amet, consectetur
+                                adipisicing elit. Est blanditiis dolorem culpa incidunt minus dignissimos deserunt
+                                repellat aperiam quasi sunt officia expedita beatae cupiditate, maiores repudiandae,
+                                nostrum, reiciendis facere nemo!</p>
                             <ul class="list-inline">
                                 <li>Date: January 2017</li>
                                 <li>Client: Threads</li>
@@ -201,7 +271,8 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                             </ul>
                             <button class="btn btn-primary" data-dismiss="modal" type="button">
                                 <i class="fas fa-times"></i>
-                                Close Project</button>
+                                Close Project
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -234,29 +305,29 @@ $comments = $commentDAO->get_comments_by_game($id_game);
     });*/
 
     <!-- Rating Form Submit with jQuery Ajax -------------------->
-    $(document).ready(function(){
+    $(document).ready(function () {
 
-        $('#data-stars > span').on('click', function(event){
+        $('#data-stars > span').on('click', function (event) {
             var rating = $(event.currentTarget).attr('data-rating');
             var hiddenInfoDiv = $('#game-info');
             var userId = hiddenInfoDiv.attr('data-user-id');
             var gameId = hiddenInfoDiv.attr('data-game-id');
 
             $.ajax({
-                type : 'POST',
-                url : 'save_punctuaction.php',
-                data : {'rating':rating, 'user_id': userId, 'game_id': gameId},
-                success:function(response){
+                type: 'POST',
+                url: 'save_punctuaction.php',
+                data: {'rating': rating, 'user_id': userId, 'game_id': gameId},
+                success: function (response) {
 
                     var jsonResponse = JSON.parse(response);
                     var currentRating = jsonResponse.users_rating;
 
-                    $('#data-stars > span').each(function(i){
-                        if(i+1 <= currentRating){
+                    $('#data-stars > span').each(function (i) {
+                        if (i + 1 <= currentRating) {
                             $(this).attr('class', 'fa fa-star');
                             console.log(rating);
 
-                        }else{
+                        } else {
                             $(this).attr('class', 'far fa-star');
                         }
                     });
@@ -266,6 +337,18 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             });
         });
 
+        $('#comment').on('change keyup paste', function() {
+            var comment = $('#comment');
+            var len = comment.val().length;
+            var max = 255;
+
+            if (len >= max) {
+                comment.val(comment.val().substr(0, max));
+                len = max;
+            }
+
+            $('#commentLength').text(len)
+        })
 
 
     });
