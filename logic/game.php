@@ -16,7 +16,7 @@ $commentDAO = new commentDAO();
 $userDAO = new userDAO();
 $punctuation_dao = new punctuationDAO();
 
-$user_id = $_SESSION['id_user'];
+$user_id = $_SESSION['id_user'] ?? null;
 //$user_id = null;
 
 $id_game = $_GET["id_game"];
@@ -173,7 +173,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                             <?php
 
                             if ($user_id == null) {
-                                echo "<h3>Si quieres votar, registrate!</h3>
+                                echo "<h3>Si quieres comentar o votar, registrate!</h3>
                                           <a class='btn btn-primary btn-xl text-uppercase' href='register.php'>Registro</a>";
                             }
                             ?>
@@ -185,7 +185,7 @@ $comments = $commentDAO->get_comments_by_game($id_game);
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <h3 id="comment-title"><?= $user_already_commented ? 'Ya has comentado este juego' : 'Añade un comentario' ?></h3>
+                            <h3 id="comment-title" class="<?= $user_id == null ? "d-none" : "" ?>"><?= $user_already_commented ? 'Ya has comentado este juego' : 'Añade un comentario' ?></h3>
                             <?php if (!$user_already_commented) {?>
                             <form method="post">
                                 <div class="form-group">
