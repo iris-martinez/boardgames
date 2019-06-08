@@ -77,8 +77,8 @@ $comments = $commentDAO->get_comments_by_game($id_game);
             <div class="col-lg-8 mx-auto">
                 <div class="modal-body">
                     <!-- Game Details Go Here -->
-                    <h2 class="text-uppercase">Título <?= $game->get_name(); ?></h2>
-                    <p class="item-intro text-muted">Categoría <?= $game->get_category(); ?></p>
+                    <h2 class="text-uppercase"><?= $game->get_name(); ?></h2>
+                    <p class="item-intro text-muted"><?= $game->get_category(); ?></p>
                     <img class="img-fluid d-block mx-auto" src="../views/images/<?=$game->get_image()?>" alt="">
                     <br>
                     <p align="justify"><?= $game->get_description(); ?></p>
