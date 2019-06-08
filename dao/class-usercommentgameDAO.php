@@ -111,14 +111,13 @@ class commentDAO
     public function insert_comment($comment)
     {
         $conn = $this->datasource->get_connection();
-        $sql = "INSERT INTO UserCommentGame (id_user, id_game, comment, create_date) VALUES (?,?,?,?)";
+        $sql = "INSERT INTO UserCommentGame (id_user, id_game, comment, create_date) VALUES (?,?,?,now())";
         // Vincular variables a una instrucción preparada como parámetros
         $stmt = $conn->prepare($sql);
         $user_id = $comment->get_user_id();
         $game_id = $comment->get_game_id();
         $comentario = $comment->get_comment();
-        $date = $comment->get_date();
-        $stmt->bind_param('ddss', $user_id, $game_id, $comentario, $date);
+        $stmt->bind_param('dds', $user_id, $game_id, $comentario);
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido crear el comentario correctamente" . $conn->error);
         }
@@ -136,5 +135,22 @@ class commentDAO
         if ($stmt->execute() === FALSE) {
             throw new Exception("No has podido eliminar el comentario correctamente" . $conn->error);
         }
+    }
+
+    public function userHasCommented($id_user, $id_game){
+        $conn = $this->datasource->get_connection();
+        $sql = "SELECT 1 FROM UserCommentGame WHERE id_game = ? AND id_user = ? limit 1";
+
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param('dd', $id_game, $id_user);
+
+        if ($stmt->execute() === FALSE) {
+            throw new Exception("No has podido insertar el comentario correctamente" . $conn->error);
+        }
+
+        $stmt->store_result();
+        $rnum = $stmt->num_rows;
+
+        return $rnum > 0;
     }
 }

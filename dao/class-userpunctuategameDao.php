@@ -217,9 +217,6 @@ class punctuationDAO
 
     }
 
-
-
-
     public function userHasRated($id_user, $id_game){
         $conn = $this->datasource->get_connection();
         $sql = "SELECT * FROM UserPunctuateGame WHERE id_game = ? AND id_user = ?";
